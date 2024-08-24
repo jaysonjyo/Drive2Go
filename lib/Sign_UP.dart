@@ -3,6 +3,9 @@ import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'BottomNavigation.dart';
+import 'Home.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -46,6 +49,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 81.h,),
                 TextField(
+                  cursorColor: Colors.grey,
                   controller:fullname ,
                   style: TextStyle(color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
@@ -76,6 +80,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 20.h,),
                 TextField(
+                  cursorColor: Colors.grey,
                   controller:email ,
                   style: TextStyle(color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
@@ -107,6 +112,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 20.h,),
                 TextField(
+                  cursorColor: Colors.grey,
                   controller:phonenumber ,
                   style: TextStyle(color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
@@ -137,6 +143,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 20.h,),
                 TextField(
+                  cursorColor: Colors.grey,
                   controller:password ,
                   style: TextStyle(color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
@@ -168,27 +175,31 @@ class _SignUpState extends State<SignUp> {
           
                 ),
                 SizedBox(height: 82.h,),
-            Container(
-              width: 350.w,
-              height: 73.h,
-              decoration: ShapeDecoration(
-                color: Color(0xFFDDE0E3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.r),
+            GestureDetector(onTap: (){
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>Bottomnavigation()),(route)=>false);
+            },
+              child: Container(
+                width: 350.w,
+                height: 73.h,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFDDE0E3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.r),
+                  ),
                 ),
-              ),
-            child: Center(
-              child: Text(
-                'Sign Up',
-                style: TextStyle(
-                  color: Color(0xFF01293B),
-                  fontSize: 20.sp,
-                  fontFamily: 'sfprodisplay',
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.20.w,
+              child: Center(
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    color: Color(0xFF01293B),
+                    fontSize: 20.sp,
+                    fontFamily: 'sfprodisplay',
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.20.w,
+                  ),
                 ),
+              )
               ),
-            )
             ),
                 SizedBox(height: 20.h,),
                 Row(mainAxisAlignment: MainAxisAlignment.center,

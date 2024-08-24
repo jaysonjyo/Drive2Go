@@ -1,3 +1,5 @@
+import 'package:drive2goo/BottomNavigation.dart';
+import 'package:drive2goo/Home.dart';
 import 'package:drive2goo/Sign_UP.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,12 +47,12 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
             SizedBox(height: 68.h,),
-                TextField(
+                TextField(cursorColor: Colors.grey,
                   controller: email,
                   style: TextStyle(color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 15.w),
+                    contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 25.w),
                     filled: true,
                       fillColor: Colors.white.withOpacity(0.18000000715255737),
                       border:OutlineInputBorder(borderSide: BorderSide.none,borderRadius: BorderRadius.circular(20.r)),
@@ -84,11 +86,12 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 40.h,),
                 TextField(
+                  cursorColor: Colors.grey,
                   controller: password,
                   style: TextStyle(color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 15.w),
+                      contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 25.w),
 
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.18000000715255737),
@@ -131,30 +134,34 @@ class _SignInState extends State<SignIn> {
                     ),
                   ],
                 ),SizedBox(height: 88.h,),
-            Container(
-              width: 350.w,
-              height: 73.h,
-              decoration: ShapeDecoration(
-                color: Color(0xFFDDE0E3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.r),
-          
-              ),
-            ),
-          
-              child:  Center(
-              child: Text(
-                'Sign In',
-                style: TextStyle(
-                  color: Color(0xFF01293B),
-                  fontSize: 20.sp,
-                  fontFamily: 'sfprodisplay',
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.20.w,
+            GestureDetector(onTap: (){
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>Bottomnavigation()),(route)=>false);
+            },
+              child: Container(
+                width: 350.w,
+                height: 73.h,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFDDE0E3),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
+
                 ),
               ),
+
+                child:  Center(
+                child: Text(
+                  'Sign In',
+                  style: TextStyle(
+                    color: Color(0xFF01293B),
+                    fontSize: 20.sp,
+                    fontFamily: 'sfprodisplay',
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.20.w,
+                  ),
+                ),
+              ),
+                        ),
             ),
-          ),
                 SizedBox(height: 20.h,),
             Container(
               width: 350.w,
@@ -203,7 +210,8 @@ class _SignInState extends State<SignIn> {
                         fontWeight: FontWeight.w400,
 
                       ),
-                    ),SizedBox(width: 5.w,),
+                    ),
+                    SizedBox(width: 5.w,),
                     GestureDetector(onTap: (){
                       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>SignUp()),(route)=>false);
                     },
