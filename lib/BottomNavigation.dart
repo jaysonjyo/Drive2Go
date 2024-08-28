@@ -22,7 +22,7 @@ body: Stack(
   children: [
     screens[currentIndex],
     Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 18.w,vertical: 34),
+      padding:  EdgeInsets.symmetric(horizontal: 18.w,vertical: 38.h),
       child: Column(mainAxisAlignment: MainAxisAlignment.end,
 
         children: [
@@ -43,49 +43,74 @@ body: Stack(
             //     )
             //   ]
             // ),
-            child: BottomNavigationBar(selectedLabelStyle: TextStyle(fontSize: 0.sp),
-              showSelectedLabels: true,
-              backgroundColor: Colors.white.withOpacity(0.05),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(16.r)),
+              child: BottomNavigationBar(
+                elevation: 0,
+                selectedLabelStyle: TextStyle(fontSize: 0.sp),
+                showSelectedLabels: true,
+                backgroundColor: Colors.white.withOpacity(0.05),
 
-              type: BottomNavigationBarType.fixed,
+                type: BottomNavigationBarType.fixed,
 
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              items: [
-                BottomNavigationBarItem(
-                    icon:
-                    currentIndex == 0 ?  Container(
-                      width: 52.w,
-                      height: 52.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(0.00, -1.00),
-                          end: Alignment(0, 1),
-                          colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
+                onTap: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                items: [
+                  BottomNavigationBarItem(
+                      icon:
+                      currentIndex == 0 ?  Container(
+                        width: 52.w,
+                        height: 52.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.00, -1.00),
+                            end: Alignment(0, 1),
+                            colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11.r),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 4.r,
+                              offset: Offset(0, 4),
+                              spreadRadius: 0.r,
+                            )
+                          ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11.r),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(  width: 28.w,
+                            height: 28.h,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/home.png"))
+                            )),
+                            Text(
+                              'Home',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF1F354D),
+                                fontSize: 10.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w300,
+
+                              ),
+                            )
+                          ],
                         ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4.r,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0.r,
-                          )
-                        ],
-                      ),
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                      ):Column(mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(  width: 28.w,
-                          height: 28.h,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: AssetImage("assets/home.png"))
-                          )),
+                              height: 28.h,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage("assets/home.png"))
+                              )),
                           Text(
                             'Home',
                             textAlign: TextAlign.center,
@@ -99,52 +124,51 @@ body: Stack(
                           )
                         ],
                       ),
-                    ):Column(mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(  width: 28.w,
-                            height: 28.h,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage("assets/home.png"))
-                            )),
-                        Text(
-                          'Home',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF1F354D),
-                            fontSize: 10.sp,
-                            fontFamily: 'sfprodisplay',
-                            fontWeight: FontWeight.w300,
-
+                      label: ""
+                  ),
+                  BottomNavigationBarItem(
+                      icon:currentIndex == 1 ? Container(
+                        width: 52.w,
+                        height: 52.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.00, -1.00),
+                            end: Alignment(0, 1),
+                            colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
                           ),
-                        )
-                      ],
-                    ),
-                    label: ""
-                ),
-                BottomNavigationBarItem(
-                    icon:currentIndex == 1 ? Container(
-                      width: 52.w,
-                      height: 52.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(0.00, -1.00),
-                          end: Alignment(0, 1),
-                          colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11.r),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 4.r,
+                              offset: Offset(0, 4),
+                              spreadRadius: 0.r,
+                            )
+                          ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11.r),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(  width: 28.w,
+                                height: 28.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(image: AssetImage("assets/search.png"))
+                                )),
+                            Text(
+                              'Search',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF1F354D),
+                                fontSize: 10.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w300,
+                              ),
+                            )
+                          ],
                         ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4.r,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0.r,
-                          )
-                        ],
-                      ),
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                      ):Column(mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(  width: 28.w,
                               height: 28.h,
@@ -163,119 +187,120 @@ body: Stack(
                             ),
                           )
                         ],
-                      ),
-                    ):Column(mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(  width: 28.w,
-                            height: 28.h,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage("assets/search.png"))
-                            )),
-                        Text(
-                          'Search',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF1F354D),
-                            fontSize: 10.sp,
-                            fontFamily: 'sfprodisplay',
-                            fontWeight: FontWeight.w300,
+                      ),  label: ""
+                  ),
+                  BottomNavigationBarItem(
+                      icon:currentIndex == 2 ? Container(
+                        width: 52.w,
+                        height: 52.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.00, -1.00),
+                            end: Alignment(0, 1),
+                            colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
                           ),
-                        )
-                      ],
-                    ),  label: ""
-                ),
-                BottomNavigationBarItem(
-                    icon:currentIndex == 2 ? Container(
-                      width: 52.w,
-                      height: 52.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(0.00, -1.00),
-                          end: Alignment(0, 1),
-                          colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11.r),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 4.r,
+                              offset: Offset(0, 4),
+                              spreadRadius: 0.r,
+                            )
+                          ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11.r),
-                        ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4.r,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0.r,
-                          )
-                        ],
-                      ),
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(  width: 28.w,
-                              height: 28.h,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage("assets/shopping.png"))
-                              )),
-                          Text(
-                            'Buy Car',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF1F354D),
-                              fontSize: 10.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w300,
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(  width: 28.w,
+                                height: 28.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(image: AssetImage("assets/shopping.png"))
+                                )),
+                            Text(
+                              'Buy Car',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF1F354D),
+                                fontSize: 10.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w300,
 
-                            ),
-                          )
-                        ],
-                      ),
-                    ):
-                    Column(mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(  width: 28.w,
-                        height: 28.h,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(image: AssetImage("assets/shopping.png"))
-                        )),
-                    Text(
-                      'Buy Car',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFF1F354D),
-                        fontSize: 10.sp,
-                        fontFamily: 'sfprodisplay',
-                        fontWeight: FontWeight.w300,
-
-                      ),
-                    )
-                  ],
-                ),
-                    label: ""
-
-                ),
-                BottomNavigationBarItem(
-                    icon:currentIndex == 3 ?Container(
-                      width: 52.w,
-                      height: 52.h,
-                      decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(0.00, -1.00),
-                          end: Alignment(0, 1),
-                          colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
+                              ),
+                            )
+                          ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11.r),
+                      ):
+                      Column(mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(  width: 28.w,
+                          height: 28.h,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/shopping.png"))
+                          )),
+                      Text(
+                        'Buy Car',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF1F354D),
+                          fontSize: 10.sp,
+                          fontFamily: 'sfprodisplay',
+                          fontWeight: FontWeight.w300,
+
                         ),
-                        shadows: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4.r,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0.r,
-                          )
-                        ],
-                      ),
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                      )
+                    ],
+                  ),
+                      label: ""
+
+                  ),
+                  BottomNavigationBarItem(
+                      icon:currentIndex == 3 ?Container(
+                        width: 52.w,
+                        height: 52.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.00, -1.00),
+                            end: Alignment(0, 1),
+                            colors: [Colors.white.withOpacity(0.5899999737739563), Color(0xD69E9E9E)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11.r),
+                          ),
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0x3F000000),
+                              blurRadius: 4.r,
+                              offset: Offset(0, 4),
+                              spreadRadius: 0.r,
+                            )
+                          ],
+                        ),
+                        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(  width: 28.w,
+                                height: 28.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(image: AssetImage("assets/user.png"))
+                                )),
+                            Text(
+                              'Account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFF1F354D),
+                                fontSize: 10.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w300,
+
+                              ),
+                            )
+                          ],
+                        ),
+                      ):Column(mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(  width: 28.w,
                               height: 28.h,
@@ -296,31 +321,11 @@ body: Stack(
                           )
                         ],
                       ),
-                    ):Column(mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(  width: 28.w,
-                            height: 28.h,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage("assets/user.png"))
-                            )),
-                        Text(
-                          'Account',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF1F354D),
-                            fontSize: 10.sp,
-                            fontFamily: 'sfprodisplay',
-                            fontWeight: FontWeight.w300,
+                      label: ""
 
-                          ),
-                        )
-                      ],
-                    ),
-                    label: ""
-
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
