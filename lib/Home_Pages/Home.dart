@@ -459,7 +459,8 @@ class _HomeState extends State<Home> {
                     mainAxisSpacing: 20.0.h,
                     childAspectRatio: 185/225,
                     shrinkWrap: true,
-                    children: List.generate(6, (index) {
+                    children: List.generate(6,
+                          (index) {
                       return GestureDetector(onTap: (){
                         Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));
                       },

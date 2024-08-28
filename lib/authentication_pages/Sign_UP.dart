@@ -1,10 +1,10 @@
-import 'package:drive2goo/Sign_In.dart';
+import 'package:drive2goo/authentication_pages/Sign_In.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'BottomNavigation.dart';
-import 'Home.dart';
+import '../BottomNavigation.dart';
+import '../Home_Pages/Home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});

@@ -1,6 +1,6 @@
 import 'package:drive2goo/BottomNavigation.dart';
-import 'package:drive2goo/Home.dart';
-import 'package:drive2goo/Sign_UP.dart';
+import 'package:drive2goo/Home_Pages/Home.dart';
+import 'package:drive2goo/authentication_pages/Sign_UP.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -88,7 +88,8 @@ class _SignInState extends State<SignIn> {
                 TextField(
                   cursorColor: Colors.grey,
                   controller: password,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: Colors.white),
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 20.h,horizontal: 25.w),

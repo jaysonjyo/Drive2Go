@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:drive2goo/Rent_Details.dart';
+import 'package:drive2goo/Home_Pages/Rent_Details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -763,7 +763,7 @@ class _CarDetailsState extends State<CarDetails> {
                 width: 430.w,
                 height: 99.h,
                 decoration: ShapeDecoration(
-                  color: Colors.white.withOpacity(0.7099999904632568),
+                  color:Color(0x82C2C2C2).withOpacity(0.8),
                   //color: Colors.white.withOpacity(0.7099999904632568),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -844,4 +844,4 @@ class _CarDetailsState extends State<CarDetails> {
     );
   }
 }
-// sfprodisplay
+
