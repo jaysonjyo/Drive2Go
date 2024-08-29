@@ -751,7 +751,7 @@ class _CarDetailsState extends State<CarDetails> {
                   ),
                 ),
                 SizedBox(
-                  height: 98.h,
+                  height: 108.h,
                 )
               ],
             ),

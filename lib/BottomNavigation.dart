@@ -1,7 +1,9 @@
-import 'package:drive2goo/Account.dart';
-import 'package:drive2goo/Buy_Car.dart';
+import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:drive2goo/Account_Pages/Account.dart';
+import 'package:drive2goo/Buy_Car_Pages/Buy_Car.dart';
 import 'package:drive2goo/Home_Pages/Home.dart';
-import 'package:drive2goo/Search.dart';
+import 'package:drive2goo/My_Car/My_Car.dart';
+import 'package:drive2goo/Search_page/Search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,7 +15,7 @@ class Bottomnavigation extends StatefulWidget {
 }
 
 class _BottomnavigationState extends State<Bottomnavigation> {
-  final screens = [Home(),Search(),BuyCar(),Account(),];
+  final screens = [Home(),MyCar(),BuyCar(),Account(),];
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -35,14 +37,7 @@ body: Stack(
                 borderRadius: BorderRadius.all(Radius.circular(16.r)),
               ),
             ),
-            // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.r),
-            //   boxShadow: [
-            //     BoxShadow(
-            //       blurRadius: 20.r,
-            //       color: Colors.transparent
-            //     )
-            //   ]
-            // ),
+           
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(16.r)),
               child: BottomNavigationBar(
@@ -154,10 +149,11 @@ body: Stack(
                                 height: 28.h,
                                 clipBehavior: Clip.antiAlias,
                                 decoration: BoxDecoration(
-                                    image: DecorationImage(image: AssetImage("assets/search.png"))
-                                )),
+
+                                ),child: Icon(BootstrapIcons.car_front,color:Color(0xFF1F354D) ,),
+                            ),
                             Text(
-                              'Search',
+                              'My Car',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color(0xFF1F354D),
@@ -174,10 +170,12 @@ body: Stack(
                               height: 28.h,
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage("assets/search.png"))
-                              )),
+                              ),
+                            child: Icon(BootstrapIcons.car_front,color:Color(0xFF1F354D) ,),
+
+                          ),
                           Text(
-                            'Search',
+                            'My Car',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xFF1F354D),
