@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:drive2goo/Home_Pages/Rent_Details.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'Rent_Details.dart';
 
 class CarDetails extends StatefulWidget {
   const CarDetails({super.key});

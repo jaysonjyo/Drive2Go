@@ -1,10 +1,9 @@
-import 'package:drive2goo/Buy_Car_Pages/Buy_car_Details.dart';
-import 'package:drive2goo/Search_page/Buy_Car_Search.dart';
-import 'package:drive2goo/authentication_pages/Sign_In.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../Home_Pages/Car_Details.dart';
+import '../Search_page/Buy_Car_Search.dart';
+import 'Buy_car_Details.dart';
 
 class BuyCar extends StatefulWidget {
   const BuyCar({super.key});

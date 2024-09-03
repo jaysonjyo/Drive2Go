@@ -30,7 +30,7 @@ class _BuyCarSearchState extends State<BuyCarSearch> {
               ),
             ),
             child: TextField(
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
               cursorColor: Colors.white,
               decoration: InputDecoration(
                   border: InputBorder.none,

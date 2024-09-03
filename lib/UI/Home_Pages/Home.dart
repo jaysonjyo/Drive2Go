@@ -1,8 +1,15 @@
-import 'package:drive2goo/Search_page/Search.dart';
+
+import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
+import 'package:drive2goo/Repostory/ModelClass/NearbyModelClass.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../Search_page/Search.dart';
 import 'Car_Details.dart';
 
 class Home extends StatefulWidget {
@@ -13,6 +20,55 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // current location start
+  String _location = 'Unknown';
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+  // current location
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get the current position of the device.
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    // Convert the coordinates to a human-readable address.
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude, position.longitude);
+    BlocProvider.of<NearbyCarBloc>(context).add(FetchNearbycar(lat:  position.latitude.toString(), long: position.longitude.toString()));
+
+    Placemark place = placemarks[0];
+
+    setState(() {
+      _location =
+      '${place.locality}, ${place.administrativeArea}, ${place.country}';
+    });
+  }
+  // current location end
+  late List<NearbyCarModelClass> nearbycardata;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +91,8 @@ class _HomeState extends State<Home> {
                         children: [
                           Container(
                             width: 179.w,
-                            height: 55.h,
+                            height: 68.h,
+                           // 55.h,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -49,9 +106,9 @@ class _HomeState extends State<Home> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                //SizedBox(height: 7.h,),
+                                SizedBox(height: 7.h,),
                                 Text(
-                                  'Malappuram , Kerala',
+                                 " $_location",
                                   style: TextStyle(
                                     color: Color(0xFFF7F5F2),
                                     fontSize: 20.sp,
@@ -169,8 +226,18 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   width: double.infinity.w,
                   height: 223.h,
-                  child: ListView.separated(
-                    itemCount: 20,
+                  child: BlocBuilder<NearbyCarBloc, NearbyCarState>(
+  builder: (context, state) {
+    if(state is NearbyCarBlocLoading){
+      return Center(child: CircularProgressIndicator(),);
+    }
+    if(state is NearbyCarBlocError){
+      return Center(child:  Text("Error",style: TextStyle(color: Colors.white),),);
+    }
+    if(state is NearbyCarBlocLoaded){
+      nearbycardata = BlocProvider.of<NearbyCarBloc>(context).nearbyCarModelClass;
+    return ListView.separated(
+                    itemCount: nearbycardata.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, position) {
                       return  GestureDetector(onTap: (){
@@ -200,7 +267,7 @@ class _HomeState extends State<Home> {
                                 height: 146.h,
                                 decoration: ShapeDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage("assets/g.png"),
+                                    image: NetworkImage(nearbycardata[position].photos![0].toString()),
                                     fit: BoxFit.cover,
                                   ),
                                   shape: RoundedRectangleBorder(
@@ -216,7 +283,7 @@ class _HomeState extends State<Home> {
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Audi R8 Coupé',maxLines: 1,
+                                      nearbycardata[position].brand.toString(),maxLines: 1,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Color(0xFFF7F5F2),
@@ -229,7 +296,6 @@ class _HomeState extends State<Home> {
                                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                                       children: [
-
                                         Row(mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
@@ -242,7 +308,7 @@ class _HomeState extends State<Home> {
                                             ),
                                             SizedBox(width: 5.w,),
                                             Text(
-                                              'Kottakal',
+                                              nearbycardata[position].location.toString(),
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Color(0xFFF7F5F2),
@@ -280,7 +346,11 @@ class _HomeState extends State<Home> {
                       return SizedBox(width: 18.w,);
                     },
 
-                  ),
+                  );}else {
+      return SizedBox();
+    }
+  },
+),
                 ),
                 SizedBox(height: 24.h,),
                 Padding(

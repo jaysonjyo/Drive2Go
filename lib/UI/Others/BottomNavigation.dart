@@ -1,11 +1,10 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
-import 'package:drive2goo/Account_Pages/Account.dart';
-import 'package:drive2goo/Buy_Car_Pages/Buy_Car.dart';
-import 'package:drive2goo/Home_Pages/Home.dart';
-import 'package:drive2goo/My_Car/My_Car.dart';
-import 'package:drive2goo/Search_page/Search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../Account_Pages/Account.dart';
+import '../Buy_Car_Pages/Buy_Car.dart';
+import '../Home_Pages/Home.dart';
+import '../My_Car/My_Car.dart';
 
 class Bottomnavigation extends StatefulWidget {
   const Bottomnavigation({super.key});

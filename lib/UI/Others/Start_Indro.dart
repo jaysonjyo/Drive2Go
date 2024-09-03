@@ -1,8 +1,10 @@
-import 'package:drive2goo/authentication_pages/Sign_In.dart';
+import 'package:drive2goo/UI/authentication_pages/Sign_UP.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../authentication_pages/Sign_In.dart';
 
 class StartIndro extends StatefulWidget {
   const StartIndro({super.key});
@@ -55,7 +57,7 @@ class _StartIndroState extends State<StartIndro> {
                 ),
                   SizedBox(height: 446.h,),
                               GestureDetector(onTap: (){
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>SignIn()),(route)=>false);
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>SignUp()),(route)=>false);
                               },
                                 child: Container(
                                                 width: 332.w,

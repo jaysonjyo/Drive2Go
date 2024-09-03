@@ -1,6 +1,4 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
-import 'package:drive2goo/Account_Pages/Account_settings.dart';
-import 'package:drive2goo/authentication_pages/Sign_In.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
