@@ -17,6 +17,7 @@ class NearbyCarModelClass {
       this.ownerName, 
       this.ownerPhoneNumber, 
       this.ownerPlace, 
+      this.ownerProfilePhoto, 
       this.available, 
       this.v,});
 
@@ -38,6 +39,7 @@ class NearbyCarModelClass {
     ownerName = json['ownerName'];
     ownerPhoneNumber = json['ownerPhoneNumber'];
     ownerPlace = json['ownerPlace'];
+    ownerProfilePhoto = json['ownerProfilePhoto'];
     available = json['available'];
     v = json['__v'];
   }
@@ -46,20 +48,21 @@ class NearbyCarModelClass {
   String? brand;
   String? model;
   String? description;
-  dynamic? rentPrice;
-  dynamic? mileage;
+  int? rentPrice;
+  int? mileage;
   List<String>? photos;
   String? vehicleColor;
   String? gearType;
   String? fuelType;
-  dynamic? noOfSeats;
-  dynamic? rating;
-  dynamic? noOfDoors;
+  int? noOfSeats;
+  double? rating;
+  int? noOfDoors;
   String? ownerName;
   String? ownerPhoneNumber;
   String? ownerPlace;
+  String? ownerProfilePhoto;
   bool? available;
-  dynamic? v;
+  int? v;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -82,15 +85,18 @@ class NearbyCarModelClass {
     map['ownerName'] = ownerName;
     map['ownerPhoneNumber'] = ownerPhoneNumber;
     map['ownerPlace'] = ownerPlace;
+    map['ownerProfilePhoto'] = ownerProfilePhoto;
     map['available'] = available;
     map['__v'] = v;
     return map;
   }
+  //convert in to list code
   static List<NearbyCarModelClass> listFromJson(List<dynamic> json) {
     return json == null
         ? []
         : json.map((value) => NearbyCarModelClass.fromJson(value)).toList();
   }
+//convert in to list code
 }
 
 class Location {
@@ -100,10 +106,10 @@ class Location {
 
   Location.fromJson(dynamic json) {
     type = json['type'];
-    coordinates = json['coordinates'] != null ? json['coordinates'].cast<dynamic>() : [];
+    coordinates = json['coordinates'] != null ? json['coordinates'].cast<double>() : [];
   }
   String? type;
-  List<dynamic>? coordinates;
+  List<double>? coordinates;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
