@@ -23,6 +23,9 @@ class CarDetails extends StatefulWidget {
   final String ownername;
   final String location;
   final String id;
+  final String price;
+  final String color;
+  final dynamic available;
 
   const CarDetails(
       {super.key,
@@ -35,7 +38,10 @@ class CarDetails extends StatefulWidget {
       required this.door,
       required this.ownerphoto,
       required this.ownername,
-      required this.location, required this.id});
+      required this.location,
+      required this.id,
+      required this.price,
+      required this.color, required this.available});
 
   @override
   State<CarDetails> createState() => _CarDetailsState();
@@ -44,6 +50,7 @@ class CarDetails extends StatefulWidget {
 class _CarDetailsState extends State<CarDetails> {
   // current location start
   String _location = 'Unknown';
+
   // current location
   Future<void> _getCurrentLocation() async {
     bool serviceEnabled;
@@ -89,6 +96,7 @@ class _CarDetailsState extends State<CarDetails> {
 
   // current location end
   late List<NearbyCarModelClass> nearbydatas;
+
   // just converting
   Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
     try {
@@ -103,6 +111,7 @@ class _CarDetailsState extends State<CarDetails> {
       return []; // Return an empty list in case of an error
     }
   }
+
 // just converting
   @override
   void initState() {
@@ -615,7 +624,9 @@ class _CarDetailsState extends State<CarDetails> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          widget.ownername,
+                                          widget.ownername, //..... see
+                                          overflow: TextOverflow.ellipsis,
+                                          //.....
                                           maxLines: 1,
                                           style: TextStyle(
                                             color: Color(0xFFF7F5F2),
@@ -647,7 +658,9 @@ class _CarDetailsState extends State<CarDetails> {
                                             Container(
                                               width: 131.w,
                                               child: Text(
-                                                widget.location,
+                                                widget.location, //..... see
+                                                overflow: TextOverflow.ellipsis,
+                                                //......,
                                                 maxLines: 1,
                                                 textAlign: TextAlign.start,
                                                 style: TextStyle(
@@ -747,9 +760,10 @@ class _CarDetailsState extends State<CarDetails> {
                                 itemCount: nearbydatas.length,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, position) {
-                                  if(widget.id==nearbydatas[position].id.toString()){
-                                    return Container(child: Text("Error",style: TextStyle(color: Colors.red),),);
-                                  }else {
+                                  if (widget.id ==
+                                      nearbydatas[position].id.toString()) {
+                                    return SizedBox();
+                                  } else {
                                     return FutureBuilder<List<Placemark>>(
                                       future: _getVechileAddress(
                                           nearbydatas[position]
@@ -767,59 +781,64 @@ class _CarDetailsState extends State<CarDetails> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           return Center(
-                                              child: CircularProgressIndicator());
+                                              child:
+                                                  CircularProgressIndicator());
                                         } else if (snapshot.hasError) {
                                           return Center(
                                               child: Text(
                                                   "Error fetching location"));
                                         } else if (snapshot.hasData) {
-                                          String? place = snapshot.data![0]
-                                              .locality;
+                                          String? place =
+                                              snapshot.data![0].locality;
                                           return GestureDetector(
-                                            // onTap: () {
-                                            //   Navigator.of(context).push(MaterialPageRoute(
-                                            //       builder: (_) => CarDetails(
-                                            //         carphoto:
-                                            //         nearbydatas[position]
-                                            //             .photos!
-                                            //             .toList(),
-                                            //         carname:
-                                            //         nearbydatas[position]
-                                            //             .brand
-                                            //             .toString(),
-                                            //         rating:
-                                            //         nearbydatas[position]
-                                            //             .rating
-                                            //             .toString(),
-                                            //         fuel:
-                                            //         nearbydatas[position]
-                                            //             .fuelType
-                                            //             .toString(),
-                                            //         gear:
-                                            //         nearbydatas[position]
-                                            //             .gearType
-                                            //             .toString(),
-                                            //         seat:
-                                            //         nearbydatas[position]
-                                            //             .noOfSeats
-                                            //             .toString(),
-                                            //         door:
-                                            //         nearbydatas[position]
-                                            //             .noOfDoors
-                                            //             .toString(),
-                                            //         ownerphoto:
-                                            //         nearbydatas[position]
-                                            //             .ownerProfilePhoto
-                                            //             .toString(),
-                                            //         ownername:
-                                            //         nearbydatas[position]
-                                            //             .ownerName
-                                            //             .toString(),
-                                            //         location: place.toString(),
-                                            //       )
-                                            //       )
-                                            //   );
-                                            // },
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (_) => CarDetails(
+                                                                carphoto: nearbydatas[
+                                                                        position]
+                                                                    .photos!
+                                                                    .toList(),
+                                                                carname: nearbydatas[
+                                                                        position]
+                                                                    .brand
+                                                                    .toString(),
+                                                                rating: nearbydatas[
+                                                                        position]
+                                                                    .rating
+                                                                    .toString(),
+                                                                fuel: nearbydatas[
+                                                                        position]
+                                                                    .fuelType
+                                                                    .toString(),
+                                                                gear: nearbydatas[
+                                                                        position]
+                                                                    .gearType
+                                                                    .toString(),
+                                                                seat: nearbydatas[
+                                                                        position]
+                                                                    .noOfSeats
+                                                                    .toString(),
+                                                                door: nearbydatas[
+                                                                        position]
+                                                                    .noOfDoors
+                                                                    .toString(),
+                                                                ownerphoto: nearbydatas[
+                                                                        position]
+                                                                    .ownerProfilePhoto
+                                                                    .toString(),
+                                                                ownername: nearbydatas[
+                                                                        position]
+                                                                    .ownerName
+                                                                    .toString(),
+                                                                location: place
+                                                                    .toString(),
+                                                                id:nearbydatas[position].id.toString(),
+                                                                price: nearbydatas[position].rentPrice.toString(),
+                                                                color:nearbydatas[position].vehicleColor.toString(), available: nearbydatas[position].available,
+                                                              )));
+                                            },
                                             child: Container(
                                               width: 185.w,
                                               height: 223.h,
@@ -837,7 +856,8 @@ class _CarDetailsState extends State<CarDetails> {
                                                       width: 1.w,
                                                       color: Color(0xFF58606A)),
                                                   borderRadius:
-                                                  BorderRadius.circular(10.r),
+                                                      BorderRadius.circular(
+                                                          10.r),
                                                 ),
                                               ),
                                               child: Column(
@@ -851,45 +871,55 @@ class _CarDetailsState extends State<CarDetails> {
                                                     decoration: ShapeDecoration(
                                                       image: DecorationImage(
                                                         image: NetworkImage(
-                                                            nearbydatas[position]
+                                                            nearbydatas[
+                                                                    position]
                                                                 .photos![0]
                                                                 .toString()),
                                                         fit: BoxFit.cover,
                                                       ),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius
-                                                            .only(
-                                                          topLeft: Radius
-                                                              .circular(8.r),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  8.r),
                                                           topRight:
-                                                          Radius.circular(8.r),
+                                                              Radius.circular(
+                                                                  8.r),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 9.w,
-                                                        vertical: 13.h),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 9.w,
+                                                      //vertical: 13.h
+                                                    ),
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
+                                                        SizedBox(
+                                                          height: 6.h,
+                                                        ),
                                                         Text(
                                                           nearbydatas[position]
                                                               .brand
                                                               .toString(),
                                                           maxLines: 1,
-                                                          textAlign: TextAlign
-                                                              .center,
+                                                          textAlign:
+                                                              TextAlign.center,
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xFFF7F5F2),
                                                             fontSize: 16.sp,
-                                                            fontFamily: 'sfprodisplay',
-                                                            fontWeight: FontWeight
-                                                                .w500,
+                                                            fontFamily:
+                                                                'sfprodisplay',
+                                                            fontWeight:
+                                                                FontWeight.w500,
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -897,16 +927,16 @@ class _CarDetailsState extends State<CarDetails> {
                                                         ),
                                                         Row(
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
                                                             Row(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 Container(
                                                                   width: 14.w,
@@ -928,47 +958,71 @@ class _CarDetailsState extends State<CarDetails> {
                                                                         .toString(),
                                                                     maxLines: 1,
                                                                     textAlign:
-                                                                    TextAlign
-                                                                        .start,
-                                                                    style: TextStyle(
+                                                                        TextAlign
+                                                                            .start,
+                                                                    style:
+                                                                        TextStyle(
                                                                       color: Color(
                                                                           0xFFF7F5F2),
-                                                                      fontSize: 13
-                                                                          .sp,
+                                                                      fontSize:
+                                                                          13.sp,
                                                                       fontFamily:
-                                                                      'sfprodisplay',
+                                                                          'sfprodisplay',
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w300,
+                                                                          FontWeight
+                                                                              .w300,
                                                                       letterSpacing:
-                                                                      0.50.w,
+                                                                          0.50.w,
                                                                     ),
                                                                   ),
                                                                 )
                                                               ],
                                                             ),
                                                             Text(
-                                                              "\$ ${nearbydatas[position]
-                                                                  .rentPrice
-                                                                  .toString()} / day",
+                                                              "₹ ${nearbydatas[position].rentPrice.toString()} / day",
                                                               // ' 8000 ',
                                                               textAlign:
-                                                              TextAlign.center,
+                                                                  TextAlign
+                                                                      .center,
                                                               style: TextStyle(
-                                                                color:
-                                                                Color(
+                                                                color: Color(
                                                                     0xFFFFD66D),
                                                                 fontSize: 13.sp,
                                                                 fontFamily:
-                                                                'sfprodisplay',
+                                                                    'sfprodisplay',
                                                                 fontWeight:
-                                                                FontWeight.w500,
-                                                                letterSpacing: 0.50
-                                                                    .w,
+                                                                    FontWeight
+                                                                        .w500,
+                                                                letterSpacing:
+                                                                    0.50.w,
                                                               ),
                                                             )
                                                           ],
-                                                        )
+                                                        ),
+                                                        SizedBox(
+                                                          height: 6.h,
+                                                        ),
+                                                        Text(
+                                                          "Available",
+                                                          //..... see
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          //.....
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                            color: Color(
+                                                                0xFFF7F5F2),
+                                                            fontSize: 13.sp,
+                                                            fontFamily:
+                                                                'sfprodisplay',
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            letterSpacing:
+                                                                0.50.w,
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   )
@@ -980,15 +1034,18 @@ class _CarDetailsState extends State<CarDetails> {
                                           return SizedBox();
                                         }
                                       },
-
-
                                     );
                                   }
                                 },
                                 separatorBuilder: (context, position) {
-                                  return SizedBox(
-                                    width: 18.w,
-                                  );
+                                  if (widget.id ==
+                                      nearbydatas[position].id.toString()) {
+                                    return SizedBox();
+                                  } else {
+                                    return SizedBox(
+                                      width: 18.w,
+                                    );
+                                  }
                                 },
                               );
                             } else {
@@ -1005,8 +1062,7 @@ class _CarDetailsState extends State<CarDetails> {
                 )
               ],
             ),
-          ),
-          Column(
+          ),widget.available==true?Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
@@ -1031,7 +1087,7 @@ class _CarDetailsState extends State<CarDetails> {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: '8000\$',
+                            text: "${widget.price}\$",
                             style: TextStyle(
                               color: Color(0xFF000B17),
                               fontSize: 20.sp,
@@ -1056,8 +1112,14 @@ class _CarDetailsState extends State<CarDetails> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => RentDetails()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => RentDetails(
+                              id: widget.id,
+                              carname: widget.carname,
+                              color: widget.color,
+                              price: widget.price,
+                              image: widget.carphoto,
+                            )));
                       },
                       child: Container(
                         width: 213.w,
@@ -1092,7 +1154,7 @@ class _CarDetailsState extends State<CarDetails> {
                 ),
               ),
             ],
-          ),
+          ):SizedBox()
         ],
       ),
     );

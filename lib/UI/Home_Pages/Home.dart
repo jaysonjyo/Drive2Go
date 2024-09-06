@@ -1,4 +1,6 @@
+import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
 import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
+import 'package:drive2goo/Repostory/ModelClass/AllcarModel.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +28,10 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+    BlocProvider.of<AllcarBloc>(context).add(FetchAllcarEvent());
   }
 
-  // current location
+  // current location and nearbylocation
   Future<void> _getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -71,8 +74,10 @@ class _HomeState extends State<Home> {
     });
   }
 
-  // current location end
+  // current location and nearbylocation end
+
   late List<NearbyCarModelClass> nearbycardata;
+
 // just converting
   Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
     try {
@@ -87,7 +92,10 @@ class _HomeState extends State<Home> {
       return []; // Return an empty list in case of an error
     }
   }
+
 // just converting
+  late List<AllcarModelClass> allcardata;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -310,7 +318,6 @@ class _HomeState extends State<Home> {
                                       .toString()),
                               builder: (BuildContext context,
                                   AsyncSnapshot<dynamic> snapshot) {
-
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   return Center(
@@ -323,47 +330,44 @@ class _HomeState extends State<Home> {
 
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (_) => CarDetails(
-                                                    carphoto:
-                                                        nearbycardata[position]
-                                                            .photos!
-                                                            .toList(),
-                                                    carname:
-                                                        nearbycardata[position]
-                                                            .brand
-                                                            .toString(),
-                                                    rating:
-                                                        nearbycardata[position]
-                                                            .rating
-                                                            .toString(),
-                                                    fuel:
-                                                        nearbycardata[position]
-                                                            .fuelType
-                                                            .toString(),
-                                                    gear:
-                                                        nearbycardata[position]
-                                                            .gearType
-                                                            .toString(),
-                                                    seat:
-                                                        nearbycardata[position]
-                                                            .noOfSeats
-                                                            .toString(),
-                                                    door:
-                                                        nearbycardata[position]
-                                                            .noOfDoors
-                                                            .toString(),
-                                                    ownerphoto:
-                                                        nearbycardata[position]
-                                                            .ownerProfilePhoto
-                                                            .toString(),
-                                                    ownername:
-                                                        nearbycardata[position]
-                                                            .ownerName
-                                                            .toString(),
-                                                    location: place.toString(), id: nearbycardata[position].id.toString(),
-                                                  )));
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (_) => CarDetails(
+                                              carphoto: nearbycardata[position]
+                                                  .photos!
+                                                  .toList(),
+                                              carname: nearbycardata[position]
+                                                  .brand
+                                                  .toString(),
+                                              rating: nearbycardata[position]
+                                                  .rating
+                                                  .toString(),
+                                              fuel: nearbycardata[position]
+                                                  .fuelType
+                                                  .toString(),
+                                              gear: nearbycardata[position]
+                                                  .gearType
+                                                  .toString(),
+                                              seat: nearbycardata[position]
+                                                  .noOfSeats
+                                                  .toString(),
+                                              door: nearbycardata[position]
+                                                  .noOfDoors
+                                                  .toString(),
+                                              ownerphoto: nearbycardata[position]
+                                                  .ownerProfilePhoto
+                                                  .toString(),
+                                              ownername: nearbycardata[position]
+                                                  .ownerName
+                                                  .toString(),
+                                              location: place.toString(),
+                                              id: nearbycardata[position]
+                                                  .id
+                                                  .toString(),
+                                              price: nearbycardata[position]
+                                                  .rentPrice
+                                                  .toString(),
+                                              color: nearbycardata[position].vehicleColor.toString(),
+                                              available: nearbycardata[position].available)));
                                     },
                                     child: Container(
                                       width: 185.w,
@@ -372,8 +376,6 @@ class _HomeState extends State<Home> {
                                         gradient: LinearGradient(
                                           begin: Alignment(-5, 0.54),
                                           end: Alignment(0.54, -0.54),
-                                          // begin: Alignment(-0.99, 1.00),
-                                          // end: Alignment(0.09, -5),
                                           colors: [
                                             Color(0x1BFFFFFF),
                                             Color(0xFF000C1B)
@@ -414,17 +416,27 @@ class _HomeState extends State<Home> {
                                           ),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
-                                                horizontal: 9.w,
-                                                vertical: 13.h),
+                                              horizontal: 9.w,
+                                              //vertical: 13.h
+                                            ),
                                             child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
+                                                SizedBox(
+                                                  height: 6.h,
+                                                ),
                                                 Text(
                                                   nearbycardata[position]
                                                       .brand
                                                       .toString(),
                                                   maxLines: 1,
+                                                  //..... see
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  //.....
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     color: Color(0xFFF7F5F2),
@@ -462,11 +474,18 @@ class _HomeState extends State<Home> {
                                                         SizedBox(
                                                           width: 5.w,
                                                         ),
-                                                        Container(width: 70.w,
+                                                        Container(
+                                                          width: 70.w,
                                                           child: Text(
                                                             place.toString(),
+                                                            //..... see
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            //.....
                                                             textAlign:
-                                                                TextAlign.start,maxLines: 1,
+                                                                TextAlign.start,
+                                                            maxLines: 1,
                                                             style: TextStyle(
                                                               color: Color(
                                                                   0xFFF7F5F2),
@@ -474,7 +493,8 @@ class _HomeState extends State<Home> {
                                                               fontFamily:
                                                                   'sfprodisplay',
                                                               fontWeight:
-                                                                  FontWeight.w300,
+                                                                  FontWeight
+                                                                      .w300,
                                                               letterSpacing:
                                                                   0.50.w,
                                                             ),
@@ -483,7 +503,7 @@ class _HomeState extends State<Home> {
                                                       ],
                                                     ),
                                                     Text(
-                                                      "\$ ${nearbycardata[position].rentPrice.toString()} / day",
+                                                      "₹ ${nearbycardata[position].rentPrice.toString()} / day",
                                                       // ' {8000} ',
                                                       textAlign:
                                                           TextAlign.center,
@@ -499,7 +519,30 @@ class _HomeState extends State<Home> {
                                                       ),
                                                     )
                                                   ],
-                                                )
+                                                ),
+                                                SizedBox(
+                                                  height: 6.h,
+                                                ),
+                                                Text(
+                                                  nearbycardata[position]
+                                                              .available ==
+                                                          true
+                                                      ? "Available"
+                                                      : "NotAvailable",
+                                                  //..... see
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  //.....
+                                                  textAlign: TextAlign.start,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 13.sp,
+                                                    fontFamily: 'sfprodisplay',
+                                                    fontWeight: FontWeight.w300,
+                                                    letterSpacing: 0.50.w,
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           )
@@ -564,140 +607,269 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: 9.h,
                 ),
-                SizedBox(
-                  width: 389.w,
-                  height: (236 * 6 / 2).h,
-                  child: GridView.count(
-                    physics: NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 18.0.w,
-                    mainAxisSpacing: 20.0.h,
-                    childAspectRatio: 185 / 225,
-                    shrinkWrap: true,
-                    children: List.generate(
-                      6,
-                      (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            //  Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));
-                          },
-                          child: Container(
-                            width: 185.w,
-                            height: 223.h,
-                            decoration: ShapeDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment(-5, 0.54),
-                                end: Alignment(0.54, -0.54),
-                                // begin: Alignment(-0.99, 1.00),
-                                // end: Alignment(0.09, -5),
-                                colors: [Color(0x1BFFFFFF), Color(0xFF000C1B)],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    width: 1.w, color: Color(0xFF58606A)),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Container(
-                                  width: 177.w,
-                                  height: 146.h,
-                                  decoration: ShapeDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage("assets/g.png"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(8.r),
-                                        topRight: Radius.circular(8.r),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 9.w, vertical: 13.h),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Audi R8 Coupé',
-                                        maxLines: 1,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Color(0xFFF7F5F2),
-                                          fontSize: 16.sp,
-                                          fontFamily: 'sfprodisplay',
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 6.h,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 14.w,
-                                                height: 14.h,
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: AssetImage(
-                                                            "assets/h.png"),
-                                                        fit: BoxFit.cover)),
-                                              ),
-                                              SizedBox(
-                                                width: 5.w,
-                                              ),
-                                              Text(
-                                                'Kottakal',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color(0xFFF7F5F2),
-                                                  fontSize: 13.sp,
-                                                  fontFamily: 'sfprodisplay',
-                                                  fontWeight: FontWeight.w300,
-                                                  letterSpacing: 0.50.w,
-                                                ),
-                                              )
+                BlocBuilder<AllcarBloc, AllcarState>(
+                  builder: (context, state) {
+                    if (state is AllcarBlocLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is AllcarBlocError) {
+                      return Center(
+                        child: Text("Error"),
+                      );
+                    }
+                    if (state is AllcarBlocLoaded) {
+                      allcardata =
+                          BlocProvider.of<AllcarBloc>(context).allcarModelClass;
+                      return SizedBox(
+                        width: 389.w,
+                        height: (236 * allcardata.length / 2).h,
+                        child: GridView.count(
+                          physics: NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 18.0.w,
+                          mainAxisSpacing: 20.0.h,
+                          childAspectRatio: 185 / 225,
+                          shrinkWrap: true,
+                          children: List.generate(
+                            allcardata.length,
+                            (index) {
+                              return FutureBuilder<List<Placemark>>(
+                                future: _getVechileAddress(
+                                    allcardata[index]
+                                        .location!
+                                        .coordinates!
+                                        .first
+                                        .toString(),
+                                    allcardata[index]
+                                        .location!
+                                        .coordinates!
+                                        .last
+                                        .toString()),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Center(
+                                        child: Text("Error fetching location"));
+                                  } else if (snapshot.hasData) {
+                                    String? place = snapshot.data![0].locality;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (_) => CarDetails(
+                                                      carphoto: allcardata[index].photos!.toList(),
+                                                      carname:allcardata[index].brand.toString(),
+                                                      rating: allcardata[index].rentPrice.toString(),
+                                                      fuel: allcardata[index].fuelType.toString(),
+                                                      gear: allcardata[index].gearType.toString(),
+                                                      seat:allcardata[index].noOfSeats.toString(),
+                                                      door: allcardata[index].noOfDoors.toString(),
+                                                      ownerphoto:allcardata[index].ownerProfilePhoto.toString(),
+                                                      ownername: allcardata[index].ownerName.toString(),
+                                                      location: allcardata[index].location.toString(),
+                                                      id: allcardata[index].id.toString(),
+                                                      price: allcardata[index].rentPrice.toString(),
+                                                      color: allcardata[index].vehicleColor.toString(),
+                                                      available: allcardata[index].available,
+                                                    )));
+                                      },
+                                      child: Container(
+                                        width: 185.w,
+                                        height: 223.h,
+                                        decoration: ShapeDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment(-5, 0.54),
+                                            end: Alignment(0.54, -0.54),
+                                            colors: [
+                                              Color(0x1BFFFFFF),
+                                              Color(0xFF000C1B)
                                             ],
                                           ),
-                                          Text(
-                                            '\$ 8000 / day',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Color(0xFFFFD66D),
-                                              fontSize: 13.sp,
-                                              fontFamily: 'sfprodisplay',
-                                              fontWeight: FontWeight.w500,
-                                              letterSpacing: 0.50.w,
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                                width: 1.w,
+                                                color: Color(0xFF58606A)),
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 3.h,
                                             ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                                            Container(
+                                              width: 177.w,
+                                              height: 146.h,
+                                              decoration: ShapeDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      allcardata[index]
+                                                          .photos![0]),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(8.r),
+                                                    topRight:
+                                                        Radius.circular(8.r),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 9.w,
+                                                //vertical: 13.h
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 6.h,
+                                                  ),
+                                                  Text(
+                                                    allcardata[index]
+                                                        .brand
+                                                        .toString(),
+                                                    //..... see
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    //.....
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Color(0xFFF7F5F2),
+                                                      fontSize: 16.sp,
+                                                      fontFamily:
+                                                          'sfprodisplay',
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 6.h,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            width: 14.w,
+                                                            height: 14.h,
+                                                            decoration: BoxDecoration(
+                                                                image: DecorationImage(
+                                                                    image: AssetImage(
+                                                                        "assets/h.png"),
+                                                                    fit: BoxFit
+                                                                        .cover)),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 5.w,
+                                                          ),
+                                                          Container(
+                                                            width: 70.w,
+                                                            child: Text(
+                                                              place.toString(),
+                                                              //..... see
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              //.....
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                              style: TextStyle(
+                                                                color: Color(
+                                                                    0xFFF7F5F2),
+                                                                fontSize: 13.sp,
+                                                                fontFamily:
+                                                                    'sfprodisplay',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                                letterSpacing:
+                                                                    0.50.w,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                        "₹ ${allcardata[index].rentPrice.toString()} / day",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color:
+                                                              Color(0xFFFFD66D),
+                                                          fontSize: 13.sp,
+                                                          fontFamily:
+                                                              'sfprodisplay',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          letterSpacing: 0.50.w,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 4.h,
+                                                  ),
+                                                  Text(
+                                                    allcardata[index].available==true?"Available":"NotAvailable",
+                                                    //..... see
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    //.....
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      color: Color(0xFFF7F5F2),
+                                                      fontSize: 13.sp,
+                                                      fontFamily:
+                                                          'sfprodisplay',
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      letterSpacing: 0.50.w,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return SizedBox();
+                                  }
+                                },
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  },
                 ),
                 SizedBox(
                   height: 130.h,

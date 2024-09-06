@@ -33,7 +33,7 @@ class _GoogleMapickupState extends State<GoogleMapickup> {
       Placemark place = placemarks[0];
 
       setState(() {
-
+pickuplocationcontroller.text=place.locality??"";
       });
 
       print("Address: ${pickuplocationcontroller.text}");
