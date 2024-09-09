@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
 
     setState(() {
       _location =
-          '${place.locality}, ${place.administrativeArea}, ${place.country}';
+          '${place.locality}, ${place.administrativeArea}';
     });
   }
 
@@ -624,7 +624,7 @@ class _HomeState extends State<Home> {
                           BlocProvider.of<AllcarBloc>(context).allcarModelClass;
                       return SizedBox(
                         width: 389.w,
-                        height: (236 * allcardata.length / 2).h,
+                        height: ((276 * allcardata.length) / 2).h,
                         child: GridView.count(
                           physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 2,

@@ -40,7 +40,8 @@ class _RentDetailsState extends State<RentDetails> {
   //pick up date
   TextEditingController pickupdatecontroler = TextEditingController();
 
-  Future<void> _pickdate(BuildContext context) async {
+  Future<void>
+  _pickdate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -48,7 +49,7 @@ class _RentDetailsState extends State<RentDetails> {
         lastDate: DateTime(2101));
     if (picked != null) {
       setState(() {
-        pickupdatecontroler.text = DateFormat("dd/MM/yyyy").format(picked);
+        pickupdatecontroler.text = DateFormat("MM/dd/yyyy").format(picked);
         calculateDateDifference();
       });
     }
@@ -60,9 +61,9 @@ class _RentDetailsState extends State<RentDetails> {
     if (pickupdatecontroler.text.isNotEmpty &&
         retrundatecontroler.text.isNotEmpty) {
       DateTime departureDate =
-          DateFormat("dd/MM/yyyy").parse(pickupdatecontroler.text);
+          DateFormat("MM/dd/yyyy").parse(pickupdatecontroler.text);
       DateTime returnDate =
-          DateFormat("dd/MM/yyyy").parse(retrundatecontroler.text);
+          DateFormat("MM/dd/yyyy").parse(retrundatecontroler.text);
 
       dateDifference = returnDate.difference(departureDate).inDays;
 
@@ -83,7 +84,7 @@ class _RentDetailsState extends State<RentDetails> {
     if (pickedreturndate != null) {
       setState(() {
         retrundatecontroler.text =
-            DateFormat("dd/MM/yyyy").format(pickedreturndate);
+            DateFormat("MM/dd/yyyy").format(pickedreturndate);
         calculateDateDifference();
       });
     }
@@ -92,12 +93,14 @@ class _RentDetailsState extends State<RentDetails> {
   @override
   void dispose() {
     setState(() {
+
       pickuplocationcontroller.clear();
       returnlocationcontroller.clear();
     });
     // TODO: implement dispose
     super.dispose();
   }
+
 
   // payment for any payments
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
@@ -112,13 +115,20 @@ class _RentDetailsState extends State<RentDetails> {
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+    ToastMessage().toastmessage(message: "Successs");
+    print("hello"+((dateDifference! * double.parse(widget.price))* 100).toString());
+
     BlocProvider.of<RentcarBloc>(context).add(FetchRentcar(
         vehicle: widget.id,
-        pickupdate: pickupdatecontroler.text,
+        pickupdate:
+        //'${pickupdatecontroler.text.day.toString()} '
+            //${DateFormat('MMM').format(date)} ${date.year.toString()}',
+        pickupdatecontroler.text,
         returndate: retrundatecontroler.text,
         pickuplocation: pickuplocationcontroller.text,
         returnlocation: returnlocationcontroller.text,
-        amount: widget.price));
+        amount: ((dateDifference! * int.parse(widget.price))).toString(),
+    ));
     /*
     * Payment Success Response contains three values:
     * 1. Order ID
@@ -126,11 +136,12 @@ class _RentDetailsState extends State<RentDetails> {
     * 3. Signature
     * */
 
+
     showAlertDialog(
         context, "Payment Successful", "Payment ID: ${response.paymentId}");
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
+
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
@@ -345,10 +356,11 @@ class _RentDetailsState extends State<RentDetails> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextField(
+
                                     controller: pickupdatecontroler,
                                     textAlign: TextAlign.center,
                                     cursorColor: Colors.white,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
                                     textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                       //filled: true,
@@ -532,7 +544,7 @@ class _RentDetailsState extends State<RentDetails> {
                                 controller: pickuplocationcontroller,
                                 //textAlign: TextAlign.start,
                                 cursorColor: Colors.white,
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
                                 textAlignVertical: TextAlignVertical.center,
                                 decoration: InputDecoration(
                                   //filled: true,
@@ -608,7 +620,7 @@ class _RentDetailsState extends State<RentDetails> {
                                 //textAlign: TextAlign.start,
                                 cursorColor: Colors.white,
                                 style: TextStyle(
-                                    color: Colors.white),
+                                    color: Colors.white,decorationThickness: 0.sp),
 
                                 textAlignVertical: TextAlignVertical.center,
                                 decoration: InputDecoration(
@@ -916,7 +928,8 @@ class _RentDetailsState extends State<RentDetails> {
                         Navigator.of(context).pop();
                       }
                       if (state is RentcarBlocLoaded) {
-                        Navigator.of(context).pop();
+Navigator.of(context).pop();
+
                         ToastMessage().toastmessage(message: "Successs");
                       }
                       // TODO: implement listener
@@ -928,14 +941,19 @@ class _RentDetailsState extends State<RentDetails> {
                             retrundatecontroler.text.isNotEmpty &&
                             pickuplocationcontroller.text.isNotEmpty &&
                             returnlocationcontroller.text.isNotEmpty) {
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Home()));
+                           Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
+                           print("hy"+(dateDifference! * int.parse(widget.price)).toString());
                           BlocProvider.of<RentcarBloc>(context).add(FetchRentcar(
+
                               vehicle: widget.id,
-                              pickupdate: pickupdatecontroler.text,
-                              returndate: retrundatecontroler.text,
+                              pickupdate: pickupdatecontroler.text.toString(),
+                              returndate: retrundatecontroler.text.toString(),
                               pickuplocation: pickuplocationcontroller.text,
                               returnlocation: returnlocationcontroller.text,
-                              amount: widget.price));
+                              amount: (dateDifference! * int.parse(widget.price)).toString()
+                          )
+
+                          );
 
                         } else if (_selectedIndex == 1 &&
                             pickupdatecontroler.text.isNotEmpty &&
@@ -945,7 +963,7 @@ class _RentDetailsState extends State<RentDetails> {
                           Razorpay razorpay = Razorpay();
                           var options = {
                             'key': 'rzp_test_gKANZdsNdLqaQs',
-                            'amount':(dateDifference! * double.parse(widget.price))* 100,
+                            'amount':(dateDifference! * int.parse(widget.price))* 100,
                             'name': 'Acme Corp.',
                             'description': 'Fine T-Shirt',
                             'retry': {'enabled': true, 'max_count': 1},

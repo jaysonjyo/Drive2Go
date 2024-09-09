@@ -1003,7 +1003,7 @@ class _CarDetailsState extends State<CarDetails> {
                                                           height: 6.h,
                                                         ),
                                                         Text(
-                                                          "Available",
+                                                         widget.available==true? "Available":"NotAvailable",
                                                           //..... see
                                                           overflow: TextOverflow
                                                               .ellipsis,
@@ -1039,6 +1039,7 @@ class _CarDetailsState extends State<CarDetails> {
                                 },
                                 separatorBuilder: (context, position) {
                                   if (widget.id ==
+
                                       nearbydatas[position].id.toString()) {
                                     return SizedBox();
                                   } else {

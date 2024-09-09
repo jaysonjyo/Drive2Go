@@ -24,7 +24,7 @@ TextEditingController email = TextEditingController();
 TextEditingController phonenumber = TextEditingController();
 TextEditingController password = TextEditingController();
 //controllers
-bool isvisible = true;
+bool isvisible = false;
 
 var _formKey = GlobalKey<FormState>();
 
@@ -197,7 +197,7 @@ class _SignUpState extends State<SignUp> {
                     height: 20.h,
                   ),
                   TextFormField(
-                    obscureText: isvisible,
+                    obscureText:!isvisible,
                     cursorColor: Colors.grey,
                     controller: password,
                     style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
@@ -235,12 +235,12 @@ class _SignUpState extends State<SignUp> {
                                 isvisible = !isvisible;
                               });
                             },
-                            child: isvisible == true
+                            child: isvisible
                                 ? Icon(
-                                    BootstrapIcons.eye_slash,
+                                    BootstrapIcons.eye,
                                     color: Color(0xFFA7B0BB),
                                   )
-                                : Icon(BootstrapIcons.eye,
+                                : Icon(BootstrapIcons.eye_slash,
                                     color: Color(0xFFA7B0BB)))),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 9) {

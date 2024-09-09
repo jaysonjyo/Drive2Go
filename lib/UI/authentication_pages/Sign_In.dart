@@ -17,7 +17,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  bool isvisible = true;
+  bool isvisible = false;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   var _formKey = GlobalKey<FormState>();
@@ -113,7 +113,7 @@ class _SignInState extends State<SignIn> {
                     height: 40.h,
                   ),
                   TextFormField(
-                    obscureText: isvisible,
+                    obscureText: !isvisible,
                     cursorColor: Colors.grey,
                     controller: password,
                     style: TextStyle(
@@ -154,11 +154,11 @@ class _SignInState extends State<SignIn> {
                                 isvisible = !isvisible;
                               });
                             },
-                            child: isvisible == true
-                                ? Icon(BootstrapIcons.eye_slash, color: Color(
+                            child: isvisible
+                                ? Icon(BootstrapIcons.eye, color: Color(
                                 0xFFA7B0BB))
                                 : Icon(
-                              BootstrapIcons.eye,
+                              BootstrapIcons.eye_slash,
                               color: Color(0xFFA7B0BB),
                             ))),
                     validator: (value) {
