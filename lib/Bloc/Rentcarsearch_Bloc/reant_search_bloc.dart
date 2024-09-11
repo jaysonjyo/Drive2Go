@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:drive2goo/Repostory/API/Api_main.dart';
-import 'package:drive2goo/Repostory/ModelClass/RentcarsearchModelclass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelclass.dart';
 import 'package:meta/meta.dart';
 
 import '../../UI/Toast_message/Toast_message.dart';

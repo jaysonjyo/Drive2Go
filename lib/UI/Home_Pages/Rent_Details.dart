@@ -1,6 +1,5 @@
 import 'dart:ffi';
-import 'package:drive2goo/Bloc/Rent_Car/rentcar_bloc.dart';
-import 'package:drive2goo/Repostory/ModelClass/RentCarModel.dart';
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentCarModel.dart';
 import 'package:drive2goo/UI/Home_Pages/Home.dart';
 import 'package:drive2goo/UI/Others/BottomNavigation.dart';
 import 'package:drive2goo/UI/Toast_message/Toast_message.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../Bloc/Rent_Car_Bloc/rentcar_bloc.dart';
 import 'Google_Ma_pickup.dart';
 import 'Google_Map_ return.dart';
 
@@ -120,10 +120,7 @@ class _RentDetailsState extends State<RentDetails> {
 
     BlocProvider.of<RentcarBloc>(context).add(FetchRentcar(
         vehicle: widget.id,
-        pickupdate:
-        //'${pickupdatecontroler.text.day.toString()} '
-            //${DateFormat('MMM').format(date)} ${date.year.toString()}',
-        pickupdatecontroler.text,
+        pickupdate: pickupdatecontroler.text,
         returndate: retrundatecontroler.text,
         pickuplocation: pickuplocationcontroller.text,
         returnlocation: returnlocationcontroller.text,

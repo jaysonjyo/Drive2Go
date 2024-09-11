@@ -1,12 +1,13 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:drive2goo/Bloc/Sign_In_Bloc/sign_in_bloc.dart';
-import 'package:drive2goo/Repostory/ModelClass/SignINModelClass.dart';
+
 import 'package:drive2goo/UI/Others/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Repostory/ModelClass/authentication/SignInModelClass.dart';
 import 'Sign_UP.dart';
 
 class SignIn extends StatefulWidget {

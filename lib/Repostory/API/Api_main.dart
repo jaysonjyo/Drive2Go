@@ -1,14 +1,15 @@
 import 'dart:convert';
-import 'package:drive2goo/Repostory/ModelClass/NearByBuyCarModelClass.dart';
-import 'package:drive2goo/Repostory/ModelClass/RentOrderMOdelClass.dart';
-import 'package:drive2goo/Repostory/ModelClass/RentcarsearchModelclass.dart';
-import 'package:drive2goo/Repostory/ModelClass/SignINModelClass.dart';
-import 'package:drive2goo/Repostory/ModelClass/SignUpModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Buyvechile/AllBuyVechileModelclass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentOrderMOdelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelclass.dart';
+import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../ModelClass/AllcarModel.dart';
-import '../ModelClass/NearbyCarModelClass.dart';
-import '../ModelClass/RentCarModel.dart';
+import '../ModelClass/Rentvechile/AllcarModel.dart';
+import '../ModelClass/Rentvechile/NearbyCarModelClass.dart';
+import '../ModelClass/Rentvechile/RentCarModel.dart';
+import '../ModelClass/authentication/SignInModelClass.dart';
 import 'Client.dart';
 
 class User {
@@ -119,9 +120,8 @@ class User {
   }
 
   // Buy_ Cars ModelClass
-  Future <List<NearByBuyCarModelClass>> getNBuycar(String lat, String long) async {
-    String trendingpath =
-        "http://45.159.221.50:8868/api/get-nearby-buyvehicles?latitude=-$lat&longitude=$long";
+  Future<List<NearByBuyCarModelClass>> getNBuycar(String lat, String long) async {
+    String trendingpath ="http://45.159.221.50:8868/api/get-nearby-buyvehicles?latitude=$lat&longitude=$long";
 
     var body = {};
     print(body);
@@ -129,4 +129,18 @@ class User {
 
     return NearByBuyCarModelClass.listFromJson(jsonDecode(response.body));
   }
+  // allbuycarmodelss
+  Future<AllBuyVechileModelclass> getAllBuycar(String lat, String long) async {
+    String trendingpath ="http://45.159.221.50:8868/api/get-buyvehicles";
+
+    var body = {};
+    print(body);
+    Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
+
+    return AllBuyVechileModelclass.fromJson(jsonDecode(response.body));
+  }
+
+
+
+
 }

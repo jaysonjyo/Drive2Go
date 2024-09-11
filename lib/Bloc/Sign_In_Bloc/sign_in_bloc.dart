@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:drive2goo/Repostory/API/Api_main.dart';
-import 'package:drive2goo/Repostory/ModelClass/SignINModelClass.dart';
 import 'package:meta/meta.dart';
+import '../../Repostory/ModelClass/authentication/SignInModelClass.dart';
 import '../../UI/Toast_message/Toast_message.dart';
 
 part 'sign_in_event.dart';

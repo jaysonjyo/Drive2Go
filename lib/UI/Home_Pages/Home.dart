@@ -1,6 +1,6 @@
 import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
 import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
-import 'package:drive2goo/Repostory/ModelClass/AllcarModel.dart';
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/AllcarModel.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +9,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../Repostory/ModelClass/NearbyCarModelClass.dart';
+import '../../Repostory/ModelClass/Rentvechile/NearbyCarModelClass.dart';
 import '../Search_page/Search.dart';
 import 'Car_Details.dart';
 
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
 
   late List<NearbyCarModelClass> nearbycardata;
 
-// just converting
+// list of location  converting
   Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -359,7 +359,7 @@ class _HomeState extends State<Home> {
                                               ownername: nearbycardata[position]
                                                   .ownerName
                                                   .toString(),
-                                              location: place.toString(),
+                                              ownerplace: nearbycardata[position].ownerPlace.toString(),
                                               id: nearbycardata[position]
                                                   .id
                                                   .toString(),
@@ -515,7 +515,7 @@ class _HomeState extends State<Home> {
                                                             'sfprodisplay',
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        letterSpacing: 0.50.w,
+                                                      //  letterSpacing: 0.50.w,
                                                       ),
                                                     )
                                                   ],
@@ -624,7 +624,7 @@ class _HomeState extends State<Home> {
                           BlocProvider.of<AllcarBloc>(context).allcarModelClass;
                       return SizedBox(
                         width: 389.w,
-                        height: ((276 * allcardata.length) / 2).h,
+                        height: ((246.h * allcardata.length) / 2).h,
                         child: GridView.count(
                           physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 2,
@@ -672,7 +672,7 @@ class _HomeState extends State<Home> {
                                                       door: allcardata[index].noOfDoors.toString(),
                                                       ownerphoto:allcardata[index].ownerProfilePhoto.toString(),
                                                       ownername: allcardata[index].ownerName.toString(),
-                                                      location: allcardata[index].location.toString(),
+                                                  ownerplace: allcardata[index].ownerPlace.toString(),
                                                       id: allcardata[index].id.toString(),
                                                       price: allcardata[index].rentPrice.toString(),
                                                       color: allcardata[index].vehicleColor.toString(),

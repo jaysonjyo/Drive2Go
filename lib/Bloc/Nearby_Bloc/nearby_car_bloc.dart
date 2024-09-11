@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drive2goo/Repostory/API/Api_main.dart';
 import 'package:meta/meta.dart';
 
-import '../../Repostory/ModelClass/NearbyCarModelClass.dart';
+import '../../Repostory/ModelClass/Rentvechile/NearbyCarModelClass.dart';
 import '../../UI/Toast_message/Toast_message.dart';
 
 part 'nearby_car_event.dart';

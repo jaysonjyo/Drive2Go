@@ -1,5 +1,5 @@
-class NearByBuyCarModelClass {
-  NearByBuyCarModelClass({
+class AllBuyVechileModelclass {
+  AllBuyVechileModelclass({
       this.location, 
       this.id, 
       this.brand, 
@@ -23,7 +23,7 @@ class NearByBuyCarModelClass {
       this.highMilage, 
       this.v,});
 
-  NearByBuyCarModelClass.fromJson(dynamic json) {
+  AllBuyVechileModelclass.fromJson(dynamic json) {
     location = json['location'] != null ? Location.fromJson(json['location']) : null;
     id = json['_id'];
     brand = json['brand'];
@@ -98,13 +98,6 @@ class NearByBuyCarModelClass {
     map['__v'] = v;
     return map;
   }
-  //convert in to list code
-  static List<NearByBuyCarModelClass> listFromJson(List<dynamic> json) {
-    return json == null
-        ? []
-        : json.map((value) => NearByBuyCarModelClass.fromJson(value)).toList();
-  }
-//convert in to list code
 
 }
 

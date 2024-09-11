@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
-import 'package:drive2goo/Repostory/ModelClass/NearbyCarModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/NearbyCarModelClass.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,7 @@ class CarDetails extends StatefulWidget {
   final String door;
   final String ownerphoto;
   final String ownername;
-  final String location;
+  final String ownerplace;
   final String id;
   final String price;
   final String color;
@@ -38,7 +38,7 @@ class CarDetails extends StatefulWidget {
       required this.door,
       required this.ownerphoto,
       required this.ownername,
-      required this.location,
+      required this.ownerplace,
       required this.id,
       required this.price,
       required this.color, required this.available});
@@ -48,8 +48,6 @@ class CarDetails extends StatefulWidget {
 }
 
 class _CarDetailsState extends State<CarDetails> {
-  // current location start
-  String _location = 'Unknown';
 
   // current location
   Future<void> _getCurrentLocation() async {
@@ -86,18 +84,12 @@ class _CarDetailsState extends State<CarDetails> {
         lat: position.latitude.toString(),
         long: position.longitude.toString()));
 
-    Placemark place = placemarks[0];
-
-    setState(() {
-      _location =
-          '${place.locality}, ${place.administrativeArea}, ${place.country}';
-    });
   }
 
   // current location end
   late List<NearbyCarModelClass> nearbydatas;
 
-  // just converting
+  // just list of place converting
   Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -658,7 +650,7 @@ class _CarDetailsState extends State<CarDetails> {
                                             Container(
                                               width: 131.w,
                                               child: Text(
-                                                widget.location, //..... see
+                                                widget.ownerplace, //..... see
                                                 overflow: TextOverflow.ellipsis,
                                                 //......,
                                                 maxLines: 1,
@@ -832,8 +824,7 @@ class _CarDetailsState extends State<CarDetails> {
                                                                         position]
                                                                     .ownerName
                                                                     .toString(),
-                                                                location: place
-                                                                    .toString(),
+                                                                ownerplace: nearbydatas[position].ownerPlace.toString(),
                                                                 id:nearbydatas[position].id.toString(),
                                                                 price: nearbydatas[position].rentPrice.toString(),
                                                                 color:nearbydatas[position].vehicleColor.toString(), available: nearbydatas[position].available,

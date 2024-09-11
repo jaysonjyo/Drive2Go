@@ -1,9 +1,5 @@
 import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
-import 'package:drive2goo/Bloc/Buy_Car/nearby_buy_bloc.dart';
-import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
-import 'package:drive2goo/Bloc/RentOrder/rent_car_order_bloc.dart';
-import 'package:drive2goo/Bloc/Rent_Car/rentcar_bloc.dart';
-import 'package:drive2goo/Bloc/Rentcarsearch/reant_search_bloc.dart';
+
 import 'package:drive2goo/Bloc/Sign_In_Bloc/sign_in_bloc.dart';
 import 'package:drive2goo/Bloc/Sign_up_Bloc/sign_up_bloc.dart';
 import 'package:drive2goo/UI/Others/Splash.dart';
@@ -11,6 +7,12 @@ import 'package:drive2goo/UI/Others/Start_Indro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'Bloc/Buy_Car_Bloc/nearby_buy_bloc.dart';
+import 'Bloc/Nearby_Bloc/nearby_car_bloc.dart';
+import 'Bloc/RentOrder_Bloc/rent_car_order_bloc.dart';
+import 'Bloc/Rent_Car_Bloc/rentcar_bloc.dart';
+import 'Bloc/Rentcarsearch_Bloc/reant_search_bloc.dart';
 
 TextEditingController pickuplocationcontroller = TextEditingController();
 TextEditingController returnlocationcontroller = TextEditingController();

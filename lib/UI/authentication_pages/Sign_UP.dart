@@ -1,6 +1,6 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:drive2goo/Bloc/Sign_up_Bloc/sign_up_bloc.dart';
-import 'package:drive2goo/Repostory/ModelClass/SignUpModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

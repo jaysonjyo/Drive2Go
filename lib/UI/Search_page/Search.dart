@@ -1,10 +1,11 @@
-import 'package:drive2goo/Bloc/Rentcarsearch/reant_search_bloc.dart';
-import 'package:drive2goo/Repostory/ModelClass/RentcarsearchModelclass.dart';
+
+import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelclass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 
+import '../../Bloc/Rentcarsearch_Bloc/reant_search_bloc.dart';
 import '../Home_Pages/Car_Details.dart';
 
 class Search extends StatefulWidget {
@@ -211,7 +212,7 @@ class _SearchState extends State<Search> {
                                                         door: rentcarsearchdata[index].noOfDoors.toString(),
                                                         ownerphoto: rentcarsearchdata[index].ownerProfilePhoto.toString(),
                                                         ownername: rentcarsearchdata[index].ownerName.toString(),
-                                                        location: rentcarsearchdata[index].location.toString(),
+                                                        ownerplace: rentcarsearchdata[index].ownerPlace.toString(),
                                                         id: rentcarsearchdata[index].id.toString(),
                                                         price: rentcarsearchdata[index].rentPrice.toString(),
                                                         color: rentcarsearchdata[index].vehicleColor.toString(),

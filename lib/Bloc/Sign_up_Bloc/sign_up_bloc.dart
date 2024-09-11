@@ -1,5 +1,5 @@
 
-import 'package:drive2goo/Repostory/ModelClass/SignUpModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
