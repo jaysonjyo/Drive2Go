@@ -1,3 +1,4 @@
+import 'package:drive2goo/Bloc/All_buyCar_Bloc/all_buycar_bloc.dart';
 import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
 
 import 'package:drive2goo/Bloc/Sign_In_Bloc/sign_in_bloc.dart';
@@ -57,6 +58,9 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => NearbyBuyBloc(),
+              ),
+              BlocProvider(
+                create: (context) => AllBuycarBloc(),
               ),
             ],
             child: MaterialApp(

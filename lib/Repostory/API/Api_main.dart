@@ -130,14 +130,14 @@ class User {
     return NearByBuyCarModelClass.listFromJson(jsonDecode(response.body));
   }
   // allbuycarmodelss
-  Future<AllBuyVechileModelclass> getAllBuycar(String lat, String long) async {
+  Future<List<AllBuyVechileModelclass>> getAllBuycar() async {
     String trendingpath ="http://45.159.221.50:8868/api/get-buyvehicles";
 
     var body = {};
     print(body);
     Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
 
-    return AllBuyVechileModelclass.fromJson(jsonDecode(response.body));
+    return AllBuyVechileModelclass.listFromJson(jsonDecode(response.body));
   }
 
 

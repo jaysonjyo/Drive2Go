@@ -98,7 +98,13 @@ class AllBuyVechileModelclass {
     map['__v'] = v;
     return map;
   }
-
+  //convert in to list code
+  static List<AllBuyVechileModelclass> listFromJson(List<dynamic> json) {
+    return json == null
+        ? []
+        : json.map((value) => AllBuyVechileModelclass.fromJson(value)).toList();
+  }
+//convert in to list code
 }
 
 class Location {
