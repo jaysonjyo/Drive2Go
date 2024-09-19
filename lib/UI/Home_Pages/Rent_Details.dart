@@ -926,6 +926,7 @@ class _RentDetailsState extends State<RentDetails> {
                       }
                       if (state is RentcarBlocLoaded) {
 Navigator.of(context).pop();
+Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
 
                         ToastMessage().toastmessage(message: "Successs");
                       }
@@ -938,7 +939,7 @@ Navigator.of(context).pop();
                             retrundatecontroler.text.isNotEmpty &&
                             pickuplocationcontroller.text.isNotEmpty &&
                             returnlocationcontroller.text.isNotEmpty) {
-                           Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
+
                            print("hy"+(dateDifference! * int.parse(widget.price)).toString());
                           BlocProvider.of<RentcarBloc>(context).add(FetchRentcar(
 

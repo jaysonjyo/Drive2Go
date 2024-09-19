@@ -39,7 +39,12 @@ class _SearchState extends State<Search> {
       return []; // Return an empty list in case of an error
     }
   }
-
+@override
+  void dispose() {
+    search.clear();
+    // TODO: implement dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +140,7 @@ class _SearchState extends State<Search> {
               if (state is ReantSearchBlocLoaded) {
                 rentcarsearchdata = BlocProvider.of<ReantSearchBloc>(context)
                     .rentcarsearchModelclass;
-                return Column(
+                return  Column(
                   children: [
                     SizedBox(
                       height: 20.h,
@@ -423,9 +428,4 @@ class _SearchState extends State<Search> {
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
 }

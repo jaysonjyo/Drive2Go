@@ -6,6 +6,9 @@ import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelcla
 import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../ModelClass/Buyvechile/Buy_OrderShow_Modelclass.dart';
+import '../ModelClass/Buyvechile/Buy_VechilOrderModelClass.dart';
+import '../ModelClass/Buyvechile/BuyvehileSearchModelclass.dart';
 import '../ModelClass/Rentvechile/AllcarModel.dart';
 import '../ModelClass/Rentvechile/NearbyCarModelClass.dart';
 import '../ModelClass/Rentvechile/RentCarModel.dart';
@@ -57,7 +60,7 @@ class User {
   }
 
   // rent car
-  Future <RentCarModel> getrentcar(
+  Future<RentCarModel> getrentcar(
       String vehicle,
       String pickupdate,
       String returndate,
@@ -66,7 +69,7 @@ class User {
       String amount) async {
     String trendingpath = "http://45.159.221.50:8868/api/create-rent-order";
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId=prefs.getString("userId").toString();
+    String userId = prefs.getString("userId").toString();
     var body = {
       "vehicle": vehicle,
       "user": userId,
@@ -76,15 +79,16 @@ class User {
       "returnLocation": returnlocation,
       "amount": int.parse(amount)
     };
-    print("hi"+body.toString());
-    Response response = await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+    print("hi" + body.toString());
+    Response response =
+        await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
 
     return RentCarModel.fromJson(jsonDecode(response.body));
   }
+
   //All car
-  Future <List<AllcarModelClass>> getAllcar() async {
-    String trendingpath =
-        "http://45.159.221.50:8868/api/get-vehicles";
+  Future<List<AllcarModelClass>> getAllcar() async {
+    String trendingpath = "http://45.159.221.50:8868/api/get-vehicles";
 
     var body = {};
     print(body);
@@ -92,10 +96,11 @@ class User {
 
     return AllcarModelClass.listFromJson(jsonDecode(response.body));
   }
+
   // rentcarorder
-  Future <List<RentCarOrderModelClass>> getRentorder() async {
+  Future<List<RentCarOrderModelClass>> getRentorder() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId=prefs.getString("userId").toString();
+    String userId = prefs.getString("userId").toString();
     String trendingpath =
         "http://45.159.221.50:8868/api/get-rent-orders/$userId";
 
@@ -105,10 +110,9 @@ class User {
 
     return RentCarOrderModelClass.listFromJson(jsonDecode(response.body));
   }
+
   //searchrent
-  Future <List<RentcarsearchModelclass>> getRentsearch(String brand) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId=prefs.getString("userId").toString();
+  Future<List<RentcarsearchModelclass>> getRentsearch(String brand) async {
     String trendingpath =
         "http://45.159.221.50:8868/api/search-vehicles?brand=$brand";
 
@@ -120,8 +124,10 @@ class User {
   }
 
   // Buy_ Cars ModelClass
-  Future<List<NearByBuyCarModelClass>> getNBuycar(String lat, String long) async {
-    String trendingpath ="http://45.159.221.50:8868/api/get-nearby-buyvehicles?latitude=$lat&longitude=$long";
+  Future<List<NearByBuyCarModelClass>> getNBuycar(
+      String lat, String long) async {
+    String trendingpath =
+        "http://45.159.221.50:8868/api/get-nearby-buyvehicles?latitude=$lat&longitude=$long";
 
     var body = {};
     print(body);
@@ -129,9 +135,10 @@ class User {
 
     return NearByBuyCarModelClass.listFromJson(jsonDecode(response.body));
   }
+
   // allbuycarmodelss
   Future<List<AllBuyVechileModelclass>> getAllBuycar() async {
-    String trendingpath ="http://45.159.221.50:8868/api/get-buyvehicles";
+    String trendingpath = "http://45.159.221.50:8868/api/get-buyvehicles";
 
     var body = {};
     print(body);
@@ -140,7 +147,57 @@ class User {
     return AllBuyVechileModelclass.listFromJson(jsonDecode(response.body));
   }
 
+  // create oder
+  Future<BuyCreateOrderModelClass> getBuyCreateOrder(
+      String vehicleid,
+      String buyerAddress,
+      String purchaseprice
+      ) async {
+    String trendingpath = "http://45.159.221.50:8868/api/create-buy-order";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    //egganeyum cheyyam /  ui design undakite controler veche kodukam but requied akkanam
+    String userName =prefs.getString("userName").toString();
+    String userPhonenumber=prefs.getString("userPhonenumber").toString();
+    String userEmail=prefs.getString("userEmail").toString();
+    var body = {
+      "vehicle": vehicleid,
+      "buyerId": userId,
+      "buyerName": userName,
+      "buyerPhoneNumber": userPhonenumber,
+      "buyerEmail": userEmail,
+      "buyerAddress": buyerAddress,
+      "purchasePrice": int.parse(purchaseprice)
 
+    };
+    print("jayson"+body.toString());
+    Response response =
+        await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
 
+    return BuyCreateOrderModelClass.fromJson(jsonDecode(response.body));
+  }
+  // buyvehileshwoorder
+  Future<List<BuyOrderShowModelclass>> getBuyorder() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    String trendingpath = "http://45.159.221.50:8868/api/get-buy-orders/$userId";
 
+    var body = {};
+    print(body);
+    Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
+
+    return BuyOrderShowModelclass.listFromJson(jsonDecode(response.body));
+  }
+  //
+  // buyvehile search
+  Future<List<BuyvehileSearchModelclass>> getBuyvehileSearch( String brandsearch) async {
+    String trendingpath = "http://45.159.221.50:8868/api/search-buyvehicles?brand=$brandsearch";
+
+    var body = {};
+    print(body);
+    Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
+
+    return BuyvehileSearchModelclass.listFromJson(jsonDecode(response.body));
+  }
+//
 }

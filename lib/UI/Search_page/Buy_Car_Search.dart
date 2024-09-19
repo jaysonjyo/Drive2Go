@@ -1,5 +1,12 @@
+import 'package:drive2goo/Bloc/Buy_vechile_search/buysearch_bloc.dart';
+import 'package:drive2goo/Repostory/ModelClass/Buyvechile/BuyvehileSearchModelclass.dart';
+import 'package:drive2goo/UI/Buy_Car_Pages/Buy_car_Details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+
+import '../Home_Pages/Car_Details.dart';
 
 class BuyCarSearch extends StatefulWidget {
   const BuyCarSearch({super.key});
@@ -9,201 +16,355 @@ class BuyCarSearch extends StatefulWidget {
 }
 
 class _BuyCarSearchState extends State<BuyCarSearch> {
+  TextEditingController buysearch = TextEditingController();
+
+  // @override
+  // void initState() {
+  //   BlocProvider.of<BuysearchBloc>(context)
+  //       .add(FetchBuysearchEvent(brandsearch: buysearch.text));
+  //   // TODO: implement initState
+  //   super.initState();
+  // }
+
+  late List<BuyvehileSearchModelclass> buysearchdata;
+
+  //list of plcae convert
+  Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        double.parse(lat),
+        double.parse(long),
+      );
+
+      return placemarks; // Return the list of placemarks instead of a single placemark
+    } catch (e) {
+      print(e);
+      return []; // Return an empty list in case of an error
+    }
+  }
+
+  //
+  @override
+  void dispose() {
+    buysearchdata.clear();
+    // TODO: implement dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF000B17),
-      appBar: AppBar(bottom:PreferredSize(preferredSize: Size.fromHeight(80.h), child:  Column(
-        children: [
-          Container(
-            width: 345.w,
-            height: 48.h,
-            decoration: ShapeDecoration(
-              gradient: LinearGradient(
-                begin: Alignment(-0.19, 6),
-                end: Alignment(0.09, -1),
-                colors: [Color(0x1BFFFFFF), Color(0xFF000C1B)],
-              ),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-            ),
-            child: TextField(
-              style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
-              cursorColor: Colors.white,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'What are you looking for..',
-                  hintStyle: TextStyle(
-                    color: Color(0xFF627387),
-                    fontSize: 15.sp,
-                    fontFamily: 'sfprodisplay',
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 1.50.w,
+      appBar: AppBar(
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80.h),
+          child: Column(
+            children: [
+              Container(
+                width: 345.w,
+                height: 48.h,
+                decoration: ShapeDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment(-0.19, 6),
+                    end: Alignment(0.09, -1),
+                    colors: [Color(0x1BFFFFFF), Color(0xFF000C1B)],
                   ),
-                  prefixIcon: Icon(
-                    Icons.search_rounded,
-                    color: Colors.white,
-                  )),
-            ),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+                child: TextField(
+                  controller: buysearch,
+                  style:
+                      TextStyle(color: Colors.white, decorationThickness: 0.sp),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'What are you looking for..',
+                      hintStyle: TextStyle(
+                        color: Color(0xFF627387),
+                        fontSize: 15.sp,
+                        fontFamily: 'sfprodisplay',
+                        fontWeight: FontWeight.w300,
+                        letterSpacing: 1.50.w,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search_rounded,
+                        color: Colors.white,
+                      )),
+                  onChanged: (value){
+                    setState(() {
+                      BlocProvider.of<BuysearchBloc>(context).add(FetchBuysearchEvent(brandsearch: buysearch.text));
+                    });
+                  },
+              onSubmitted: (value){
+setState(() {
+  BlocProvider.of<BuysearchBloc>(context).add(FetchBuysearchEvent(brandsearch: buysearch.text));
+});              },
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              )
+            ],
           ),
-          SizedBox(height: 20.h,)
-        ],
-      ),) ,
+        ),
         backgroundColor: Color(0xFF000B17),
-        leading: GestureDetector(onTap: (){
-          Navigator.of(context).pop();
-        },
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
           child: Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),
         ),
-
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              SizedBox(
-                width: 389.w,
-                height: (236 * 15 / 2).h,
-                child: GridView.count(
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 18.0.w,
-                  mainAxisSpacing: 20.0.h,
-                  childAspectRatio: 185 / 225,
-                  shrinkWrap: true,
-                  children: List.generate(
-                    15,
-                    (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>CarDetails()));
-                        },
-                        child: Container(
-                          width: 185.w,
-                          height: 223.h,
-                          decoration: ShapeDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment(-5, 0.54),
-                              end: Alignment(0.54, -0.54),
-                              // begin: Alignment(-0.99, 1.00),
-                              // end: Alignment(0.09, -5),
-                              colors: [Color(0x1BFFFFFF), Color(0xFF000C1B)],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1.w, color: Color(0xFF58606A)),
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 3.h,
-                              ),
-                              Container(
-                                width: 177.w,
-                                height: 146.h,
-                                decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage("assets/g.png"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8.r),
-                                      topRight: Radius.circular(8.r),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 9.w, vertical: 13.h),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Audi R8 Coupé',
-                                      maxLines: 1,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Color(0xFFF7F5F2),
-                                        fontSize: 16.sp,
-                                        fontFamily: 'sfprodisplay',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 6.h,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: 14.w,
-                                              height: 14.h,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: AssetImage(
-                                                          "assets/h.png"),
-                                                      fit: BoxFit.cover)),
-                                            ),
-                                            SizedBox(
-                                              width: 5.w,
-                                            ),
-                                            Text(
-                                              'Kottakal',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Color(0xFFF7F5F2),
-                                                fontSize: 13.sp,
-                                                fontFamily: 'sfprodisplay',
-                                                fontWeight: FontWeight.w300,
-                                                letterSpacing: 0.50.w,
-                                              ),
-                                            )
+          child: BlocBuilder<BuysearchBloc, BuysearchState>(
+            builder: (context, state) {
+              if (state is BuysearchBlocLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is BuysearchBlocError) {
+                return Center(
+                  child: Text("Error"),
+                );
+              }
+              if (state is BuysearchBlocLoaded) {
+                buysearchdata = BlocProvider.of<BuysearchBloc>(context)
+                    .buyvehileSearchModelclass;
+
+                return
+                  buysearchdata.isNotEmpty?
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    SizedBox(
+                      width: 389.w,
+                      //height: (2*buysearchdata.length)+((2-1)*20).h,
+                       height: (236 * 15 / 2).h,
+                      child: GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 18.0.w,
+                        mainAxisSpacing: 20.0.h,
+                        childAspectRatio: 185 / 225,
+                        shrinkWrap: true,
+                        children: List.generate(
+                          buysearchdata.length,
+                          (index) {
+                            return FutureBuilder<List<Placemark>>(
+                              future: _getVechileAddress(
+                                  buysearchdata[index]
+                                      .location!
+                                      .coordinates!
+                                      .first
+                                      .toString(),
+                                  buysearchdata[index]
+                                      .location!
+                                      .coordinates!
+                                      .last
+                                      .toString()),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text("Error"),
+                                  );
+                                }
+                                if (snapshot.hasData) {
+                                  String? place = snapshot.data![0].locality;
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (_) => BuyCarDetails(
+                                                  photo: buysearchdata[index].photos!.toList(),
+                                                  brand: buysearchdata[index].brand.toString(),
+                                                  rating: buysearchdata[index].rating.toString(),
+                                                  fueltype: buysearchdata[index].fuelType.toString(),
+                                                  gear: buysearchdata[index].gearType.toString(),
+                                                  seat: buysearchdata[index].noOfSeats.toString(),
+                                                  door: buysearchdata[index].noOfDoors.toString(),
+                                                  ownerphoto: buysearchdata[index].ownerProfilePhoto.toString(),
+                                                  ownername: buysearchdata[index].ownerName.toString(),
+                                                  ownerplace: buysearchdata[index].ownerPlace.toString(),
+                                                  id: buysearchdata[index].id.toString(),
+                                                  price: buysearchdata[index].rentPrice.toString())));
+                                    },
+                                    child: Container(
+                                      width: 185.w,
+                                      height: 223.h,
+                                      decoration: ShapeDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment(-5, 0.54),
+                                          end: Alignment(0.54, -0.54),
+                                          colors: [
+                                            Color(0x1BFFFFFF),
+                                            Color(0xFF000C1B)
                                           ],
                                         ),
-                                        Text(
-                                          '\$ 8000 / day',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color(0xFFFFD66D),
-                                            fontSize: 13.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.50.w,
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              width: 1.w,
+                                              color: Color(0xFF58606A)),
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 3.h,
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                                          Container(
+                                            width: 177.w,
+                                            height: 146.h,
+                                            decoration: ShapeDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    buysearchdata[index]
+                                                        .photos![0]),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(8.r),
+                                                  topRight:
+                                                      Radius.circular(8.r),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 9.w,
+                                                vertical: 13.h),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  buysearchdata[index]
+                                                      .brand
+                                                      .toString(),
+                                                  maxLines: 1,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 16.sp,
+                                                    fontFamily: 'sfprodisplay',
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 6.h,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          width: 14.w,
+                                                          height: 14.h,
+                                                          decoration: BoxDecoration(
+                                                              image: DecorationImage(
+                                                                  image: AssetImage(
+                                                                      "assets/h.png"),
+                                                                  fit: BoxFit
+                                                                      .cover)),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.w,
+                                                        ),
+                                                        Container(
+                                                          width: 70.w,
+                                                          child: Text(
+                                                            place.toString(),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                            style: TextStyle(
+                                                              color: Color(
+                                                                  0xFFF7F5F2),
+                                                              fontSize: 13.sp,
+                                                              fontFamily:
+                                                                  'sfprodisplay',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                              letterSpacing:
+                                                                  0.50.w,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Text(
+                                                      "\$ ${buysearchdata[index].rentPrice.toString()}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFFFFD66D),
+                                                        fontSize: 13.sp,
+                                                        fontFamily:
+                                                            'sfprodisplay',
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        letterSpacing: 0.50.w,
+                                                      ),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return SizedBox();
+                                }
+                              },
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                    ),
+                  ],
+                )
+                      :SizedBox()
+                ;
+              } else {
+                return SizedBox();
+              }
+            },
           ),
         ),
       ),

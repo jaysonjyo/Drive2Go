@@ -1,5 +1,7 @@
 import 'package:drive2goo/Bloc/All_buyCar_Bloc/all_buycar_bloc.dart';
 import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
+import 'package:drive2goo/Bloc/Buy_create_order/buy_create_order_bloc.dart';
+import 'package:drive2goo/Bloc/Buycar_order/buyorder_bloc.dart';
 
 import 'package:drive2goo/Bloc/Sign_In_Bloc/sign_in_bloc.dart';
 import 'package:drive2goo/Bloc/Sign_up_Bloc/sign_up_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'Bloc/Buy_Car_Bloc/nearby_buy_bloc.dart';
+import 'Bloc/Buy_vechile_search/buysearch_bloc.dart';
 import 'Bloc/Nearby_Bloc/nearby_car_bloc.dart';
 import 'Bloc/RentOrder_Bloc/rent_car_order_bloc.dart';
 import 'Bloc/Rent_Car_Bloc/rentcar_bloc.dart';
@@ -61,6 +64,15 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => AllBuycarBloc(),
+              ),
+              BlocProvider(
+                create: (context) => BuyCreateOrderBloc(),
+              ),
+              BlocProvider(
+                create: (context) => BuyorderBloc(),
+              ),
+              BlocProvider(
+                create: (context) => BuysearchBloc(),
               ),
             ],
             child: MaterialApp(

@@ -200,7 +200,7 @@ class _SignInState extends State<SignIn> {
                         print("loading");
                       }if(state is SignInBlocLoaded){
                         signindata=BlocProvider.of<SignInBloc>(context).signInModelClass;
-                       CheckLogin(signindata.id.toString());
+                       CheckLogin(signindata.id.toString(),signindata.fullName.toString(),signindata.phone.toString(),signindata.email.toString());
                         Navigator.of(context).pop();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (_) => Bottomnavigation()),
@@ -331,10 +331,13 @@ BlocProvider.of<SignInBloc>(context).add(FetchSignInEvent(email: email.text, pas
     );
   }
   //sharedpreference
-  void CheckLogin(String userId) async {
+  void CheckLogin(String userId,String userName,String userPhonenumber,String userEmail) async {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 prefs.setString("userId", userId);
+    prefs.setString("userName", userName);
+    prefs.setString("userPhonenumber", userPhonenumber);
+    prefs.setString("userEmail", userEmail);
   }
 //sharedpreference
 }

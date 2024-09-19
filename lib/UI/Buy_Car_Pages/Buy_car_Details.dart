@@ -1,7 +1,11 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:drive2goo/Bloc/Buy_Car_Bloc/nearby_buy_bloc.dart';
+import 'package:drive2goo/Bloc/Buy_create_order/buy_create_order_bloc.dart';
+import 'package:drive2goo/Repostory/ModelClass/Buyvechile/Buy_VechilOrderModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
+import 'package:drive2goo/UI/Home_Pages/Home.dart';
+import 'package:drive2goo/UI/Others/BottomNavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -9,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import '../Toast_message/Toast_message.dart';
 
 class BuyCarDetails extends StatefulWidget {
   final List<dynamic> photo;
@@ -24,77 +30,25 @@ class BuyCarDetails extends StatefulWidget {
   final String id;
   final String price;
 
-  const BuyCarDetails(
-      {super.key,
-      required this.photo,
-      required this.brand,
-      required this.rating,
-      required this.fueltype,
-      required this.gear,
-      required this.seat,
-      required this.door,
-      required this.ownerphoto,
-      required this.ownername,
-      required this.ownerplace,
-      required this.id,
-      required this.price});
+  const BuyCarDetails({super.key,
+    required this.photo,
+    required this.brand,
+    required this.rating,
+    required this.fueltype,
+    required this.gear,
+    required this.seat,
+    required this.door,
+    required this.ownerphoto,
+    required this.ownername,
+    required this.ownerplace,
+    required this.id,
+    required this.price});
 
   @override
   State<BuyCarDetails> createState() => _BuyCarDetailsState();
 }
 
 class _BuyCarDetailsState extends State<BuyCarDetails> {
-  // payment for any payments
-  void handlePaymentErrorResponse(PaymentFailureResponse response) {
-    /*
-    * PaymentFailureResponse contains three values:
-    * 1. Error Code
-    * 2. Error Description
-    * 3. Metadata
-    * */
-    showAlertDialog(context, "Payment Failed",
-        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
-  }
-
-  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
-    /*
-    * Payment Success Response contains three values:
-    * 1. Order ID
-    * 2. Payment ID
-    * 3. Signature
-    * */
-    showAlertDialog(
-        context, "Payment Successful", "Payment ID: ${response.paymentId}");
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-  }
-
-  void handleExternalWalletSelected(ExternalWalletResponse response) {
-    showAlertDialog(
-        context, "External Wallet Selected", "${response.walletName}");
-  }
-
-  void showAlertDialog(BuildContext context, String title, String message) {
-    // set up the buttons
-    Widget continueButton = ElevatedButton(
-      child: const Text("Continue"),
-      onPressed: () {},
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-//payment ended function
 
   // current location
   Future<void> _getCurrentLocation() async {
@@ -126,7 +80,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
 
     // Convert the coordinates to a human-readable address.
     List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
+    await placemarkFromCoordinates(position.latitude, position.longitude);
     BlocProvider.of<NearbyBuyBloc>(context).add(FetchNearbyBuycarevent(
         lat: position.longitude.toString(),
         long: position.longitude.toString()));
@@ -149,8 +103,11 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
   }
 
 // just converting
-  late List<NearByBuyCarModelClass> nearbybuycardata;
 
+
+  late List<NearByBuyCarModelClass> nearbybuycardata;
+  var _formKey = GlobalKey<FormState>();
+  TextEditingController  address=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,19 +163,19 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                   child: CarouselSlider.builder(
                     itemCount: widget.photo.length,
                     itemBuilder: (BuildContext context, int itemIndex,
-                            int pageViewIndex) =>
+                        int pageViewIndex) =>
                         Container(
-                      width: 315.w,
-                      height: 254.h,
-                      decoration: ShapeDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(widget.photo[itemIndex]),
-                          fit: BoxFit.cover,
+                          width: 315.w,
+                          height: 254.h,
+                          decoration: ShapeDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(widget.photo[itemIndex]),
+                              fit: BoxFit.cover,
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.r)),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.r)),
-                      ),
-                    ),
                     options: CarouselOptions(
                       height: 254.h,
                       aspectRatio: 16 / 9,
@@ -272,16 +229,17 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                             unratedColor: Colors.grey,
                             itemSize: 20.sp,
                             initialRating:
-                                double.parse(widget.rating.toString()),
+                            double.parse(widget.rating.toString()),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
                             //  itemPadding: EdgeInsets.symmetric(horizontal: 4.0.w),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
+                            itemBuilder: (context, _) =>
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
                             onRatingUpdate: (rating) {
                               print(rating);
                             },
@@ -352,9 +310,9 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                         clipBehavior: Clip.antiAlias,
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
-                                          image: AssetImage("assets/1.png"),
-                                          fit: BoxFit.cover,
-                                        )),
+                                              image: AssetImage("assets/1.png"),
+                                              fit: BoxFit.cover,
+                                            )),
                                       ),
                                       SizedBox(
                                         width: 15.w,
@@ -364,7 +322,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                             vertical: 10.h),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Tank type',
@@ -421,7 +379,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image:
-                                                    AssetImage("assets/2.png"),
+                                                AssetImage("assets/2.png"),
                                                 fit: BoxFit.cover)),
                                       ),
                                       SizedBox(
@@ -432,7 +390,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                             vertical: 10.h),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Gearbox',
@@ -506,7 +464,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                             vertical: 10.h),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Seats',
@@ -561,7 +519,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image:
-                                                    AssetImage("assets/4.png"),
+                                                AssetImage("assets/4.png"),
                                                 fit: BoxFit.cover)),
                                       ),
                                       SizedBox(
@@ -572,7 +530,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                             vertical: 10.h),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Door',
@@ -667,7 +625,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                   ),
                                   Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         width: 14.w,
@@ -676,7 +634,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image:
-                                                    AssetImage("assets/h.png"),
+                                                AssetImage("assets/h.png"),
                                                 fit: BoxFit.cover)),
                                       ),
                                       SizedBox(
@@ -714,7 +672,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image:
-                                              AssetImage("assets/whatsapp.png"),
+                                          AssetImage("assets/whatsapp.png"),
                                           fit: BoxFit.cover)),
                                 ),
                                 SizedBox(
@@ -772,7 +730,8 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                             }
                             if (state is NearbybuycarBlocLoaded) {
                               nearbybuycardata =
-                                  BlocProvider.of<NearbyBuyBloc>(context)
+                                  BlocProvider
+                                      .of<NearbyBuyBloc>(context)
                                       .nearByBuyCarModelClass;
                               return ListView.separated(
                                 itemCount: nearbybuycardata.length,
@@ -814,41 +773,49 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                               snapshot.data![0].locality;
                                           return GestureDetector(
                                             onTap: () {
-                                              Navigator.of(context).push(MaterialPageRoute(
-                                                  builder: (_) => BuyCarDetails(
-                                                      photo: nearbybuycardata[position]
-                                                          .photos!
-                                                          .toList(),
-                                                      brand: nearbybuycardata[position]
-                                                          .brand
-                                                          .toString(),
-                                                      rating: nearbybuycardata[position]
-                                                          .rating
-                                                          .toString(),
-                                                      fueltype: nearbybuycardata[position]
-                                                          .fuelType
-                                                          .toString(),
-                                                      gear: nearbybuycardata[position]
-                                                          .gearType
-                                                          .toString(),
-                                                      seat: nearbybuycardata[position]
-                                                          .noOfSeats
-                                                          .toString(),
-                                                      door: nearbybuycardata[position]
-                                                          .noOfDoors
-                                                          .toString(),
-                                                      ownerphoto:
-                                                          nearbybuycardata[position]
-                                                              .ownerProfilePhoto
-                                                              .toString(),
-                                                      ownername:
-                                                          nearbybuycardata[position]
-                                                              .ownerName
-                                                              .toString(),
-                                                      ownerplace: nearbybuycardata[position].ownerPlace.toString(),
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          BuyCarDetails(
+                                                              photo: nearbybuycardata[position]
+                                                                  .photos!
+                                                                  .toList(),
+                                                              brand: nearbybuycardata[position]
+                                                                  .brand
+                                                                  .toString(),
+                                                              rating: nearbybuycardata[position]
+                                                                  .rating
+                                                                  .toString(),
+                                                              fueltype: nearbybuycardata[position]
+                                                                  .fuelType
+                                                                  .toString(),
+                                                              gear: nearbybuycardata[position]
+                                                                  .gearType
+                                                                  .toString(),
+                                                              seat: nearbybuycardata[position]
+                                                                  .noOfSeats
+                                                                  .toString(),
+                                                              door: nearbybuycardata[position]
+                                                                  .noOfDoors
+                                                                  .toString(),
+                                                              ownerphoto:
+                                                              nearbybuycardata[position]
+                                                                  .ownerProfilePhoto
+                                                                  .toString(),
+                                                              ownername:
+                                                              nearbybuycardata[position]
+                                                                  .ownerName
+                                                                  .toString(),
+                                                              ownerplace: nearbybuycardata[position]
+                                                                  .ownerPlace
+                                                                  .toString(),
 
-                                                      id: nearbybuycardata[position].id.toString(),
-                                                      price: nearbybuycardata[position].rentPrice.toString())));
+                                                              id: nearbybuycardata[position]
+                                                                  .id
+                                                                  .toString(),
+                                                              price: nearbybuycardata[position]
+                                                                  .rentPrice
+                                                                  .toString())));
                                             },
                                             child: Container(
                                               width: 185.w,
@@ -867,8 +834,8 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                       width: 1.w,
                                                       color: Color(0xFF58606A)),
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.r),
+                                                  BorderRadius.circular(
+                                                      10.r),
                                                 ),
                                               ),
                                               child: Column(
@@ -883,51 +850,51 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                       image: DecorationImage(
                                                         image: NetworkImage(
                                                             nearbybuycardata[
-                                                                    position]
+                                                            position]
                                                                 .photos![0]
                                                                 .toString()),
                                                         fit: BoxFit.cover,
                                                       ),
                                                       shape:
-                                                          RoundedRectangleBorder(
+                                                      RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.only(
+                                                        BorderRadius.only(
                                                           topLeft:
-                                                              Radius.circular(
-                                                                  8.r),
+                                                          Radius.circular(
+                                                              8.r),
                                                           topRight:
-                                                              Radius.circular(
-                                                                  8.r),
+                                                          Radius.circular(
+                                                              8.r),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 9.w,
-                                                            vertical: 13.h),
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 9.w,
+                                                        vertical: 13.h),
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Text(
                                                           nearbybuycardata[
-                                                                  position]
+                                                          position]
                                                               .brand
                                                               .toString(),
                                                           maxLines: 1,
                                                           textAlign:
-                                                              TextAlign.center,
+                                                          TextAlign.center,
                                                           style: TextStyle(
                                                             color: Color(
                                                                 0xFFF7F5F2),
                                                             fontSize: 16.sp,
                                                             fontFamily:
-                                                                'sfprodisplay',
+                                                            'sfprodisplay',
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                            FontWeight.w500,
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -935,16 +902,16 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                         ),
                                                         Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                           children: [
                                                             Row(
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                               crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                               children: [
                                                                 Container(
                                                                   width: 14.w,
@@ -965,21 +932,21 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                                     place
                                                                         .toString(),
                                                                     textAlign:
-                                                                        TextAlign
-                                                                            .start,
+                                                                    TextAlign
+                                                                        .start,
                                                                     style:
-                                                                        TextStyle(
+                                                                    TextStyle(
                                                                       color: Color(
                                                                           0xFFF7F5F2),
                                                                       fontSize:
-                                                                          13.sp,
+                                                                      13.sp,
                                                                       fontFamily:
-                                                                          'sfprodisplay',
+                                                                      'sfprodisplay',
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w300,
+                                                                      FontWeight
+                                                                          .w300,
                                                                       letterSpacing:
-                                                                          0.50.w,
+                                                                      0.50.w,
                                                                     ),
                                                                   ),
                                                                 )
@@ -987,23 +954,25 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                             ),
                                                             Container(
                                                               child: Text(
-                                                                "\$ ${nearbybuycardata[position].rentPrice.toString()} / day",
+                                                                "₹ ${nearbybuycardata[position]
+                                                                    .rentPrice
+                                                                    .toString()}",
                                                                 textAlign:
-                                                                    TextAlign
-                                                                        .center,
+                                                                TextAlign
+                                                                    .center,
                                                                 style:
-                                                                    TextStyle(
+                                                                TextStyle(
                                                                   color: Color(
                                                                       0xFFFFD66D),
                                                                   fontSize:
-                                                                      13.sp,
+                                                                  13.sp,
                                                                   fontFamily:
-                                                                      'sfprodisplay',
+                                                                  'sfprodisplay',
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                                   letterSpacing:
-                                                                      0.50.w,
+                                                                  0.50.w,
                                                                 ),
                                                               ),
                                                             )
@@ -1073,61 +1042,177 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                       width: 35.w,
                     ),
                     Container(
-                      width: 150.w,
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "₹ ${widget.price}",
-                              style: TextStyle(
-                                color: Color(0xFF000B17),
-                                fontSize: 20.sp,
-                                fontFamily: 'sfprodisplayy',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            TextSpan(
-                              text: '/Day',
-                              style: TextStyle(
-                                color: Color(0xFF000B17),
-                                fontSize: 15.sp,
-                                fontFamily: 'sfprodisplayy',
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                        width: 150.w,
+                        child: Text
+                          ("₹ ${widget.price}",
+                          style: TextStyle(
+                            color: Color(0xFF000B17),
+                            fontSize: 20.sp,
+                            fontFamily: 'sfprodisplayy',
+                            fontWeight: FontWeight.w600,
+                          ),)
                     ),
+
+
                     SizedBox(
                       width: 18.w,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Razorpay razorpay = Razorpay();
-                        var options = {
-                          'key': 'rzp_test_gKANZdsNdLqaQs',
-                          'amount': 100,
-                          'name': 'Acme Corp.',
-                          'description': 'Fine T-Shirt',
-                          'retry': {'enabled': true, 'max_count': 1},
-                          'send_sms_hash': true,
-                          'prefill': {
-                            'contact': '8888888888',
-                            'email': 'test@razorpay.com'
-                          },
-                          'external': {
-                            'wallets': ['paytm']
-                          }
-                        };
-                        razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                            handlePaymentErrorResponse);
-                        razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                            handlePaymentSuccessResponse);
-                        razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                            handleExternalWalletSelected);
-                        razorpay.open(options);
-                      },
+                    GestureDetector(onTap: (){
+
+                      showModalBottomSheet<void>(
+                        isScrollControlled: true,
+                        // context and builder are
+                        // required properties in this widget
+                        context: context,
+                        builder: (BuildContext context) {
+                          // we set up a container inside which
+                          // we create center column and display text
+
+                          // Returning SizedBox instead of a Container
+
+                          return Padding(
+                            padding:  EdgeInsets.only( bottom: MediaQuery.of(context).viewInsets.bottom, ),
+                            child: Container(
+                              height: 200.h,
+                              color: Color(0xFF000C1B),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(height: 10.h,),
+                                    Text("Enter your Address", style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22.sp,
+                                      fontFamily:
+                                      'sfprodisplay',
+                                      fontWeight:
+                                      FontWeight.w500,
+                                    ),),
+                                    SizedBox(height: 10.h,),
+                                    Padding(
+                                      padding:  EdgeInsets.symmetric(horizontal: 20.w),
+                                      child: Form(
+                                        key: _formKey,
+                                        child: TextFormField(textAlign: TextAlign.start,
+                                          controller: address,
+                                          cursorColor: Colors.grey,
+                                          style: TextStyle(
+                                              color: Colors.white,decorationThickness: 0.sp),
+
+                                          textAlignVertical: TextAlignVertical.top,
+                                          decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.symmetric(
+                                                  vertical: 10.h, horizontal: 25.w),
+                                              filled: true,
+                                              fillColor:
+                                              Colors.white.withOpacity(0.18000000715255737),
+                                              border: OutlineInputBorder(
+                                                  borderSide: BorderSide.none,
+                                                  borderRadius: BorderRadius.circular(10.r)),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.r),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10.r),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.red),
+                                                  borderRadius: BorderRadius.circular(10.r)),
+                                              hintText: 'Address',
+                                              hintStyle: TextStyle(
+                                                decoration: TextDecoration.none,
+                                                color: Color(0xFFA7B0BB),
+                                                fontSize: 16.sp,
+                                                fontFamily: 'sfprodisplay',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          validator: (value) {
+                                            if (value!.isEmpty ) {
+                                              return 'Enter a your Address!....';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10.h,),
+                                    BlocListener<BuyCreateOrderBloc, BuyCreateOrderState>(
+                                      listener: (context, state) {
+                                        if (state is BuyCreateOrderBlocLoading) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (ctx) =>
+                                                  Center(
+                                                    child: CircularProgressIndicator(),
+                                                  ));
+                                        }
+                                        if (state is BuyCreateOrderBlocError) {
+                                          Navigator.of(context).pop();
+                                        }
+                                        if (state is BuyCreateOrderBlocLoaded) {
+                                           Navigator.of(context).pop();
+                                           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>Bottomnavigation()),(route)=>false);
+
+
+                                           ToastMessage().toastmessage(message: "Successs");
+                                        }
+                                        // TODO: implement listener
+                                      },
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          final isValid = _formKey.currentState!.validate();
+                                          if (isValid) {
+
+                                            BlocProvider.of<BuyCreateOrderBloc>(context).add(FetchBuycreateorderevent(
+                                                vehicleid: widget.id,
+                                                buyerAddress: address.text.toString(),
+                                                purchaseprice: widget.price
+                                            ));
+                                          }
+                                          _formKey.currentState?.save();
+
+                                        },
+                                        child: Container(
+                                          width: 213.w,
+                                          height: 50.h,
+                                          decoration: ShapeDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [
+                                                Color(0xFFFFF0C9),
+                                                Color(0xFFFFCE50),
+                                              ],
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.r),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Order Now',
+                                              style: TextStyle(
+                                                color: Color(0xFFF7F5F2),
+                                                fontSize: 20.sp,
+                                                fontFamily: 'sfprodisplayy',
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                       child: Container(
                         width: 213.w,
                         height: 50.h,
@@ -1156,9 +1241,13 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
+                //
+
+
+                //
               ),
             ],
           ),
