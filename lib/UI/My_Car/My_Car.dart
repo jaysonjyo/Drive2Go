@@ -61,7 +61,7 @@ class _MyCarState extends State<MyCar> {
                         decoration: ShapeDecoration(
                           color: Color(0xFF000B17),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)),
+                              borderRadius: BorderRadius.circular(30.r)),
                         ),
                         child: TabBar(
                           indicatorPadding: EdgeInsets.only(left: 10.w,right: 10.w),
@@ -156,12 +156,12 @@ class _MyCarState extends State<MyCar> {
                                       ),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
                                     ),
-                                  ),
+                                  ),SizedBox(width: 15.w,),
                                   Padding(
-                                    padding:  EdgeInsets.symmetric(horizontal: 10.w,),
+                                    padding:  EdgeInsets.symmetric(),
                                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(height: 12.h,),
+                                        SizedBox(height: 10.h,),
                                         Text(
                                           rentcarorderdata[position].vehicle!.brand.toString(),
                                           textAlign: TextAlign.center,
@@ -208,7 +208,28 @@ class _MyCarState extends State<MyCar> {
                                             fontWeight: FontWeight.w400,
 
                                           ),
-                                        ), SizedBox(height: 4.h,),
+                                        ),  SizedBox(height: 4.h,),
+                                        Row(children: [  Text(
+                                          "Status : ",
+                                          style: TextStyle(
+                                            color: Color(0xFFF7F5F2),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'sfprodisplay',
+                                            fontWeight: FontWeight.w400,
+
+                                          ),
+                                        ),  Text(
+                                          rentcarorderdata[position].status.toString(),
+                                          style: TextStyle(
+                                            color:Color(0xFFFFD66D),
+                                            fontSize: 14.sp,
+                                            fontFamily: 'sfprodisplay',
+                                            fontWeight: FontWeight.w400,
+
+                                          ),
+                                        ),
+                                        ],),
+                                        SizedBox(height: 2.h,),
                                         Row(
                                           children: [
                                             Container(width: 140.w,
@@ -305,13 +326,15 @@ class _MyCarState extends State<MyCar> {
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
                                             ),
                                           ),
+                                          SizedBox(width: 15.w,),
                                           Padding(
-                                            padding:  EdgeInsets.symmetric(horizontal: 15.w,vertical: 16.h),
+                                            padding:  EdgeInsets.symmetric(vertical: 16.h),
                                             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
+                                               // SizedBox(height: 16.h,),
                                                 Text(
                                                   buyorderdata[position].vehicle!.brand.toString(),
-                                                  textAlign: TextAlign.center,
+                                                  textAlign: TextAlign.start,
                                                   style: TextStyle(
                                                     color: Color(0xFFF7F5F2),
                                                     fontSize: 16.sp,
@@ -320,7 +343,7 @@ class _MyCarState extends State<MyCar> {
 
                                                   ),
                                                 ),
-                                                SizedBox(height: 8.h,),
+                                                SizedBox(height: 3.h,),
                                                 Text(
                                                   buyorderdata[position].vehicle!.ownerName.toString(),
                                                   style: TextStyle(
@@ -330,7 +353,7 @@ class _MyCarState extends State<MyCar> {
                                                     fontWeight: FontWeight.w400,
 
                                                   ),
-                                                ), SizedBox(height: 8.h,),
+                                                ),
                                                 Text(
                                                   pickedate.toString(),
                                                   style: TextStyle(
@@ -340,7 +363,28 @@ class _MyCarState extends State<MyCar> {
                                                     fontWeight: FontWeight.w400,
 
                                                   ),
-                                                ), SizedBox(height: 8.h,),
+                                                ), SizedBox(height: 4.h,),
+                                                Row(children: [  Text(
+                                                  "Status : ",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF7F5F2),
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'sfprodisplay',
+                                                    fontWeight: FontWeight.w400,
+
+                                                  ),
+                                                ),  Text(
+                                                 buyorderdata[position].deliveryStatus.toString(),
+                                                  style: TextStyle(
+                                                    color:Color(0xFFFFD66D),
+                                                    fontSize: 14.sp,
+                                                    fontFamily: 'sfprodisplay',
+                                                    fontWeight: FontWeight.w400,
+
+                                                  ),
+                                                ),
+                                                ],),
+                                                SizedBox(height: 4.h,),
                                                 Row(
                                                   children: [
                                                     Container(

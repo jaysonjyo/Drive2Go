@@ -8,6 +8,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Rent_Details.dart';
 
@@ -26,6 +27,9 @@ class CarDetails extends StatefulWidget {
   final String price;
   final String color;
   final dynamic available;
+  final String description;
+  final String number;
+  final bool locationenable;
 
   const CarDetails(
       {super.key,
@@ -41,14 +45,17 @@ class CarDetails extends StatefulWidget {
       required this.ownerplace,
       required this.id,
       required this.price,
-      required this.color, required this.available});
+      required this.color,
+      required this.available,
+      required this.description,
+      required this.number,
+      required this.locationenable});
 
   @override
   State<CarDetails> createState() => _CarDetailsState();
 }
 
 class _CarDetailsState extends State<CarDetails> {
-
   // current location
   Future<void> _getCurrentLocation() async {
     bool serviceEnabled;
@@ -83,7 +90,6 @@ class _CarDetailsState extends State<CarDetails> {
     BlocProvider.of<NearbyCarBloc>(context).add(FetchNearbycar(
         lat: position.latitude.toString(),
         long: position.longitude.toString()));
-
   }
 
   // current location end
@@ -111,6 +117,13 @@ class _CarDetailsState extends State<CarDetails> {
     super.initState();
   }
 
+// chat to whatsapp
+  void Whatsapp({required number}) async {
+    String url = "whatsapp://send?phone=$number";
+    await canLaunch(url) ? launch(url) : print("can't open whatsapp ");
+  }
+
+  //
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,27 +217,18 @@ class _CarDetailsState extends State<CarDetails> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            widget.carname,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFFF7F5F2),
-                              fontSize: 20.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Container(
-                            width: 30.w,
-                            height: 30.h,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage("assets/like.png"))),
-                          )
-                        ],
+                      Text(
+                        widget.carname,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          color: Color(0xFFF7F5F2),
+                          fontSize: 20.sp,
+                          fontFamily: 'sfprodisplay',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.h,
                       ),
                       Row(
                         children: [
@@ -250,7 +254,7 @@ class _CarDetailsState extends State<CarDetails> {
                           ),
                           Text(
                             widget.rating,
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.start,
                             style: TextStyle(
                               color: Color(0xFFF7F5F2),
                               fontSize: 16.sp,
@@ -260,8 +264,19 @@ class _CarDetailsState extends State<CarDetails> {
                           )
                         ],
                       ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        widget.description,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                          fontFamily: 'sfprodisplay',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       SizedBox(
-                        height: 39.h,
+                        height: 29.h,
                       ),
                       Text(
                         'Car Details',
@@ -677,280 +692,394 @@ class _CarDetailsState extends State<CarDetails> {
                             ),
                             Row(
                               children: [
-                                Container(
-                                  width: 26.w,
-                                  height: 26.h,
-                                  padding: EdgeInsets.all(3.25.sp),
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage("assets/j.png"),
-                                          fit: BoxFit.cover)),
+                                GestureDetector(
+                                  onTap: () {
+                                    Whatsapp(number: " +91${widget.number}");
+                                  },
+                                  child: Container(
+                                    width: 26.w,
+                                    height: 26.h,
+                                    padding: EdgeInsets.all(3.25.sp),
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage("assets/j.png"),
+                                            fit: BoxFit.cover)),
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 25.w,
                                 ),
-                                Container(
-                                  width: 26.w,
-                                  height: 26.h,
-                                  padding: EdgeInsets.all(3.25.sp),
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage("assets/k.png"),
-                                          fit: BoxFit.cover)),
+                                GestureDetector(
+                                  onTap: () {
+                                    launch("tel:${widget.number}");
+                                  },
+                                  child: Container(
+                                    width: 26.w,
+                                    height: 26.h,
+                                    padding: EdgeInsets.all(3.25.sp),
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage("assets/k.png"),
+                                            fit: BoxFit.cover)),
+                                  ),
                                 )
                               ],
                             ),
                           ])),
-                      SizedBox(
-                        height: 39.h,
-                      ),
-                      Text(
-                        'Recommended for you',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22.sp,
-                          fontFamily: 'sfprodisplayy',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 23.h,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 21.w),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: double.infinity.w,
-                        height: 223.h,
-                        child: BlocBuilder<NearbyCarBloc, NearbyCarState>(
-                          builder: (context, state) {
-                            if (state is NearbyCarBlocLoading) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            if (state is NearbyCarBlocError) {
-                              return Center(
-                                child: Text(
-                                  "Error",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
-                            }
-                            if (state is NearbyCarBlocLoaded) {
-                              nearbydatas =
-                                  BlocProvider.of<NearbyCarBloc>(context)
-                                      .nearbyCarModelClass;
+                      BlocBuilder<NearbyCarBloc, NearbyCarState>(
+                        builder: (context, state) {
+                          if (state is NearbyCarBlocLoading) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (state is NearbyCarBlocError) {
+                            return Center(
+                              child: Text(
+                                "Error",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }
+                          if (state is NearbyCarBlocLoaded) {
+                            nearbydatas =
+                                BlocProvider.of<NearbyCarBloc>(context)
+                                    .nearbyCarModelClass;
 
-                              return ListView.separated(
-                                itemCount: nearbydatas.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, position) {
-                                  if (widget.id ==
-                                      nearbydatas[position].id.toString()) {
-                                    return SizedBox();
-                                  } else {
-                                    return FutureBuilder<List<Placemark>>(
-                                      future: _getVechileAddress(
-                                          nearbydatas[position]
-                                              .location!
-                                              .coordinates!
-                                              .first
-                                              .toString(),
-                                          nearbydatas[position]
-                                              .location!
-                                              .coordinates!
-                                              .last
-                                              .toString()),
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<dynamic> snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        } else if (snapshot.hasError) {
-                                          return Center(
-                                              child: Text(
-                                                  "Error fetching location"));
-                                        } else if (snapshot.hasData) {
-                                          String? place =
-                                              snapshot.data![0].locality;
-                                          return GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (_) => CarDetails(
-                                                                carphoto: nearbydatas[
-                                                                        position]
-                                                                    .photos!
-                                                                    .toList(),
-                                                                carname: nearbydatas[
-                                                                        position]
-                                                                    .brand
-                                                                    .toString(),
-                                                                rating: nearbydatas[
-                                                                        position]
-                                                                    .rating
-                                                                    .toString(),
-                                                                fuel: nearbydatas[
-                                                                        position]
-                                                                    .fuelType
-                                                                    .toString(),
-                                                                gear: nearbydatas[
-                                                                        position]
-                                                                    .gearType
-                                                                    .toString(),
-                                                                seat: nearbydatas[
-                                                                        position]
-                                                                    .noOfSeats
-                                                                    .toString(),
-                                                                door: nearbydatas[
-                                                                        position]
-                                                                    .noOfDoors
-                                                                    .toString(),
-                                                                ownerphoto: nearbydatas[
-                                                                        position]
-                                                                    .ownerProfilePhoto
-                                                                    .toString(),
-                                                                ownername: nearbydatas[
-                                                                        position]
-                                                                    .ownerName
-                                                                    .toString(),
-                                                                ownerplace: nearbydatas[position].ownerPlace.toString(),
-                                                                id:nearbydatas[position].id.toString(),
-                                                                price: nearbydatas[position].rentPrice.toString(),
-                                                                color:nearbydatas[position].vehicleColor.toString(), available: nearbydatas[position].available,
-                                                              )));
-                                            },
-                                            child: Container(
-                                              width: 185.w,
-                                              height: 223.h,
-                                              decoration: ShapeDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment(-5, 0.54),
-                                                  end: Alignment(0.54, -0.54),
-                                                  colors: [
-                                                    Color(0x1BFFFFFF),
-                                                    Color(0xFF000C1B)
-                                                  ],
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      width: 1.w,
-                                                      color: Color(0xFF58606A)),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.r),
-                                                ),
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 3.h,
-                                                  ),
-                                                  Container(
-                                                    width: 177.w,
-                                                    height: 146.h,
-                                                    decoration: ShapeDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            nearbydatas[
-                                                                    position]
-                                                                .photos![0]
-                                                                .toString()),
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  8.r),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  8.r),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                      horizontal: 9.w,
-                                                      //vertical: 13.h
-                                                    ),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SizedBox(
-                                                          height: 6.h,
-                                                        ),
-                                                        Text(
-                                                          nearbydatas[position]
-                                                              .brand
-                                                              .toString(),
-                                                          maxLines: 1,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFFF7F5F2),
-                                                            fontSize: 16.sp,
-                                                            fontFamily:
-                                                                'sfprodisplay',
-                                                            fontWeight:
-                                                                FontWeight.w500,
+                            return widget.locationenable == false ||
+                                    nearbydatas.length == 0
+                                ? SizedBox()
+                                : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 39.h,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 7.w),
+                                        child: Text(
+                                          'Recommended for you',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22.sp,
+                                            fontFamily: 'sfprodisplayy',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 23.h,
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity.w,
+                                        height: 223.h,
+                                        child: ListView.separated(
+                                          itemCount: nearbydatas.length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, position) {
+                                            if (widget.id ==
+                                                nearbydatas[position]
+                                                    .id
+                                                    .toString()) {
+                                              return SizedBox();
+                                            } else {
+                                              return FutureBuilder<
+                                                  List<Placemark>>(
+                                                future: _getVechileAddress(
+                                                    nearbydatas[position]
+                                                        .location!
+                                                        .coordinates!
+                                                        .first
+                                                        .toString(),
+                                                    nearbydatas[position]
+                                                        .location!
+                                                        .coordinates!
+                                                        .last
+                                                        .toString()),
+                                                builder: (BuildContext context,
+                                                    AsyncSnapshot<dynamic>
+                                                        snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return Center(
+                                                        child:
+                                                            CircularProgressIndicator());
+                                                  } else if (snapshot
+                                                      .hasError) {
+                                                    return Center(
+                                                        child: Text(
+                                                            "Error fetching location"));
+                                                  } else if (snapshot.hasData) {
+                                                    String? place = snapshot
+                                                        .data![0].locality;
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    CarDetails(
+                                                                      carphoto: nearbydatas[
+                                                                              position]
+                                                                          .photos!
+                                                                          .toList(),
+                                                                      carname: nearbydatas[
+                                                                              position]
+                                                                          .brand
+                                                                          .toString(),
+                                                                      rating: nearbydatas[
+                                                                              position]
+                                                                          .rating
+                                                                          .toString(),
+                                                                      fuel: nearbydatas[
+                                                                              position]
+                                                                          .fuelType
+                                                                          .toString(),
+                                                                      gear: nearbydatas[
+                                                                              position]
+                                                                          .gearType
+                                                                          .toString(),
+                                                                      seat: nearbydatas[
+                                                                              position]
+                                                                          .noOfSeats
+                                                                          .toString(),
+                                                                      door: nearbydatas[
+                                                                              position]
+                                                                          .noOfDoors
+                                                                          .toString(),
+                                                                      ownerphoto: nearbydatas[
+                                                                              position]
+                                                                          .ownerProfilePhoto
+                                                                          .toString(),
+                                                                      ownername: nearbydatas[
+                                                                              position]
+                                                                          .ownerName
+                                                                          .toString(),
+                                                                      ownerplace: nearbydatas[
+                                                                              position]
+                                                                          .ownerPlace
+                                                                          .toString(),
+                                                                      id: nearbydatas[
+                                                                              position]
+                                                                          .id
+                                                                          .toString(),
+                                                                      price: nearbydatas[
+                                                                              position]
+                                                                          .rentPrice
+                                                                          .toString(),
+                                                                      color: nearbydatas[
+                                                                              position]
+                                                                          .vehicleColor
+                                                                          .toString(),
+                                                                      available:
+                                                                          nearbydatas[position]
+                                                                              .available,
+                                                                      description: nearbydatas[
+                                                                              position]
+                                                                          .description
+                                                                          .toString(),
+                                                                      number: nearbydatas[
+                                                                              position]
+                                                                          .ownerPhoneNumber
+                                                                          .toString(),
+                                                                      locationenable:
+                                                                          widget
+                                                                              .locationenable,
+                                                                    )));
+                                                      },
+                                                      child: Container(
+                                                        width: 185.w,
+                                                        height: 223.h,
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          gradient:
+                                                              LinearGradient(
+                                                            begin: Alignment(
+                                                                -5, 0.54),
+                                                            end: Alignment(
+                                                                0.54, -0.54),
+                                                            colors: [
+                                                              Color(0x1BFFFFFF),
+                                                              Color(0xFF000C1B)
+                                                            ],
+                                                          ),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            side: BorderSide(
+                                                                width: 1.w,
+                                                                color: Color(
+                                                                    0xFF58606A)),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.r),
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          height: 6.h,
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                        child: Column(
                                                           children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Container(
-                                                                  width: 14.w,
-                                                                  height: 14.h,
-                                                                  decoration: BoxDecoration(
-                                                                      image: DecorationImage(
-                                                                          image: AssetImage(
-                                                                              "assets/h.png"),
-                                                                          fit: BoxFit
-                                                                              .cover)),
+                                                            SizedBox(
+                                                              height: 3.h,
+                                                            ),
+                                                            Container(
+                                                              width: 177.w,
+                                                              height: 146.h,
+                                                              decoration:
+                                                                  ShapeDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image: NetworkImage(nearbydatas[
+                                                                          position]
+                                                                      .photos![
+                                                                          0]
+                                                                      .toString()),
+                                                                  fit: BoxFit
+                                                                      .cover,
                                                                 ),
-                                                                SizedBox(
-                                                                  width: 5.w,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .only(
+                                                                    topLeft: Radius
+                                                                        .circular(
+                                                                            8.r),
+                                                                    topRight: Radius
+                                                                        .circular(
+                                                                            8.r),
+                                                                  ),
                                                                 ),
-                                                                Container(
-                                                                  width: 70.w,
-                                                                  child: Text(
-                                                                    place
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: 9.w,
+                                                                //vertical: 13.h
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: 6.h,
+                                                                  ),
+                                                                  Text(
+                                                                    nearbydatas[
+                                                                            position]
+                                                                        .brand
                                                                         .toString(),
                                                                     maxLines: 1,
                                                                     textAlign:
                                                                         TextAlign
                                                                             .start,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Color(
+                                                                          0xFFF7F5F2),
+                                                                      fontSize:
+                                                                          16.sp,
+                                                                      fontFamily:
+                                                                          'sfprodisplay',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 6.h,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                14.w,
+                                                                            height:
+                                                                                14.h,
+                                                                            decoration:
+                                                                                BoxDecoration(image: DecorationImage(image: AssetImage("assets/h.png"), fit: BoxFit.cover)),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                5.w,
+                                                                          ),
+                                                                          Container(
+                                                                            width:
+                                                                                70.w,
+                                                                            child:
+                                                                                Text(
+                                                                              place.toString(),
+                                                                              maxLines: 1,
+                                                                              textAlign: TextAlign.start,
+                                                                              style: TextStyle(
+                                                                                color: Color(0xFFF7F5F2),
+                                                                                fontSize: 13.sp,
+                                                                                fontFamily: 'sfprodisplay',
+                                                                                fontWeight: FontWeight.w300,
+                                                                                letterSpacing: 0.50.w,
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Text(
+                                                                        "₹ ${nearbydatas[position].rentPrice.toString()} / day",
+                                                                        // ' 8000 ',
+                                                                        textAlign:
+                                                                            TextAlign.start,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Color(0xFFFFD66D),
+                                                                          fontSize:
+                                                                              13.sp,
+                                                                          fontFamily:
+                                                                              'sfprodisplay',
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          letterSpacing:
+                                                                              0.50.w,
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 6.h,
+                                                                  ),
+                                                                  Text(
+                                                                    nearbydatas[position].available ==
+                                                                            true
+                                                                        ? "Available"
+                                                                        : "NotAvailable",
+                                                                    //..... see
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    //.....
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    maxLines: 1,
                                                                     style:
                                                                         TextStyle(
                                                                       color: Color(
@@ -966,85 +1095,41 @@ class _CarDetailsState extends State<CarDetails> {
                                                                           0.50.w,
                                                                     ),
                                                                   ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                            Text(
-                                                              "₹ ${nearbydatas[position].rentPrice.toString()} / day",
-                                                              // ' 8000 ',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                color: Color(
-                                                                    0xFFFFD66D),
-                                                                fontSize: 13.sp,
-                                                                fontFamily:
-                                                                    'sfprodisplay',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                letterSpacing:
-                                                                    0.50.w,
+                                                                ],
                                                               ),
                                                             )
                                                           ],
                                                         ),
-                                                        SizedBox(
-                                                          height: 6.h,
-                                                        ),
-                                                        Text(
-                                                         widget.available==true? "Available":"NotAvailable",
-                                                          //..... see
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          //.....
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                          maxLines: 1,
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0xFFF7F5F2),
-                                                            fontSize: 13.sp,
-                                                            fontFamily:
-                                                                'sfprodisplay',
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                            letterSpacing:
-                                                                0.50.w,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          return SizedBox();
-                                        }
-                                      },
-                                    );
-                                  }
-                                },
-                                separatorBuilder: (context, position) {
-                                  if (widget.id ==
-
-                                      nearbydatas[position].id.toString()) {
-                                    return SizedBox();
-                                  } else {
-                                    return SizedBox(
-                                      width: 18.w,
-                                    );
-                                  }
-                                },
-                              );
-                            } else {
-                              return SizedBox();
-                            }
-                          },
-                        ),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return SizedBox();
+                                                  }
+                                                },
+                                              );
+                                            }
+                                          },
+                                          separatorBuilder:
+                                              (context, position) {
+                                            if (widget.id ==
+                                                nearbydatas[position]
+                                                    .id
+                                                    .toString()) {
+                                              return SizedBox();
+                                            } else {
+                                              return SizedBox(
+                                                width: 18.w,
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                          } else {
+                            return SizedBox();
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -1054,99 +1139,102 @@ class _CarDetailsState extends State<CarDetails> {
                 )
               ],
             ),
-          ),widget.available==true?Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: 430.w,
-                height: 99.h,
-                decoration: ShapeDecoration(
-                  color: Color(0x82C2C2C2).withOpacity(0.8),
-                  //color: Colors.white.withOpacity(0.7099999904632568),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      topRight: Radius.circular(16.r),
-                    ),
-                  ),
-                ),
-                child: Row(
+          ),
+          widget.available == true
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(
-                      width: 49.w,
-                    ),
-                    Text.rich(
-                      TextSpan(
+                    Container(
+                      width: 430.w,
+                      height: 99.h,
+                      decoration: ShapeDecoration(
+                        color: Color(0x82C2C2C2).withOpacity(0.8),
+                        //color: Colors.white.withOpacity(0.7099999904632568),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16.r),
+                            topRight: Radius.circular(16.r),
+                          ),
+                        ),
+                      ),
+                      child: Row(
                         children: [
-                          TextSpan(
-                            text: "${widget.price}\$",
-                            style: TextStyle(
-                              color: Color(0xFF000B17),
-                              fontSize: 20.sp,
-                              fontFamily: 'sfprodisplayy',
-                              fontWeight: FontWeight.w600,
+                          SizedBox(
+                            width: 49.w,
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "${widget.price}\$",
+                                  style: TextStyle(
+                                    color: Color(0xFF000B17),
+                                    fontSize: 20.sp,
+                                    fontFamily: 'sfprodisplayy',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '/Day',
+                                  style: TextStyle(
+                                    color: Color(0xFF000B17),
+                                    fontSize: 15.sp,
+                                    fontFamily: 'sfprodisplayy',
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          TextSpan(
-                            text: '/Day',
-                            style: TextStyle(
-                              color: Color(0xFF000B17),
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplayy',
-                              fontWeight: FontWeight.w300,
-                            ),
+                          SizedBox(
+                            width: 41.w,
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => RentDetails(
+                                        id: widget.id,
+                                        carname: widget.carname,
+                                        color: widget.color,
+                                        price: widget.price,
+                                        image: widget.carphoto,
+                                      )));
+                            },
+                            child: Container(
+                              width: 213.w,
+                              height: 50.h,
+                              decoration: ShapeDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFFFF0C9),
+                                    Color(0xFFFFCE50),
+                                  ],
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Rent Now',
+                                  style: TextStyle(
+                                    color: Color(0xFFF7F5F2),
+                                    fontSize: 20.sp,
+                                    fontFamily: 'sfprodisplayy',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    SizedBox(
-                      width: 41.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => RentDetails(
-                              id: widget.id,
-                              carname: widget.carname,
-                              color: widget.color,
-                              price: widget.price,
-                              image: widget.carphoto,
-                            )));
-                      },
-                      child: Container(
-                        width: 213.w,
-                        height: 50.h,
-                        decoration: ShapeDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xFFFFF0C9),
-                              Color(0xFFFFCE50),
-                            ],
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Rent Now',
-                            style: TextStyle(
-                              color: Color(0xFFF7F5F2),
-                              fontSize: 20.sp,
-                              fontFamily: 'sfprodisplayy',
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
                   ],
-                ),
-              ),
-            ],
-          ):SizedBox()
+                )
+              : SizedBox()
         ],
       ),
     );

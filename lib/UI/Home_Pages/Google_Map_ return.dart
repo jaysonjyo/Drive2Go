@@ -114,7 +114,7 @@ class _GoogleMapReturnState extends State<GoogleMapReturn> {
       bottomNavigationBar: tappedLocation == null
           ? null
           : Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.sp),
         color: Colors.white,
         child: Text(
           'Selected Location: ${tappedLocation!.latitude}, ${tappedLocation!.longitude}',

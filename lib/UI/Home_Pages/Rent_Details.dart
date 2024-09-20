@@ -266,7 +266,7 @@ class _RentDetailsState extends State<RentDetails> {
                           children: [
                             Text(
                               widget.carname,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Color(0xFFF7F5F2),
                                 fontSize: 20.sp,
@@ -279,7 +279,7 @@ class _RentDetailsState extends State<RentDetails> {
                             ),
                             Text(
                               widget.color,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Color(0xFF627487),
                                 fontSize: 16.sp,
@@ -381,7 +381,7 @@ class _RentDetailsState extends State<RentDetails> {
                                               width: 1.w,
                                               color: Color(0xFF627487))),
 
-                                      hintText: 'dd/mm/yyyy',
+                                      hintText: 'mm/dd/yyyy',
                                       hintStyle: TextStyle(
                                         color: Color(0xFF627487),
                                         fontSize: 16.sp,
@@ -459,7 +459,7 @@ class _RentDetailsState extends State<RentDetails> {
                                               color: Color(0xFF627487))),
                                       //errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red),
                                       //  borderRadius: BorderRadius.circular(20.r)),
-                                      hintText: 'dd/mm/yyyy',
+                                      hintText: 'mm/dd/yyyy',
                                       hintStyle: TextStyle(
                                         color: Color(0xFF627487),
                                         fontSize: 16.sp,
@@ -719,7 +719,7 @@ class _RentDetailsState extends State<RentDetails> {
                         height: 18.h,
                       ),
                       Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
+                          padding: EdgeInsets.symmetric(horizontal: 4.w),
                           child: Column(
                             children: [
                               GestureDetector(
@@ -876,13 +876,12 @@ class _RentDetailsState extends State<RentDetails> {
                         Row(
                           children: [
                             Text(
-                              //now day firmate
+                              //now day formate
                               (pickupdatecontroler.text.isNotEmpty &&
                                       retrundatecontroler.text.isNotEmpty)
                                   ? "${dateDifference.toString()} Days"
                                   : '${date.day.toString()} ToDay',
 
-                              //'14  - 1,12,000\$',
                               style: TextStyle(
                                 color: Color(0xFFF7F5F2),
                                 fontSize: 20.sp,

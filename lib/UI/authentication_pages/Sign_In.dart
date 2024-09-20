@@ -70,7 +70,8 @@ class _SignInState extends State<SignIn> {
                   TextFormField(
                     cursorColor: Colors.grey,
                     controller: email,
-                    style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
+                    style: TextStyle(
+                        color: Colors.white, decorationThickness: 0.sp),
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
@@ -93,7 +94,6 @@ class _SignInState extends State<SignIn> {
                           borderRadius: BorderRadius.circular(20.r)),
                       hintText: 'Email ID',
                       hintStyle: TextStyle(
-
                         color: Color(0xFFA7B0BB),
                         fontSize: 16.sp,
                         fontFamily: 'sfprodisplay',
@@ -102,8 +102,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     validator: (value) {
                       if (value!.isEmpty ||
-                          !RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(value)) {
                         return 'Enter a valid email!';
                       }
@@ -118,14 +117,14 @@ class _SignInState extends State<SignIn> {
                     cursorColor: Colors.grey,
                     controller: password,
                     style: TextStyle(
-                        color: Colors.white,decorationThickness: 0.sp),
+                        color: Colors.white, decorationThickness: 0.sp),
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 20.h, horizontal: 25.w),
                         filled: true,
                         fillColor:
-                        Colors.white.withOpacity(0.18000000715255737),
+                            Colors.white.withOpacity(0.18000000715255737),
                         border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(20.r)),
@@ -156,12 +155,12 @@ class _SignInState extends State<SignIn> {
                               });
                             },
                             child: isvisible
-                                ? Icon(BootstrapIcons.eye, color: Color(
-                                0xFFA7B0BB))
+                                ? Icon(BootstrapIcons.eye,
+                                    color: Color(0xFFA7B0BB))
                                 : Icon(
-                              BootstrapIcons.eye_slash,
-                              color: Color(0xFFA7B0BB),
-                            ))),
+                                    BootstrapIcons.eye_slash,
+                                    color: Color(0xFFA7B0BB),
+                                  ))),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 9) {
                         return 'Enter a valid password!....';
@@ -191,35 +190,45 @@ class _SignInState extends State<SignIn> {
                   ),
                   BlocListener<SignInBloc, SignInState>(
                     listener: (context, state) {
-                      if(state is SignInBlocLoading){
+                      if (state is SignInBlocLoading) {
                         showDialog(
                             context: context,
                             builder: (ctx) => Center(
-                              child: CircularProgressIndicator(),
-                            ));
+                                  child: CircularProgressIndicator(),
+                                ));
                         print("loading");
-                      }if(state is SignInBlocLoaded){
-                        signindata=BlocProvider.of<SignInBloc>(context).signInModelClass;
-                       CheckLogin(signindata.id.toString(),signindata.fullName.toString(),signindata.phone.toString(),signindata.email.toString());
+                      }
+                      if (state is SignInBlocLoaded) {
+                        signindata = BlocProvider.of<SignInBloc>(context)
+                            .signInModelClass;
+                        CheckLogin(
+                            signindata.id.toString(),
+                            //
+                            //id koduthathe preference ne ane bakki ullathe namuke venamenkil kodutha mathi " athe orderne vendi koduthatha " order detail adikkathey sign cheytha usernte details vech cheyan venditte "pakshe ethe venakil atharm kodutha mathi
+                            signindata.fullName.toString(),
+                            signindata.phone.toString(),
+                            signindata.email.toString());
+                        //
                         Navigator.of(context).pop();
                         Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (_) => Bottomnavigation()),
-                                (route) => false);
-                      }if(state is SignInBlocError){
+                            MaterialPageRoute(
+                                builder: (_) => Bottomnavigation()),
+                            (route) => false);
+                      }
+                      if (state is SignInBlocError) {
                         Navigator.of(context).pop();
-
                       }
                       // TODO: implement listener
                     },
                     child: GestureDetector(
                       onTap: () {
-    final isValid = _formKey.currentState!.validate();
-    if (isValid) {
-BlocProvider.of<SignInBloc>(context).add(FetchSignInEvent(email: email.text, password: password.text));
-    }
-    _formKey.currentState?.save();
-
-
+                        final isValid = _formKey.currentState!.validate();
+                        if (isValid) {
+                          BlocProvider.of<SignInBloc>(context).add(
+                              FetchSignInEvent(
+                                  email: email.text, password: password.text));
+                        }
+                        _formKey.currentState?.save();
                       },
                       child: Container(
                         width: 350.w,
@@ -308,7 +317,7 @@ BlocProvider.of<SignInBloc>(context).add(FetchSignInEvent(email: email.text, pas
                         onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(builder: (_) => SignUp()),
-                                  (route) => false);
+                              (route) => false);
                         },
                         child: Text(
                           'Sign Up',
@@ -330,11 +339,13 @@ BlocProvider.of<SignInBloc>(context).add(FetchSignInEvent(email: email.text, pas
       ),
     );
   }
-  //sharedpreference
-  void CheckLogin(String userId,String userName,String userPhonenumber,String userEmail) async {
 
+  //sharedpreference
+  void CheckLogin(String userId, String userName, String userPhonenumber,
+      String userEmail) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-prefs.setString("userId", userId);
+    prefs.setString("userId", userId);
+    //ethile bakki ullathe koduthathe molil parja details ne vendi matharm "code number 206"
     prefs.setString("userName", userName);
     prefs.setString("userPhonenumber", userPhonenumber);
     prefs.setString("userEmail", userEmail);

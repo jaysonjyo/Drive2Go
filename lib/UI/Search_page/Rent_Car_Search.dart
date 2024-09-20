@@ -1,9 +1,11 @@
+import 'dart:math';
 
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelclass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../Bloc/Rentcarsearch_Bloc/reant_search_bloc.dart';
 import '../Home_Pages/Car_Details.dart';
@@ -16,16 +18,75 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  //modelcalss calling
   late List<RentcarsearchModelclass> rentcarsearchdata;
-  TextEditingController search = TextEditingController();
 
+  //
+  //controller
+  TextEditingController rent_search = TextEditingController();
+
+  //
+  bool locationEnabled = true;
+
+// initstate
   @override
   void initState() {
+    _getCurrentLocation();
     BlocProvider.of<ReantSearchBloc>(context)
-        .add(FetchReantSearchEvent(brand: search.text));
+        .add(FetchReantSearchEvent(brand: rent_search.text));
     super.initState();
   }
 
+  //
+  // dispose
+  @override
+  void dispose() {
+    rent_search.clear();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+//
+
+//all functions
+  // current location
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      setState(() {
+        locationEnabled = false;
+      });
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get the current position of the device.
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    // Convert the coordinates to a human-readable address.
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+  }
+
+  // current location end
+// list of location convert cheyyan
   Future<List<Placemark>> _getVechileAddress(String lat, String long) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -39,12 +100,9 @@ class _SearchState extends State<Search> {
       return []; // Return an empty list in case of an error
     }
   }
-@override
-  void dispose() {
-    search.clear();
-    // TODO: implement dispose
-    super.dispose();
-  }
+
+  // end code for list of place converting
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,13 +127,7 @@ class _SearchState extends State<Search> {
                   ),
                 ),
                 child: TextField(
-                  onChanged: (v) {
-                    setState(() {
-                      BlocProvider.of<ReantSearchBloc>(context)
-                          .add(FetchReantSearchEvent(brand: search.text));
-                    });
-                  },
-                  controller: search,
+                  controller: rent_search,
                   style:
                       TextStyle(color: Colors.white, decorationThickness: 0.sp),
                   cursorColor: Colors.white,
@@ -93,10 +145,16 @@ class _SearchState extends State<Search> {
                         Icons.search_rounded,
                         color: Colors.white,
                       )),
+                  onChanged: (v) {
+                    setState(() {
+                      BlocProvider.of<ReantSearchBloc>(context)
+                          .add(FetchReantSearchEvent(brand: rent_search.text));
+                    });
+                  },
                   onSubmitted: (v) {
                     setState(() {
                       BlocProvider.of<ReantSearchBloc>(context)
-                          .add(FetchReantSearchEvent(brand: search.text));
+                          .add(FetchReantSearchEvent(brand: rent_search.text));
                     });
                   },
                 ),
@@ -119,8 +177,8 @@ class _SearchState extends State<Search> {
         ),
         centerTitle: true,
         title: Text(
-          "Normal car",
-          style: TextStyle(color: Colors.white),
+          "Rent Car Search",
+          style: TextStyle(fontSize: 25.sp, color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(
@@ -140,16 +198,22 @@ class _SearchState extends State<Search> {
               if (state is ReantSearchBlocLoaded) {
                 rentcarsearchdata = BlocProvider.of<ReantSearchBloc>(context)
                     .rentcarsearchModelclass;
-                return  Column(
+                return Column(
                   children: [
                     SizedBox(
                       height: 20.h,
                     ),
                     SizedBox(
                       width: 389.w,
-                      height: rentcarsearchdata.length == 1
-                          ? 225.h
-                          : ((280 * rentcarsearchdata.length) / 2).h,
+                      height: max(
+                          0,
+                          ((rentcarsearchdata.length / 2).ceil() *
+                                  (225.h + 20.0.h)) -
+                              20.0.h),
+
+                      // height: rentcarsearchdata.length == 1
+                      //     ? 225.h
+                      //     : ((280 * rentcarsearchdata.length) / 2).h,
                       child: GridView.count(
                           physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 2,
@@ -212,16 +276,64 @@ class _SearchState extends State<Search> {
                                                                 index]
                                                             .fuelType
                                                             .toString(),
-                                                        gear: rentcarsearchdata[index].gearType.toString(),
-                                                        seat: rentcarsearchdata[index].noOfSeats.toString(),
-                                                        door: rentcarsearchdata[index].noOfDoors.toString(),
-                                                        ownerphoto: rentcarsearchdata[index].ownerProfilePhoto.toString(),
-                                                        ownername: rentcarsearchdata[index].ownerName.toString(),
-                                                        ownerplace: rentcarsearchdata[index].ownerPlace.toString(),
-                                                        id: rentcarsearchdata[index].id.toString(),
-                                                        price: rentcarsearchdata[index].rentPrice.toString(),
-                                                        color: rentcarsearchdata[index].vehicleColor.toString(),
-                                                        available: rentcarsearchdata[index].available.toString(),
+                                                        gear: rentcarsearchdata[
+                                                                index]
+                                                            .gearType
+                                                            .toString(),
+                                                        seat: rentcarsearchdata[
+                                                                index]
+                                                            .noOfSeats
+                                                            .toString(),
+                                                        door: rentcarsearchdata[
+                                                                index]
+                                                            .noOfDoors
+                                                            .toString(),
+                                                        ownerphoto:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .ownerProfilePhoto
+                                                                .toString(),
+                                                        ownername:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .ownerName
+                                                                .toString(),
+                                                        ownerplace:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .ownerPlace
+                                                                .toString(),
+                                                        id: rentcarsearchdata[
+                                                                index]
+                                                            .id
+                                                            .toString(),
+                                                        price:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .rentPrice
+                                                                .toString(),
+                                                        color:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .vehicleColor
+                                                                .toString(),
+                                                        available:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .available
+                                                                .toString(),
+                                                        description:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .description
+                                                                .toString(),
+                                                        number:
+                                                            rentcarsearchdata[
+                                                                    index]
+                                                                .ownerPhoneNumber
+                                                                .toString(),
+                                                        locationenable:
+                                                            locationEnabled,
                                                       )));
                                         },
                                         child: Container(
@@ -287,7 +399,7 @@ class _SearchState extends State<Search> {
                                                           .toString(),
                                                       maxLines: 1,
                                                       textAlign:
-                                                          TextAlign.center,
+                                                          TextAlign.start,
                                                       style: TextStyle(
                                                         color:
                                                             Color(0xFFF7F5F2),
@@ -427,5 +539,4 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-
 }

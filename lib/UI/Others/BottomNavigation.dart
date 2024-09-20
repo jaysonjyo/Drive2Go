@@ -78,7 +78,7 @@ body: Stack(
                         ),
                         child: Column(mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(  width: 28.w,
+                            Container(width: 28.w,
                             height: 28.h,
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
