@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
 import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/AllcarModel.dart';
+import 'package:drive2goo/UI/Others/notification_screen.dart';
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -156,16 +157,20 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                           ),
-                          Container(
-                            width: 45.w,
-                            height: 45.h,
-                            decoration: ShapeDecoration(
-                              color: Color(0xFFF7F5F2),
-                              shape: OvalBorder(),
-                            ),
-                            child: Icon(
-                              Icons.notifications_none_outlined,
-                              size: 24.sp,
+                          GestureDetector(onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_)=>NotificationScreen()));
+                          },
+                            child: Container(
+                              width: 45.w,
+                              height: 45.h,
+                              decoration: ShapeDecoration(
+                                color: Color(0xFFF7F5F2),
+                                shape: OvalBorder(),
+                              ),
+                              child: Icon(
+                                Icons.notifications_none_outlined,
+                                size: 24.sp,
+                              ),
                             ),
                           )
                         ],

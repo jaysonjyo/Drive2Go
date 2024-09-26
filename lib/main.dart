@@ -7,6 +7,8 @@ import 'package:drive2goo/Bloc/Sign_In_Bloc/sign_in_bloc.dart';
 import 'package:drive2goo/Bloc/Sign_up_Bloc/sign_up_bloc.dart';
 import 'package:drive2goo/UI/Others/Splash.dart';
 import 'package:drive2goo/UI/Others/Start_Indro.dart';
+import 'package:drive2goo/UI/Others/notification_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,13 +19,24 @@ import 'Bloc/Nearby_Bloc/nearby_car_bloc.dart';
 import 'Bloc/RentOrder_Bloc/rent_car_order_bloc.dart';
 import 'Bloc/Rent_Car_Bloc/rentcar_bloc.dart';
 import 'Bloc/Rentcarsearch_Bloc/reant_search_bloc.dart';
+import 'UI/notification_api.dart';
+import 'firebase_options.dart';
 
 TextEditingController pickuplocationcontroller = TextEditingController();
 TextEditingController returnlocationcontroller = TextEditingController();
+final navigatorykey=GlobalKey<NavigatorState>();
 
-void main() {
+Future <void> main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options:
+    DefaultFirebaseOptions.currentPlatform,
+  );
+  await Notificationfirebase().initNotification();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -76,6 +89,7 @@ class MyApp extends StatelessWidget {
               ),
             ],
             child: MaterialApp(
+              navigatorKey: navigatorykey,
               debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
               theme: ThemeData(
@@ -98,6 +112,9 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
               ),
               home: Splash(),
+              routes: {
+                NotificationScreen.route:(context)=>NotificationScreen()
+              },
             ),
           );
         });

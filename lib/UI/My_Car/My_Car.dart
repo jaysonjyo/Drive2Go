@@ -157,108 +157,105 @@ class _MyCarState extends State<MyCar> {
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
                                     ),
                                   ),SizedBox(width: 15.w,),
-                                  Padding(
-                                    padding:  EdgeInsets.symmetric(),
-                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(height: 10.h,),
-                                        Text(
-                                          rentcarorderdata[position].vehicle!.brand.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 16.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w600,
+                                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 5.h,),
+                                      Text(
+                                        rentcarorderdata[position].vehicle!.brand.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Color(0xFFF7F5F2),
+                                          fontSize: 16.sp,
+                                          fontFamily: 'sfprodisplay',
+                                          fontWeight: FontWeight.w600,
 
-                                          ),
                                         ),
-                                        SizedBox(height: 3.h,),
-                                        Text(
+                                      ),
+                                      SizedBox(height: 3.h,),
+                                      Text(
 
-                                          rentcarorderdata[position].vehicle!.ownerName.toString()
-                                          ,
-                                          style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 15.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w400,
+                                        rentcarorderdata[position].vehicle!.ownerName.toString()
+                                        ,
+                                        style: TextStyle(
+                                          color: Color(0xFFF7F5F2),
+                                          fontSize: 15.sp,
+                                          fontFamily: 'sfprodisplay',
+                                          fontWeight: FontWeight.w400,
 
-                                          ),
                                         ),
-                                        Text(
-                                       pickedate,
+                                      ),
+                                      Text(
+                                     pickedate,
 
-                                            style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w400,
-
-                                          ),
-                                        ),SizedBox(height: 3.h,),
-                                        Text(
-
-                                          returndate
-                                          ,
                                           style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w400,
+                                          color: Color(0xFFF7F5F2),
+                                          fontSize: 14.sp,
+                                          fontFamily: 'sfprodisplay',
+                                          fontWeight: FontWeight.w400,
 
-                                          ),
-                                        ),  SizedBox(height: 4.h,),
-                                        Row(children: [  Text(
-                                          "Status : ",
-                                          style: TextStyle(
-                                            color: Color(0xFFF7F5F2),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w400,
-
-                                          ),
-                                        ),  Text(
-                                          rentcarorderdata[position].status.toString(),
-                                          style: TextStyle(
-                                            color:Color(0xFFFFD66D),
-                                            fontSize: 14.sp,
-                                            fontFamily: 'sfprodisplay',
-                                            fontWeight: FontWeight.w400,
-
-                                          ),
                                         ),
-                                        ],),
-                                        SizedBox(height: 2.h,),
-                                        Row(
-                                          children: [
-                                            Container(width: 140.w,
-                                              child: Text(
-                                                "${rentcarorderdata[position].vehicle!.mileage.toString()} km mileage",
-                                                style: TextStyle(
-                                                  color: Color(0xFFF7F5F2),
-                                                  fontSize: 14.sp,
-                                                  fontFamily: 'sfprodisplay',
-                                                  fontWeight: FontWeight.w400,
+                                      ),SizedBox(height: 3.h,),
+                                      Text(
 
-                                                ),
-                                              ),
-                                            ),
-                                            // SizedBox(width: 97.w
-                                            //   ,),
-                                            Text('₹ ${rentcarorderdata[position].vehicle!.rentPrice.toString() } / day',
+                                        returndate
+                                        ,
+                                        style: TextStyle(
+                                          color: Color(0xFFF7F5F2),
+                                          fontSize: 14.sp,
+                                          fontFamily: 'sfprodisplay',
+                                          fontWeight: FontWeight.w400,
+
+                                        ),
+                                      ),  SizedBox(height: 4.h,),
+                                      Row(children: [  Text(
+                                        "Status : ",
+                                        style: TextStyle(
+                                          color: Color(0xFFF7F5F2),
+                                          fontSize: 14.sp,
+                                          fontFamily: 'sfprodisplay',
+                                          fontWeight: FontWeight.w400,
+
+                                        ),
+                                      ),  Text(
+                                        rentcarorderdata[position].status.toString(),
+                                        style: TextStyle(
+                                          color:Color(0xFFFFD66D),
+                                          fontSize: 14.sp,
+                                          fontFamily: 'sfprodisplay',
+                                          fontWeight: FontWeight.w400,
+
+                                        ),
+                                      ),
+                                      ],),
+                                      SizedBox(height: 2.h,),
+                                      Row(
+                                        children: [
+                                          Container(width: 140.w,
+                                            child: Text(
+                                              "${rentcarorderdata[position].vehicle!.mileage.toString()} km mileage",
                                               style: TextStyle(
-                                                color: Color(0xFFFFD66D),
-                                                fontSize: 13.sp,
+                                                color: Color(0xFFF7F5F2),
+                                                fontSize: 14.sp,
                                                 fontFamily: 'sfprodisplay',
                                                 fontWeight: FontWeight.w400,
 
                                               ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                            ),
+                                          ),
+                                          // SizedBox(width: 97.w
+                                          //   ,),
+                                          Text('₹ ${rentcarorderdata[position].vehicle!.rentPrice.toString() } / day',
+                                            style: TextStyle(
+                                              color: Color(0xFFFFD66D),
+                                              fontSize: 13.sp,
+                                              fontFamily: 'sfprodisplay',
+                                              fontWeight: FontWeight.w400,
+
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
                                   )
                                 ],
                               ),
@@ -327,97 +324,94 @@ class _MyCarState extends State<MyCar> {
                                             ),
                                           ),
                                           SizedBox(width: 15.w,),
-                                          Padding(
-                                            padding:  EdgeInsets.symmetric(vertical: 16.h),
-                                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                               // SizedBox(height: 16.h,),
-                                                Text(
-                                                  buyorderdata[position].vehicle!.brand.toString(),
-                                                  textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                    color: Color(0xFFF7F5F2),
-                                                    fontSize: 16.sp,
-                                                    fontFamily: 'sfprodisplay',
-                                                    fontWeight: FontWeight.w600,
+                                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height: 16.h,),
+                                              Text(
+                                                buyorderdata[position].vehicle!.brand.toString(),
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 16.sp,
+                                                  fontFamily: 'sfprodisplay',
+                                                  fontWeight: FontWeight.w600,
 
-                                                  ),
                                                 ),
-                                                SizedBox(height: 3.h,),
-                                                Text(
-                                                  buyorderdata[position].vehicle!.ownerName.toString(),
-                                                  style: TextStyle(
-                                                    color: Color(0xFFF7F5F2),
-                                                    fontSize: 15.sp,
-                                                    fontFamily: 'sfprodisplay',
-                                                    fontWeight: FontWeight.w400,
+                                              ),
+                                              SizedBox(height: 3.h,),
+                                              Text(
+                                                buyorderdata[position].vehicle!.ownerName.toString(),
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 15.sp,
+                                                  fontFamily: 'sfprodisplay',
+                                                  fontWeight: FontWeight.w400,
 
-                                                  ),
                                                 ),
-                                                Text(
-                                                  pickedate.toString(),
-                                                  style: TextStyle(
-                                                    color: Color(0xFFF7F5F2),
-                                                    fontSize: 14.sp,
-                                                    fontFamily: 'sfprodisplay',
-                                                    fontWeight: FontWeight.w400,
+                                              ),
+                                              Text(
+                                                pickedate.toString(),
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 14.sp,
+                                                  fontFamily: 'sfprodisplay',
+                                                  fontWeight: FontWeight.w400,
 
-                                                  ),
-                                                ), SizedBox(height: 4.h,),
-                                                Row(children: [  Text(
-                                                  "Status : ",
-                                                  style: TextStyle(
-                                                    color: Color(0xFFF7F5F2),
-                                                    fontSize: 14.sp,
-                                                    fontFamily: 'sfprodisplay',
-                                                    fontWeight: FontWeight.w400,
-
-                                                  ),
-                                                ),  Text(
-                                                 buyorderdata[position].deliveryStatus.toString(),
-                                                  style: TextStyle(
-                                                    color:Color(0xFFFFD66D),
-                                                    fontSize: 14.sp,
-                                                    fontFamily: 'sfprodisplay',
-                                                    fontWeight: FontWeight.w400,
-
-                                                  ),
                                                 ),
-                                                ],),
-                                                SizedBox(height: 4.h,),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      width: 140.w,
-                                                      child: Text(
-                                                        "${buyorderdata[position].vehicle!.mileage.toString()} km mileage",
+                                              ), SizedBox(height: 4.h,),
+                                              Row(children: [  Text(
+                                                "Status : ",
+                                                style: TextStyle(
+                                                  color: Color(0xFFF7F5F2),
+                                                  fontSize: 14.sp,
+                                                  fontFamily: 'sfprodisplay',
+                                                  fontWeight: FontWeight.w400,
 
-                                                        style: TextStyle(
-                                                          color: Color(0xFFF7F5F2),
-                                                          fontSize: 14.sp,
-                                                          fontFamily: 'sfprodisplay',
-                                                          fontWeight: FontWeight.w400,
+                                                ),
+                                              ),  Text(
+                                               buyorderdata[position].deliveryStatus.toString(),
+                                                style: TextStyle(
+                                                  color:Color(0xFFFFD66D),
+                                                  fontSize: 14.sp,
+                                                  fontFamily: 'sfprodisplay',
+                                                  fontWeight: FontWeight.w400,
 
-                                                        ),
-                                                      ),
-                                                    ),
+                                                ),
+                                              ),
+                                              ],),
+                                              SizedBox(height: 4.h,),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 140.w,
+                                                    child: Text(
+                                                      "${buyorderdata[position].vehicle!.mileage.toString()} km mileage",
 
-                                                    Text(
-                                                      "₹ ${buyorderdata[position].vehicle!.rentPrice.toString()}"
-                                                      //'\$5000 / day'
-                                                      ,
                                                       style: TextStyle(
-                                                        color: Color(0xFFFFD66D),
-                                                        fontSize: 13.sp,
+                                                        color: Color(0xFFF7F5F2),
+                                                        fontSize: 14.sp,
                                                         fontFamily: 'sfprodisplay',
                                                         fontWeight: FontWeight.w400,
 
                                                       ),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            ),
+                                                    ),
+                                                  ),
+
+                                                  Text(
+                                                    "₹ ${buyorderdata[position].vehicle!.rentPrice.toString()}"
+                                                    //'\$5000 / day'
+                                                    ,
+                                                    style: TextStyle(
+                                                      color: Color(0xFFFFD66D),
+                                                      fontSize: 13.sp,
+                                                      fontFamily: 'sfprodisplay',
+                                                      fontWeight: FontWeight.w400,
+
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
                                           )
                                         ],
                                       ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/AllBuyVechileModelclass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/HelpCenter/HelpCenterpostModel.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentOrderMOdelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelclass.dart';
 import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
@@ -28,7 +29,7 @@ class User {
       "phone": phone,
       "password": password
     };
-    print(body);
+    print("hi hello"+body.toString());
     Response response =
         await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
 
@@ -200,4 +201,24 @@ class User {
     return BuyvehileSearchModelclass.listFromJson(jsonDecode(response.body));
   }
 //
+//Helpcenterpost
+  Future<HelpCenterpostModel> getHelpcenterpost(
+
+      String descriptionmessage,
+    ) async {
+    String trendingpath = "http://45.159.221.50:8868/api/help-center";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    var body = {
+      {
+        "user": userId,
+        "queryDescription":descriptionmessage
+      }
+    };
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+
+    return HelpCenterpostModel.fromJson(jsonDecode(response.body));
+  }
+  //
 }

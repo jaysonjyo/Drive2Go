@@ -149,7 +149,7 @@ body: Stack(
                                 clipBehavior: Clip.antiAlias,
                                 decoration: BoxDecoration(
 
-                                ),child: Icon(BootstrapIcons.car_front,color:Color(0xFF1F354D) ,),
+                                ),child: Icon(BootstrapIcons.car_front,color:Color(0xFF1F354D),size: 28.sp ,),
                             ),
                             Text(
                               'My Car',
@@ -170,7 +170,7 @@ body: Stack(
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                               ),
-                            child: Icon(BootstrapIcons.car_front,color:Color(0xFF1F354D) ,),
+                            child: Icon(BootstrapIcons.car_front,color:Color(0xFF1F354D) ,size: 28.sp,),
 
                           ),
                           Text(

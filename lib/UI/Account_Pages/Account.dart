@@ -1,4 +1,6 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
+import 'package:drive2goo/UI/Account_Pages/editpage.dart';
+import 'package:drive2goo/UI/Account_Pages/help_center.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -201,10 +203,8 @@ class _AccountState extends State<Account> {
             SizedBox(
               height: 23.h,
             ),
-            Container(
-              width: 370.w,
-              height: 650.h,
-              decoration: BoxDecoration(),
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 30.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -233,33 +233,37 @@ class _AccountState extends State<Account> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
-                    child: Container(
-                      width: 113.w,
-                      height: 24.h,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 24.w,
-                            height: 24.h,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
+                    child: GestureDetector(onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Editpage()));
+                    },
+                      child: Container(
+                        width: 113.w,
+                        height: 24.h,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 24.w,
+                              height: 24.h,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
 
+                              ),
+                              child: Image.asset("assets/edit.png",fit: BoxFit.cover,color: Colors.white,),
                             ),
-                            child: Image.asset("assets/edit.png",fit: BoxFit.cover,color: Colors.white,),
-                          ),
-                          SizedBox(
-                            width: 22.w,
-                          ),
-                          Text(
-                            'Edit Profile',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w400,
+                            SizedBox(
+                              width: 22.w,
                             ),
-                          )
-                        ],
+                            Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -292,33 +296,37 @@ class _AccountState extends State<Account> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
-                    child: Container(
-                      width: 76.w,
-                      height: 24.h,
-                      child: Row(
-                        children: [
-                          Container(
-                              width: 24.w,
-                              height: 24.h,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(),
-                              child: Icon(
-                                Icons.help_outline_outlined,
-                                color: Colors.white,
-                              )),
-                          SizedBox(
-                            width: 22.w,
-                          ),
-                          Text(
-                            'Help',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w400,
+                    child: GestureDetector(onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>HelpCenter()));
+                    },
+                      child: Container(
+                        width: 76.w,
+                        height: 24.h,
+                        child: Row(
+                          children: [
+                            Container(
+                                width: 24.w,
+                                height: 24.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(),
+                                child: Icon(
+                                  Icons.help_outline_outlined,
+                                  color: Colors.white,
+                                )),
+                            SizedBox(
+                              width: 22.w,
                             ),
-                          )
-                        ],
+                            Text(
+                              'Help',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -132,6 +132,7 @@ class _SearchState extends State<Search> {
                       TextStyle(color: Colors.white, decorationThickness: 0.sp),
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 20.h),
                       border: InputBorder.none,
                       hintText: 'What are you looking for..',
                       hintStyle: TextStyle(

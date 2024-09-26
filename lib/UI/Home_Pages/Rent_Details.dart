@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../Bloc/Rent_Car_Bloc/rentcar_bloc.dart';
@@ -33,15 +34,32 @@ class RentDetails extends StatefulWidget {
   State<RentDetails> createState() => _RentDetailsState();
 }
 
-class _RentDetailsState extends State<RentDetails> {
-  final date = DateTime.now();
+class _RentDetailsState extends State<RentDetails>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
 
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this,);
+    // TODO: implement initState
+    super.initState();
+    animationController.addStatusListener((status)async{
+      if(status==AnimationStatus.completed){
+        Navigator.of(context).pop();
+        animationController.reset();
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => Bottomnavigation()));
+      }
+    });
+  }
+
+  final date = DateTime.now();
 
   //pick up date
   TextEditingController pickupdatecontroler = TextEditingController();
 
-  Future<void>
-  _pickdate(BuildContext context) async {
+  Future<void> _pickdate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -92,15 +110,14 @@ class _RentDetailsState extends State<RentDetails> {
 
   @override
   void dispose() {
+    animationController.dispose();
     setState(() {
-
       pickuplocationcontroller.clear();
       returnlocationcontroller.clear();
     });
     // TODO: implement dispose
     super.dispose();
   }
-
 
   // payment for any payments
   void handlePaymentErrorResponse(PaymentFailureResponse response) {
@@ -115,16 +132,17 @@ class _RentDetailsState extends State<RentDetails> {
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
-    ToastMessage().toastmessage(message: "Successs");
-    print("hello"+((dateDifference! * double.parse(widget.price))* 100).toString());
+
+    // print("hello" +
+    //     ((dateDifference! * double.parse(widget.price)) * 100).toString());
 
     BlocProvider.of<RentcarBloc>(context).add(FetchRentcar(
-        vehicle: widget.id,
-        pickupdate: pickupdatecontroler.text,
-        returndate: retrundatecontroler.text,
-        pickuplocation: pickuplocationcontroller.text,
-        returnlocation: returnlocationcontroller.text,
-        amount: ((dateDifference! * int.parse(widget.price))).toString(),
+      vehicle: widget.id,
+      pickupdate: pickupdatecontroler.text,
+      returndate: retrundatecontroler.text,
+      pickuplocation: pickuplocationcontroller.text,
+      returnlocation: returnlocationcontroller.text,
+      amount: ((dateDifference! * int.parse(widget.price))).toString(),
     ));
     /*
     * Payment Success Response contains three values:
@@ -133,12 +151,11 @@ class _RentDetailsState extends State<RentDetails> {
     * 3. Signature
     * */
 
-
     showAlertDialog(
         context, "Payment Successful", "Payment ID: ${response.paymentId}");
     Navigator.of(context).pop();
-    Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
-
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => Bottomnavigation()));
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
@@ -188,8 +205,10 @@ class _RentDetailsState extends State<RentDetails> {
       appBar: AppBar(
         backgroundColor: Color(0xFF000B17),
         leading: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
+          onTap: ()
+          {
+
+             Navigator.of(context).pop();
           },
           child: Container(
             width: 24.w,
@@ -348,16 +367,17 @@ class _RentDetailsState extends State<RentDetails> {
                           children: [
                             Container(
                               width: 148.w,
-                              height: 80.h,
+
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextField(
-
                                     controller: pickupdatecontroler,
                                     textAlign: TextAlign.center,
                                     cursorColor: Colors.white,
-                                    style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        decorationThickness: 0.sp),
                                     textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                       //filled: true,
@@ -426,9 +446,9 @@ class _RentDetailsState extends State<RentDetails> {
                             ),
                             Container(
                               width: 148.w,
-                              height: 80.h,
+
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+
                                 children: [
                                   TextField(
                                     controller: retrundatecontroler,
@@ -531,153 +551,136 @@ class _RentDetailsState extends State<RentDetails> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        child: Container(
-                          width: 352.w,
-                          height: 80.h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextField(
-                                controller: pickuplocationcontroller,
-                                //textAlign: TextAlign.start,
-                                cursorColor: Colors.white,
-                                style: TextStyle(color: Colors.white,decorationThickness: 0.sp),
-                                textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
-                                  //filled: true,
-                                  //fillColor: Colors.white.withOpacity(0.18000000715255737),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: Color(0xFF627487))),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: Color(0xFF627487))),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: Color(0xFF627487))),
-                                  //errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red),
-                                  //  borderRadius: BorderRadius.circular(20.r)),
-                                  hintText:
-                                      'Type your location or search in map',
-                                  hintStyle: TextStyle(
-                                    color: Color(0xFF627487),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'sfprodisplay',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  GoogleMapickup()));
-                                    },
-                                    child: Icon(
-                                      Icons.map_outlined,
-                                      color: Color(0xFF627487),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 8.h,
-                              ),
-                              Text(
-                                'Pickup location',
-                                style: TextStyle(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextField(
+                              controller: pickuplocationcontroller,
+                              //textAlign: TextAlign.start,
+                              cursorColor: Colors.white,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  decorationThickness: 0.sp),
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    borderSide: BorderSide(
+                                        width: 1.w,
+                                        color: Color(0xFF627487))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    borderSide: BorderSide(
+                                        width: 1.w,
+                                        color: Color(0xFF627487))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    borderSide: BorderSide(
+                                        width: 1.w,
+                                        color: Color(0xFF627487)
+                                    )),
+                                //errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red),
+                                //  borderRadius: BorderRadius.circular(20.r)),
+                                hintText:
+                                    'Type your location or search in map',
+                                hintStyle: TextStyle(
                                   color: Color(0xFF627487),
-                                  fontSize: 14.sp,
+                                  fontSize: 16.sp,
                                   fontFamily: 'sfprodisplay',
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 26.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.w),
-                        child: Container(
-                          width: 352.w,
-                          height: 80.h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextField(
-                                controller: returnlocationcontroller,
-                                //textAlign: TextAlign.start,
-                                cursorColor: Colors.white,
-                                style: TextStyle(
-                                    color: Colors.white,decorationThickness: 0.sp),
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                GoogleMapickup()));
+                                  },
+                                  child: Icon(
+                                    Icons.map_outlined,
+                                    color: Color(0xFF627487),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              'Pickup location',
+                              style: TextStyle(
+                                color: Color(0xFF627487),
+                                fontSize: 14.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 26.h,
+                            ),
+                            TextField(
+                              controller: returnlocationcontroller,
+                              cursorColor: Colors.white,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  decorationThickness: 0.sp),
 
-                                textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
-                                  //filled: true,
-                                  //fillColor: Colors.white.withOpacity(0.18000000715255737),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: Color(0xFF627487))),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: Color(0xFF627487))),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(4.r),
-                                      borderSide: BorderSide(
-                                          width: 1.w,
-                                          color: Color(0xFF627487))),
-                                  //errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red),
-                                  //  borderRadius: BorderRadius.circular(20.r)),
-                                  hintText:
-                                      'Type your location or search in map',
-                                  hintStyle: TextStyle(
-                                    color: Color(0xFF627487),
-                                    fontSize: 16.sp,
-                                    fontFamily: 'sfprodisplay',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  GoogleMapReturn()));
-                                    },
-                                    child: Icon(
-                                      Icons.map_outlined,
-                                      color: Color(0xFF627487),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 8.h,
-                              ),
-                              Text(
-                                'Return location',
-                                style: TextStyle(
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    borderSide: BorderSide(
+                                        width: 1.w,
+                                        color: Color(0xFF627487))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    borderSide: BorderSide(
+                                        width: 1.w,
+                                        color: Color(0xFF627487))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    borderSide: BorderSide(
+                                        width: 1.w,
+                                        color: Color(0xFF627487))),
+                                hintText:
+                                'Type your location or search in map',
+                                hintStyle: TextStyle(
                                   color: Color(0xFF627487),
-                                  fontSize: 14.sp,
+                                  fontSize: 16.sp,
                                   fontFamily: 'sfprodisplay',
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                              )
-                            ],
-                          ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                GoogleMapReturn()));
+                                  },
+                                  child: Icon(
+                                    Icons.map_outlined,
+                                    color: Color(0xFF627487),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              'Return location',
+                              style: TextStyle(
+                                color: Color(0xFF627487),
+                                fontSize: 14.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
                         ),
                       ),
+
+
                     ],
                   ),
                 ),
@@ -908,7 +911,6 @@ class _RentDetailsState extends State<RentDetails> {
                     ),
                   ),
                 ),
-
                 Center(
                   child: BlocListener<RentcarBloc, RentcarState>(
                     listener: (context, state) {
@@ -918,40 +920,50 @@ class _RentDetailsState extends State<RentDetails> {
                             builder: (ctx) => Center(
                                   child: CircularProgressIndicator(),
                                 ));
-                        print("loading");
+                        // print("loading");
                       }
                       if (state is RentcarBlocError) {
                         Navigator.of(context).pop();
                       }
                       if (state is RentcarBlocLoaded) {
-Navigator.of(context).pop();
-Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
 
-                        ToastMessage().toastmessage(message: "Successs");
+                        Navigator.of(context).pop();
+    if (_selectedIndex == 0 &&
+    pickupdatecontroler.text.isNotEmpty &&
+    retrundatecontroler.text.isNotEmpty &&
+    pickuplocationcontroller.text.isNotEmpty &&
+    returnlocationcontroller.text.isNotEmpty) {
+                      return  Showanimation();}else if(_selectedIndex == 1 &&
+                            pickupdatecontroler.text.isNotEmpty &&
+                            retrundatecontroler.text.isNotEmpty &&
+                            pickuplocationcontroller.text.isNotEmpty &&
+                            returnlocationcontroller.text.isNotEmpty) {
+      ToastMessage().toastmessage(message: "Order Success");
+    }
+
                       }
                       // TODO: implement listener
                     },
                     child: GestureDetector(
                       onTap: () {
-                        if (_selectedIndex == 0  &&
+                        if (_selectedIndex == 0 &&
                             pickupdatecontroler.text.isNotEmpty &&
                             retrundatecontroler.text.isNotEmpty &&
                             pickuplocationcontroller.text.isNotEmpty &&
                             returnlocationcontroller.text.isNotEmpty) {
-
-                           print("hy"+(dateDifference! * int.parse(widget.price)).toString());
-                          BlocProvider.of<RentcarBloc>(context).add(FetchRentcar(
-
-                              vehicle: widget.id,
-                              pickupdate: pickupdatecontroler.text.toString(),
-                              returndate: retrundatecontroler.text.toString(),
-                              pickuplocation: pickuplocationcontroller.text,
-                              returnlocation: returnlocationcontroller.text,
-                              amount: (dateDifference! * int.parse(widget.price)).toString()
-                          )
-
-                          );
-
+                          // print("hy"+(dateDifference! * int.parse(widget.price)).toString());
+                          BlocProvider.of<RentcarBloc>(context).add(
+                              FetchRentcar(
+                                  vehicle: widget.id,
+                                  pickupdate:
+                                      pickupdatecontroler.text.toString(),
+                                  returndate:
+                                      retrundatecontroler.text.toString(),
+                                  pickuplocation: pickuplocationcontroller.text,
+                                  returnlocation: returnlocationcontroller.text,
+                                  amount: (dateDifference! *
+                                          int.parse(widget.price))
+                                      .toString()));
                         } else if (_selectedIndex == 1 &&
                             pickupdatecontroler.text.isNotEmpty &&
                             retrundatecontroler.text.isNotEmpty &&
@@ -960,7 +972,9 @@ Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
                           Razorpay razorpay = Razorpay();
                           var options = {
                             'key': 'rzp_test_gKANZdsNdLqaQs',
-                            'amount':(dateDifference! * int.parse(widget.price))* 100,
+                            'amount':
+                                (dateDifference! * int.parse(widget.price)) *
+                                    100,
                             'name': 'Acme Corp.',
                             'description': 'Fine T-Shirt',
                             'retry': {'enabled': true, 'max_count': 1},
@@ -1020,4 +1034,20 @@ Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Bottomnavigation()));
       )),
     );
   }
+
+  void Showanimation() => showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => Dialog(
+            child: Container(
+              width: 200.w,height: 300.h,decoration: ShapeDecoration(color: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+              child: Center(
+                child: Lottie.asset("assets/animation.json",
+                    repeat: false, controller: animationController,onLoaded: (composition){
+                    animationController.duration=composition.duration;
+                  animationController.forward();
+                    }),
+              ),
+            ),
+          ));
 }

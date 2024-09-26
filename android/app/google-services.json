@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882697483403",
+    "project_id": "drive2go-242c2",
+    "storage_bucket": "drive2go-242c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882697483403:android:6cba323ed25c55b55b108e",
+        "android_client_info": {
+          "package_name": "com.example.drive2goo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkiSvIXKb8-Tf8xIk6QO1zEE-Cl2ZuqrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1125,6 +1125,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                     GestureDetector(
                       onTap: () {
                         showModalBottomSheet<void>(
+                          backgroundColor:Color(0xFF000C1B),
                           isScrollControlled: true,
                           // context and builder are
                           // required properties in this widget
@@ -1254,7 +1255,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                     (route) => false);
 
                                             ToastMessage().toastmessage(
-                                                message: "Successs");
+                                                message: "Order Success");
                                           }
                                           // TODO: implement listener
                                         },

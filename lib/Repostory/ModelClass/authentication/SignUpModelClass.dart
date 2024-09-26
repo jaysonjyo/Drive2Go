@@ -1,36 +1,43 @@
-class SignUpModelClass {
-  SignUpModelClass({
-      this.fullName, 
-      this.email, 
-      this.phone, 
-      this.password, 
-      this.id, 
-      this.v,});
 
-  SignUpModelClass.fromJson(dynamic json) {
-    fullName = json['fullName'];
-    email = json['email'];
-    phone = json['phone'];
-    password = json['password'];
-    id = json['_id'];
-    v = json['__v'];
-  }
+class SignUpModelClass {
+  String? token;
+  dynamic profilePhoto;
+  dynamic resetPasswordToken;
+  dynamic resetPasswordExpires;
+  String? id;
   String? fullName;
   String? email;
   String? phone;
-  String? password;
-  String? id;
   int? v;
+  dynamic profilePhotoUrl;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['fullName'] = fullName;
-    map['email'] = email;
-    map['phone'] = phone;
-    map['password'] = password;
-    map['_id'] = id;
-    map['__v'] = v;
-    return map;
+  SignUpModelClass({this.token, this.profilePhoto, this.resetPasswordToken, this.resetPasswordExpires, this.id, this.fullName, this.email, this.phone, this.v, this.profilePhotoUrl});
+
+  SignUpModelClass.fromJson(Map<String, dynamic> json) {
+    token = json["token"];
+    profilePhoto = json["profilePhoto"];
+    resetPasswordToken = json["resetPasswordToken"];
+    resetPasswordExpires = json["resetPasswordExpires"];
+    id = json["_id"];
+    fullName = json["fullName"];
+    email = json["email"];
+    phone = json["phone"];
+    v = json["__v"];
+    profilePhotoUrl = json["profilePhotoUrl"];
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["token"] = token;
+    _data["profilePhoto"] = profilePhoto;
+    _data["resetPasswordToken"] = resetPasswordToken;
+    _data["resetPasswordExpires"] = resetPasswordExpires;
+    _data["_id"] = id;
+    _data["fullName"] = fullName;
+    _data["email"] = email;
+    _data["phone"] = phone;
+    _data["__v"] = v;
+    _data["profilePhotoUrl"] = profilePhotoUrl;
+    return _data;
+  }
 }
