@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/NearbyCarModelClass.dart';
 
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Bloc/Rent/Nearby_Bloc/nearby_car_bloc.dart';
 import 'Rent_Details.dart';
 
 class CarDetails extends StatefulWidget {

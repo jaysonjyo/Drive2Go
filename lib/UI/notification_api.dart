@@ -1,34 +1,82 @@
-import 'package:drive2goo/UI/Others/notification_screen.dart';
-import 'package:drive2goo/main.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-// print cheyyan mathram
-Future<void>handlebagroundmessage(RemoteMessage message)async{
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-}
+import '../main.dart';
+import 'Others/notification_screen.dart';
 
-void handlemessage (RemoteMessage? message){
-  if(message==null) return;
-  navigatorykey.currentState?.pushNamed(NotificationScreen.route,arguments: message);
-}
-Future initPush_Notifications()async{
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    sound: true,badge: true
-  );
-  FirebaseMessaging.instance.getInitialMessage().then((value) => handlemessage);
-  FirebaseMessaging.onMessageOpenedApp.listen(handlemessage);
-  FirebaseMessaging.onBackgroundMessage(handlebagroundmessage);
-}
-class Notificationfirebase{
-  final firbasemessaging=FirebaseMessaging.instance;
+class FirebaseApi {
+  final _firebasemessaging = FirebaseMessaging.instance;
 
-
-  Future<void> initNotification()async {
-    await firbasemessaging.requestPermission();
-    final Fcmtoken=await firbasemessaging.getToken();
-    
-    print("token :$Fcmtoken");
- initPush_Notifications();
+  Future<void> handleBackgroundMessage([RemoteMessage? message]) async {
+    print('Title:${message?.notification?.title}');
+    print('Body:${message?.notification?.body}');
+    print('Payload:${message?.data}');
   }
-  
+
+  Future<void> initNotificatios() async {
+    await _firebasemessaging.requestPermission();
+    final FCMToken = await _firebasemessaging.getToken();
+    print("Token:$FCMToken");
+    //for pushing notification
+    initPushNotification();
+  }
+  void handleMessage(RemoteMessage? message) {
+    if (message == null) {
+      return;
+    }
+    navigatorKey.currentState
+        ?.pushNamed(NotificationScreen.route, arguments: message);
+  }
+  Future<void> initPushNotification() async {
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((value) => handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+    FirebaseMessaging.onBackgroundMessage(
+            (message) => handleBackgroundMessage(message));
+    FirebaseMessaging.onMessage.listen((message) {
+      final notifications = message.notification;
+      if (notifications == null) return;
+      _localNotifications.show(
+          notifications.hashCode,
+          notifications.title,
+          notifications.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+                androidChannel.id, androidChannel.name,
+                channelDescription: androidChannel.description,
+                icon: '@drawable/ic_launcher'),
+          ),
+          payload: jsonEncode(message.toMap()));
+    });
+  }
+  final androidChannel = AndroidNotificationChannel(
+      'high_importance_channel', 'High_Importance_Notifications',
+      description: 'This channel is used for important notifications',
+      importance: Importance.defaultImportance);
+  final _localNotifications = FlutterLocalNotificationsPlugin();
+  Future<void> initLocalNotifications() async {
+    const android = AndroidInitializationSettings('app_icon');
+    const settings = InitializationSettings(android: android);
+
+    final FlutterLocalNotificationsPlugin localNotifications = FlutterLocalNotificationsPlugin();
+    await localNotifications.initialize(
+      settings,
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+        final payload = notificationResponse.payload;
+        if (payload != null) {
+          final message = RemoteMessage.fromMap(jsonDecode(payload));
+          handleMessage(message);
+        }
+      },
+    );
+  }
+
+
 }

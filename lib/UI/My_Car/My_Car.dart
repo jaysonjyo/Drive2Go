@@ -1,12 +1,10 @@
-
-import 'package:drive2goo/Bloc/Buycar_order/buyorder_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/Buy_OrderShow_Modelclass.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-
-import '../../Bloc/RentOrder_Bloc/rent_car_order_bloc.dart';
+import '../../Bloc/Buy/Buycar_order/buyorder_bloc.dart';
+import '../../Bloc/Rent/RentOrder_Bloc/rent_car_order_bloc.dart';
 import '../../Repostory/ModelClass/Rentvechile/RentOrderMOdelClass.dart';
 
 class MyCar extends StatefulWidget {

@@ -18,14 +18,16 @@ class _CreatepasswordState extends State<Createpassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:  Text("Create a New Password",
+      backgroundColor: Color(0xFF000B17),
+      appBar: AppBar(foregroundColor: Colors.white ,
+        title:  Text("Create a New Password",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 25.sp,
             fontFamily: 'sfprodisplay',
             fontWeight: FontWeight.w700,
-          )), centerTitle: true,backgroundColor: Colors.white,),
-      backgroundColor: Colors.white,
+          )), centerTitle: true,backgroundColor: Color(0xFF000B17),),
+    //  backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -45,14 +47,14 @@ class _CreatepasswordState extends State<Createpassword> {
                         cursorColor: Colors.grey,
                         controller: oldpassword,
                         style: TextStyle(
-                            color: Colors.black, decorationThickness: 0.sp),
+                            color: Colors.white, decorationThickness: 0.sp),
                         textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 20.h, horizontal: 25.w),
                           filled: true,
                           fillColor:
-                              Colors.black.withOpacity(0.18000000715255737),
+                              Colors.white.withOpacity(0.18000000715255737),
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.circular(20.r)),
@@ -90,14 +92,14 @@ class _CreatepasswordState extends State<Createpassword> {
                         cursorColor: Colors.grey,
                         controller: newpassword,
                         style: TextStyle(
-                            color: Colors.black, decorationThickness: 0.sp),
+                            color: Colors.white, decorationThickness: 0.sp),
                         textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 20.h, horizontal: 25.w),
                             filled: true,
                             fillColor:
-                                Colors.black.withOpacity(0.18000000715255737),
+                                Colors.white.withOpacity(0.18000000715255737),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                                 borderRadius: BorderRadius.circular(20.r)),
@@ -140,19 +142,19 @@ class _CreatepasswordState extends State<Createpassword> {
                         },
                       ),
                       SizedBox(
-                        height: 40.h,
+                        height: 50.h,
                       ),
                       Container(
                         width: 250.w,
                         height: 70.h,
                         decoration: ShapeDecoration(
-                            color: Colors.black,
+                            color: Colors.white,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.r))),
                         child:  Center(
                           child: Text("Set Your Password ",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 25.sp,
                                 fontFamily: 'sfprodisplay',
                                 fontWeight: FontWeight.w700,

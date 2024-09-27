@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:drive2goo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'createpassword.dart';
 
@@ -13,24 +16,49 @@ class Editpage extends StatefulWidget {
 
 class _EditpageState extends State<Editpage> {
   TextEditingController name = TextEditingController();
+  File? image;
+  final picker = ImagePicker();
+
+  Future getImageGallery() async {
+    final pickedFile =
+    await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    setState(() {
+      if (pickedFile != null) {
+        image = File(pickedFile.path);
+      } else {
+        print("No image Picked");
+      }
+    });
+  }
+
+  Future getCamera() async {
+    final pickedFile =
+    await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+    setState(() {
+      if (pickedFile != null) {
+        image = File(pickedFile.path);
+      } else {
+        print("No image Picked");
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        //backgroundColor: Color(0xFF000B17),
+        backgroundColor: Color(0xFF000B17),
         leading: GestureDetector(onTap: (){
           Navigator.of(context).pop();
         },
           child: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
       ),
-       // backgroundColor: Color(0xFF000B17),
+        backgroundColor: Color(0xFF000B17),
       body: SafeArea(
         child: Column(
           children: [
@@ -44,10 +72,19 @@ class _EditpageState extends State<Editpage> {
                   width: 150.w,
                   height: 150.h,
                   decoration: ShapeDecoration(
-                      color: Colors.black,
+                      color: Colors.white,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1.w, color: Colors.grey),
+                          side: BorderSide(width: 1.w, color: Colors.grey.shade300),
                           borderRadius: BorderRadius.circular(75.r))),
+                  child: GestureDetector(onTap: (){
+                    getImageGallery();
+                  },
+                      child: ClipOval(child:image != null
+                          ? Image.file(
+                        image!.absolute,
+                        fit: BoxFit.cover,
+                      )
+                          : Icon(Icons.person,size: 100.sp,))),
                 ),
                 Positioned(
                   top: 100.h,
@@ -59,9 +96,15 @@ class _EditpageState extends State<Editpage> {
                         color: Colors.grey,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.r))),
-                    child: Icon(
-                      Icons.camera_alt_outlined,
-                      color: Color(0xFF000B17),
+                    child: GestureDetector(onTap: (){
+                      getCamera();
+                    },
+                      child: ClipOval(
+                        child: Icon(
+                          Icons.camera_alt_outlined,
+                          color: Color(0xFF000B17),
+                        ),
+                      ),
                     ),
                   ),
                 )
@@ -74,8 +117,10 @@ class _EditpageState extends State<Editpage> {
             GestureDetector(
               onTap: () {
                 showModalBottomSheet<void>(
+                  backgroundColor: Color(0xFF000B17),
                   context: context,
                   builder: (BuildContext context) {
+
                     return Padding(
                       padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -138,22 +183,26 @@ class _EditpageState extends State<Editpage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Container(
-                                    width: 100.w,
-                                    height: 50.h,
-                                    decoration: ShapeDecoration(
+                                  GestureDetector(onTap: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                    child: Container(
+                                      width: 100.w,
+                                      height: 50.h,
+                                      decoration: ShapeDecoration(
 
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.r))),
-                                    child: Center(
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.sp,
-                                          fontFamily: 'sfprodisplay',
-                                          fontWeight: FontWeight.w400,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r))),
+                                      child: Center(
+                                        child: Text(
+                                          "Cancel",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.sp,
+                                            fontFamily: 'sfprodisplay',
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -214,7 +263,8 @@ class _EditpageState extends State<Editpage> {
                             width: 350.w,
                             child: Text("Name",
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white
+                                  ,
                                   fontSize: 17.sp,
                                   fontFamily: 'sfprodisplay',
                                   fontWeight: FontWeight.w400,
@@ -224,7 +274,7 @@ class _EditpageState extends State<Editpage> {
                       ),
                       Icon(
                         Icons.edit,
-                        color: Colors.black,
+                        color: Colors.white,
                       )
                     ],
                   ),
@@ -249,11 +299,11 @@ class _EditpageState extends State<Editpage> {
                 height: 50.h,
                 child: Padding(padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Row(children: [
-                  Icon(Icons.password,color: Colors.black,),
+                  Icon(Icons.password,color: Colors.white,),
                   SizedBox(width: 15.w,),
                   Text("Create New Password",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 18.sp,
                         fontFamily: 'sfprodisplay',
                         fontWeight: FontWeight.w400,

@@ -1,7 +1,4 @@
 import 'dart:math';
-
-import 'package:drive2goo/Bloc/Allcar_Bloc/allcar_bloc.dart';
-import 'package:drive2goo/Bloc/Nearby_Bloc/nearby_car_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/AllcarModel.dart';
 import 'package:drive2goo/UI/Others/notification_screen.dart';
 import 'package:drive2goo/main.dart';
@@ -11,7 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import '../../Bloc/Buy/Allcar_Bloc/allcar_bloc.dart';
+import '../../Bloc/Rent/Nearby_Bloc/nearby_car_bloc.dart';
 import '../../Repostory/ModelClass/Rentvechile/NearbyCarModelClass.dart';
 import '../Search_page/Rent_Car_Search.dart';
 import 'Car_Details.dart';

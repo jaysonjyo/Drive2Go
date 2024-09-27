@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:drive2goo/Bloc/All_buyCar_Bloc/all_buycar_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/AllBuyVechileModelclass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../Bloc/Buy_Car_Bloc/nearby_buy_bloc.dart';
+import '../../Bloc/Buy/All_buyCar_Bloc/all_buycar_bloc.dart';
+import '../../Bloc/Buy/Nearby_Buy_Car_Bloc/nearby_buy_bloc.dart';
 import '../Home_Pages/Car_Details.dart';
 import '../Search_page/Buy_Car_Search.dart';
 import 'Buy_car_Details.dart';

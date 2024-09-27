@@ -1,45 +1,26 @@
-class HelpCenterpostModel {
-  HelpCenterpostModel({
-      this.message, 
-      this.data,});
 
-  HelpCenterpostModel.fromJson(dynamic json) {
-    message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-  }
+class HelpCenterpostModel {
   String? message;
   Data? data;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['message'] = message;
-    if (data != null) {
-      map['data'] = data?.toJson();
-    }
-    return map;
+  HelpCenterpostModel({this.message, this.data});
+
+  HelpCenterpostModel.fromJson(Map<String, dynamic> json) {
+    message = json["message"];
+    data = json["data"] == null ? null : Data.fromJson(json["data"]);
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["message"] = message;
+    if(data != null) {
+      _data["data"] = data?.toJson();
+    }
+    return _data;
+  }
 }
 
 class Data {
-  Data({
-      this.user, 
-      this.queryDescription, 
-      this.status, 
-      this.response, 
-      this.id, 
-      this.createdAt, 
-      this.v,});
-
-  Data.fromJson(dynamic json) {
-    user = json['user'];
-    queryDescription = json['queryDescription'];
-    status = json['status'];
-    response = json['response'];
-    id = json['_id'];
-    createdAt = json['createdAt'];
-    v = json['__v'];
-  }
   String? user;
   String? queryDescription;
   String? status;
@@ -48,16 +29,27 @@ class Data {
   String? createdAt;
   int? v;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['user'] = user;
-    map['queryDescription'] = queryDescription;
-    map['status'] = status;
-    map['response'] = response;
-    map['_id'] = id;
-    map['createdAt'] = createdAt;
-    map['__v'] = v;
-    return map;
+  Data({this.user, this.queryDescription, this.status, this.response, this.id, this.createdAt, this.v});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    user = json["user"];
+    queryDescription = json["queryDescription"];
+    status = json["status"];
+    response = json["response"];
+    id = json["_id"];
+    createdAt = json["createdAt"];
+    v = json["__v"];
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["user"] = user;
+    _data["queryDescription"] = queryDescription;
+    _data["status"] = status;
+    _data["response"] = response;
+    _data["_id"] = id;
+    _data["createdAt"] = createdAt;
+    _data["__v"] = v;
+    return _data;
+  }
 }

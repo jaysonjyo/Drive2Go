@@ -1,5 +1,4 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
-import 'package:drive2goo/Bloc/Sign_up_Bloc/sign_up_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
 import 'package:drive2goo/UI/authentication_pages/phonenumber.dart';
 import 'package:drive2goo/main.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../Bloc/Authantication/Sign_up_Bloc/sign_up_bloc.dart';
 import '../Others/BottomNavigation.dart';
 import '../Home_Pages/Home.dart';
 import '../Toast_message/Toast_message.dart';

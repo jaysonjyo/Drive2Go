@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:drive2goo/Bloc/Buy_Car_Bloc/nearby_buy_bloc.dart';
-import 'package:drive2goo/Bloc/Buy_create_order/buy_create_order_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/Buy_VechilOrderModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
 import 'package:drive2goo/UI/Home_Pages/Home.dart';
@@ -15,6 +13,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Bloc/Buy/Buy_create_order/buy_create_order_bloc.dart';
+import '../../Bloc/Buy/Nearby_Buy_Car_Bloc/nearby_buy_bloc.dart';
 import '../Toast_message/Toast_message.dart';
 
 class BuyCarDetails extends StatefulWidget {

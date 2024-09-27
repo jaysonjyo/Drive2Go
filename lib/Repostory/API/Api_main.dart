@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/AllBuyVechileModelclass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/FeedBack/FeedBackModel.dart';
 import 'package:drive2goo/Repostory/ModelClass/HelpCenter/HelpCenterpostModel.dart';
+import 'package:drive2goo/Repostory/ModelClass/HelpCenter/HelpcenterChatModel.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentOrderMOdelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelclass.dart';
 import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
@@ -16,7 +18,7 @@ import '../ModelClass/Rentvechile/RentCarModel.dart';
 import '../ModelClass/authentication/SignInModelClass.dart';
 import 'Client.dart';
 
-class User {
+class UserMainapi {
   ApiClient apiClient = ApiClient();
 
   // signUP
@@ -202,23 +204,49 @@ class User {
   }
 //
 //Helpcenterpost
-  Future<HelpCenterpostModel> getHelpcenterpost(
-
-      String descriptionmessage,
-    ) async {
-    String trendingpath = "http://45.159.221.50:8868/api/help-center";
+  Future<HelpCenterpostModel> getHelpcenterpost(String descriptionmessage) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString("userId").toString();
+    String trendingpath = "http://45.159.221.50:8868/api/help-center";
+
     var body = {
-      {
         "user": userId,
         "queryDescription":descriptionmessage
-      }
     };
+    print("hy"+body.toString());
     Response response =
     await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
 
     return HelpCenterpostModel.fromJson(jsonDecode(response.body));
   }
   //
+  //chat
+  Future <List<HelpcenterChatModel>> getchat( ) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    String trendingpath = "http://45.159.221.50:8868/api/help-center/user/$userId";
+
+    var body = {};
+    print(body);
+    Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
+
+    return HelpcenterChatModel.listFromJson(jsonDecode(response.body));
+  }
+  //
+//feedback
+  Future<FeedBackModel> getFeedback(String comment) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    String trendingpath = "http://45.159.221.50:8868/api/feedback";
+
+    var body = {
+      "user": userId,
+      "comments": comment
+    };
+    print("print"+body.toString());
+    Response response =
+    await apiClient.invokeAPI(trendingpath, 'POST', jsonEncode(body));
+
+    return FeedBackModel.fromJson(jsonDecode(response.body));
+  }
 }

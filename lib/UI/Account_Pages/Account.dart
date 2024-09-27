@@ -1,5 +1,6 @@
 import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:drive2goo/UI/Account_Pages/editpage.dart';
+import 'package:drive2goo/UI/Account_Pages/feedback.dart';
 import 'package:drive2goo/UI/Account_Pages/help_center.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -340,33 +341,37 @@ class _AccountState extends State<Account> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
-                    child: Container(
-                      width: 108.w,
-                      height: 24.h,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 24.w,
-                            height: 24.h,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
+                    child: GestureDetector(onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=> Feedbackpage() ));
+                    },
+                      child: Container(
+                        width: 108.w,
+                        height: 24.h,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 24.w,
+                              height: 24.h,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
 
+                              ),
+                                child: Image.asset("assets/thumbs-up.png",fit: BoxFit.cover,color: Colors.white,)
                             ),
-                              child: Image.asset("assets/thumbs-up.png",fit: BoxFit.cover,color: Colors.white,)
-                          ),
-                          SizedBox(
-                            width: 22.w,
-                          ),
-                          Text(
-                            'Feedback',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w400,
+                            SizedBox(
+                              width: 22.w,
                             ),
-                          )
-                        ],
+                            Text(
+                              'Feedback',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
