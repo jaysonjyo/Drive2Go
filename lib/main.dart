@@ -1,4 +1,7 @@
 import 'package:drive2goo/Bloc/Profile/Feedback/feedback_bloc.dart';
+import 'package:drive2goo/Bloc/Profile/Privacypolicy/privacy_policy_bloc.dart';
+import 'package:drive2goo/Bloc/Profile/Terms_Condition/terms_condition_bloc.dart';
+import 'package:drive2goo/Bloc/Profile/profileupdate/profile_update_bloc.dart';
 import 'package:drive2goo/UI/Others/Splash.dart';
 import 'package:drive2goo/UI/Others/Start_Indro.dart';
 import 'package:drive2goo/UI/Others/notification_screen.dart';
@@ -96,6 +99,15 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => FeedbackBloc(),
+              ),
+              BlocProvider(
+                create: (context) => PrivacyPolicyBloc(),
+              ),
+              BlocProvider(
+                create: (context) => TermsConditionBloc(),
+              ),
+              BlocProvider(
+                create: (context) => ProfileUpdateBloc(),
               ),
             ],
             child: MaterialApp(

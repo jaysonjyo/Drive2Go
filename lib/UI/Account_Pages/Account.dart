@@ -2,6 +2,8 @@ import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:drive2goo/UI/Account_Pages/editpage.dart';
 import 'package:drive2goo/UI/Account_Pages/feedback.dart';
 import 'package:drive2goo/UI/Account_Pages/help_center.dart';
+import 'package:drive2goo/UI/Account_Pages/privacy_policy.dart';
+import 'package:drive2goo/UI/Account_Pages/terms_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -148,11 +150,11 @@ class _AccountState extends State<Account> {
                             color: Color(0xFFFFD66D),
                             shape: OvalBorder(),
                           ),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                            size: 15.sp,
-                          ),
+                          // child: Icon(
+                          //   Icons.edit,
+                          //   color: Colors.white,
+                          //   size: 15.sp,
+                          // ),
                         ),
                       )
                     ])),
@@ -475,33 +477,37 @@ class _AccountState extends State<Account> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
-                    child: Container(
-                      width: 189.w,
-                      height: 24.h,
-                      child: Row(
-                        children: [
-                          Container(
-                              width: 24.w,
-                              height: 24.h,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(),
-                              child: Icon(
-                                Icons.lock_outline,
-                                size: 24.sp,color: Colors.white,
-                              )),
-                          SizedBox(
-                            width: 22.w,
-                          ),
-                          Text(
-                            'Privacy Policy',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w400,
+                    child: GestureDetector(onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=> PrivacyPolicy() ));
+                    },
+                      child: Container(
+                        width: 189.w,
+                        height: 24.h,
+                        child: Row(
+                          children: [
+                            Container(
+                                width: 24.w,
+                                height: 24.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(),
+                                child: Icon(
+                                  Icons.lock_outline,
+                                  size: 24.sp,color: Colors.white,
+                                )),
+                            SizedBox(
+                              width: 22.w,
                             ),
-                          )
-                        ],
+                            Text(
+                              'Privacy Policy',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -515,33 +521,37 @@ class _AccountState extends State<Account> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
-                    child: Container(
-                      width: 189.w,
-                      height: 24.h,
-                      child: Row(
-                        children: [
-                          Container(
-                              width: 24.w,
-                              height: 24.h,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(),
-                              child: Icon(
-                                BootstrapIcons.shield,
-                                size: 24.sp,color: Colors.white,
-                              )),
-                          SizedBox(
-                            width: 22.w,
-                          ),
-                          Text(
-                            'Terms and Conditions',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w400,
+                    child: GestureDetector(onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>TermsCondition()));
+                    },
+                      child: Container(
+                        width: 189.w,
+                        height: 24.h,
+                        child: Row(
+                          children: [
+                            Container(
+                                width: 24.w,
+                                height: 24.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(),
+                                child: Icon(
+                                  BootstrapIcons.shield,
+                                  size: 24.sp,color: Colors.white,
+                                )),
+                            SizedBox(
+                              width: 22.w,
                             ),
-                          )
-                        ],
+                            Text(
+                              'Terms and Conditions',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
