@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/AllBuyVechileModelclass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Buyvechile/BuyvechildetailsModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/FeedBack/FeedBackModel.dart';
 import 'package:drive2goo/Repostory/ModelClass/HelpCenter/HelpCenterpostModel.dart';
@@ -11,6 +12,7 @@ import 'package:drive2goo/Repostory/ModelClass/Rentvechile/RentcarsearchModelcla
 import 'package:drive2goo/Repostory/ModelClass/Terms_Condition/TermsConditionModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/authentication/SignUpModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/profileupdate/ProfileUpdateModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/profileupdate/UserModelclass.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../ModelClass/Buyvechile/Buy_OrderShow_Modelclass.dart';
@@ -21,6 +23,7 @@ import '../ModelClass/Rentvechile/NearbyCarModelClass.dart';
 import '../ModelClass/Rentvechile/RentCarModel.dart';
 import '../ModelClass/authentication/SignInModelClass.dart';
 import 'Client.dart';
+import 'package:http/http.dart' as http;
 
 class UserMainapi {
   ApiClient apiClient = ApiClient();
@@ -152,6 +155,20 @@ class UserMainapi {
 
     return AllBuyVechileModelclass.listFromJson(jsonDecode(response.body));
   }
+  //
+  //buyvechiledetals
+  Future<BuyvechildetailsModelClass> getBuyvechildetails(
+      String vechilid
+      ) async {
+    String trendingpath = "http://45.159.221.50:8868/api/get-buyvehicle/$vechilid";
+
+    var body = {};
+    print(body);
+    Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
+
+    return BuyvechildetailsModelClass.fromJson(jsonDecode(response.body));
+  }
+  //
 
   // create oder
   Future<BuyCreateOrderModelClass> getBuyCreateOrder(String vehicleid,
@@ -281,25 +298,62 @@ class UserMainapi {
 
   }
   //
+  //User
+  Future <UserModelclass> getUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    String trendingpath = "http://45.159.221.50:8868/api/user/$userId";
+
+    var body = {};
+    print(body);
+    Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
+
+    return UserModelclass.fromJson(jsonDecode(response.body));
+
+  }
+  //
 //profileupdate
   Future <ProfileUpdateModelClass> getProfileupdate(
-      String fullname,  String oldpassword, String newpassword
+      String? fullname,
+      String? oldpassword,
+      String? newpassword
 
       ) async {
+    //111
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString("userId").toString();
     String trendingpath = "http://45.159.221.50:8868/api/update-profile/$userId";
 
     var body = {
-      "fullname":fullname,
+      "fullName":fullname,
       "oldPassword":oldpassword,
       "newPassword":newpassword
     };
-    print(body);
+    print("ptofileupdate"+body.toString());
     Response response = await apiClient.invokeAPI(trendingpath, 'PUT', jsonEncode(body));
 
     return ProfileUpdateModelClass.fromJson(jsonDecode(response.body));
 
   }
   //
+
+  // path  kittan vendi mathram ee function use akkunathe ellankil namuke matte functionil thanne cheyyam pakshe
+  // condition kodukandi verum  // 111 nte avide send code
+
+
+  Future<ProfileUpdateModelClass> uploadFile( File file) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString("userId").toString();
+    var request = http.MultipartRequest('PUT', Uri.parse('http://45.159.221.50:8868/api/update-profile/$userId'));
+    request.files.add(await http.MultipartFile.fromPath('profilePhoto', file.path));
+
+    var response = await request.send();
+print('hello'+response.statusCode.toString());
+
+      return ProfileUpdateModelClass.fromJson(response.headers);
+      // Upload successful
+    }
+
+//
+//
 }

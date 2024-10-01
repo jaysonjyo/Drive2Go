@@ -130,7 +130,7 @@ class _BuyCarSearchState extends State<BuyCarSearch> {
 
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 20.h),
+                    // contentPadding: EdgeInsets.symmetric(vertical: 20.h),
                       border: InputBorder.none,
                       hintText: 'What are you looking for..',
                       hintStyle: TextStyle(
@@ -248,54 +248,54 @@ class _BuyCarSearchState extends State<BuyCarSearch> {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
                                                 builder: (_) => BuyCarDetails(
-                                                      photo: buysearchdata[index]
-                                                          .photos!
-                                                          .toList(),
-                                                      brand: buysearchdata[index]
-                                                          .brand
-                                                          .toString(),
-                                                      rating: buysearchdata[index]
-                                                          .rating
-                                                          .toString(),
-                                                      fueltype:
-                                                          buysearchdata[index]
-                                                              .fuelType
-                                                              .toString(),
-                                                      gear: buysearchdata[index]
-                                                          .gearType
-                                                          .toString(),
-                                                      seat: buysearchdata[index]
-                                                          .noOfSeats
-                                                          .toString(),
-                                                      door: buysearchdata[index]
-                                                          .noOfDoors
-                                                          .toString(),
-                                                      ownerphoto:
-                                                          buysearchdata[index]
-                                                              .ownerProfilePhoto
-                                                              .toString(),
-                                                      ownername:
-                                                          buysearchdata[index]
-                                                              .ownerName
-                                                              .toString(),
-                                                      ownerplace:
-                                                          buysearchdata[index]
-                                                              .ownerPlace
-                                                              .toString(),
+                                                      // photo: buysearchdata[index]
+                                                      //     .photos!
+                                                      //     .toList(),
+                                                      // brand: buysearchdata[index]
+                                                      //     .brand
+                                                      //     .toString(),
+                                                      // rating: buysearchdata[index]
+                                                      //     .rating
+                                                      //     .toString(),
+                                                      // fueltype:
+                                                      //     buysearchdata[index]
+                                                      //         .fuelType
+                                                      //         .toString(),
+                                                      // gear: buysearchdata[index]
+                                                      //     .gearType
+                                                      //     .toString(),
+                                                      // seat: buysearchdata[index]
+                                                      //     .noOfSeats
+                                                      //     .toString(),
+                                                      // door: buysearchdata[index]
+                                                      //     .noOfDoors
+                                                      //     .toString(),
+                                                      // ownerphoto:
+                                                      //     buysearchdata[index]
+                                                      //         .ownerProfilePhoto
+                                                      //         .toString(),
+                                                      // ownername:
+                                                      //     buysearchdata[index]
+                                                      //         .ownerName
+                                                      //         .toString(),
+                                                      // ownerplace:
+                                                      //     buysearchdata[index]
+                                                      //         .ownerPlace
+                                                      //         .toString(),
                                                       id: buysearchdata[index]
                                                           .id
                                                           .toString(),
                                                       price: buysearchdata[index]
                                                           .rentPrice
                                                           .toString(),
-                                                      description:
-                                                          buysearchdata[index]
-                                                              .description
-                                                              .toString(),
-                                                      phonenumber:
-                                                          buysearchdata[index]
-                                                              .ownerPhoneNumber
-                                                              .toString(),
+                                                      // description:
+                                                      //     buysearchdata[index]
+                                                      //         .description
+                                                      //         .toString(),
+                                                      // phonenumber:
+                                                      //     buysearchdata[index]
+                                                      //         .ownerPhoneNumber
+                                                      //         .toString(),
                                                       locationEnabled:
                                                           locationEnabled,
                                                     )));

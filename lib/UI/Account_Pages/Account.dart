@@ -4,9 +4,15 @@ import 'package:drive2goo/UI/Account_Pages/feedback.dart';
 import 'package:drive2goo/UI/Account_Pages/help_center.dart';
 import 'package:drive2goo/UI/Account_Pages/privacy_policy.dart';
 import 'package:drive2goo/UI/Account_Pages/terms_conditions.dart';
+import 'package:drive2goo/UI/authentication_pages/Sign_In.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Bloc/Profile/User/user_bloc.dart';
+import '../../Repostory/ModelClass/profileupdate/UserModelclass.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -16,6 +22,14 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  late UserModelclass userdata;
+  @override
+  void initState() {
+    BlocProvider.of<UserBloc>(context).add(FetchUserevent());
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,20 +37,20 @@ class _AccountState extends State<Account> {
 
         appBar: AppBar(
           backgroundColor: Color(0xFF000B17),
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-                width: 24.w,
-                height: 24.h,
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                )),
-          ),
+          // leading: GestureDetector(
+          //   onTap: () {
+          //
+          //   },
+          //   child: Container(
+          //       width: 24.w,
+          //       height: 24.h,
+          //       clipBehavior: Clip.antiAlias,
+          //       decoration: BoxDecoration(),
+          //       child: Icon(
+          //         Icons.arrow_back,
+          //         color: Colors.white,
+          //       )),
+          // ),
           actions: [
             GestureDetector(
               onTap: () {
@@ -120,7 +134,20 @@ class _AccountState extends State<Account> {
           ],
         ),
         body: SingleChildScrollView(
-          child: Column(children: [
+          child: BlocBuilder<UserBloc, UserState>(
+  builder: (context, state) {
+    if(state is UserBlocLoading){
+    return Center(child: CircularProgressIndicator(),);
+    }
+    if(state is UserBlocError){
+
+    return Center(child:Text("Error"),);
+    }
+    if(state is UserBlocLoaded){
+    userdata=BlocProvider.of<UserBloc>(context).userModelclass;
+
+    return Column(
+    children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -131,13 +158,16 @@ class _AccountState extends State<Account> {
                     width: 82.w,
                     height: 80.h,
                     child: Stack(children: [
-                      Container(
-                        width: 74.w,
-                        height: 74.h,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.r)),
+                      ClipRRect(borderRadius: BorderRadius.circular(7.r),
+                        child: Container(
+                          width: 74.w,
+                          height: 74.h,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7.r)),
+                          ),
+                          child:  Image.network(userdata.profilePhotoUrl.toString(),fit: BoxFit.cover,),
                         ),
                       ),
                       Positioned(
@@ -167,7 +197,7 @@ class _AccountState extends State<Account> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'James Robert',
+                        userdata.fullName.toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,
@@ -179,7 +209,8 @@ class _AccountState extends State<Account> {
                         height: 12.h,
                       ),
                       Text(
-                        'Individual profile',
+                        userdata.email.toString(),
+                        //'Individual profile',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12.sp,
@@ -237,7 +268,7 @@ class _AccountState extends State<Account> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14.w),
                     child: GestureDetector(onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Editpage()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Editpage(profilename: userdata.fullName.toString(),)));
                     },
                       child: Container(
                         width: 113.w,
@@ -564,25 +595,31 @@ class _AccountState extends State<Account> {
                     height: 38.44.h,
                   ),
                   Center(
-                    child: Container(
-                        width: 339.w,
-                        height: 56.h,
-                        decoration: ShapeDecoration(
-                          color:Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.r)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Log Out',
-                            style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                              color:  Color(0xFF000B17),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                            )),
+                    child: GestureDetector(onTap: () async {
+                      final SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.clear();
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=> SignIn()), (route)=>false);
+                    },
+                      child: Container(
+                          width: 339.w,
+                          height: 56.h,
+                          decoration: ShapeDecoration(
+                            color:Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.r)),
                           ),
-                        )),
+                          child: Center(
+                            child: Text(
+                              'Log Out',
+                              style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                color:  Color(0xFF000B17),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              )),
+                            ),
+                          )),
+                    ),
                   ),
                 ],
               ),
@@ -590,7 +627,11 @@ class _AccountState extends State<Account> {
             SizedBox(
               height: 125.h,
             )
-          ]),
+          ]);  }else{
+      return SizedBox();
+    }
+  },
+),
         ));
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:drive2goo/Bloc/Buy/Buyvechildetails/buyvechildetails_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/AllBuyVechileModelclass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _BuyCarState extends State<BuyCar> {
   @override
   void initState() {
     BlocProvider.of<AllBuycarBloc>(context).add(FetchAllBuycarEvent());
+
     _getCurrentLocation();
     // TODO: implement initState
     super.initState();
@@ -103,90 +105,75 @@ bool  locationEnabled=true;
               SizedBox(
                 height: 92.h,
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => BuyCarSearch()));
-                    },
-                    child: Container(
-                      width: 245.w,
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 10.w),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => BuyCarSearch()));
+                      },
+                      child: Container(
+                        width: 245.w,
+                        height: 48.h,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(-0.19, 6),
+                            end: Alignment(0.09, -1),
+                            colors: [Color(0x1BFFFFFF), Color(0xFF000C1B)],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            side:
+                                BorderSide(width: 1.w, color: Color(0xFF58606A)),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 13.w,
+                            ),
+                            Icon(
+                              Icons.search_rounded,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 13.w,
+                            ),
+                            Text(
+                              'Search your dream car..',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Color(0xFF627387),
+                                fontSize: 15.sp,
+                                fontFamily: 'sfprodisplay',
+                                fontWeight: FontWeight.w300,
+                                letterSpacing: 1.50.w,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      width: 48.w,
                       height: 48.h,
                       decoration: ShapeDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(-0.19, 6),
-                          end: Alignment(0.09, -1),
-                          colors: [Color(0x1BFFFFFF), Color(0xFF000C1B)],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          side:
-                              BorderSide(width: 1.w, color: Color(0xFF58606A)),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
+                        color: Color(0xFFFFCE50),
+                        shape: OvalBorder(),
                       ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 13.w,
-                          ),
-                          Icon(
-                            Icons.search_rounded,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 13.w,
-                          ),
-                          Text(
-                            'Search your dream car..',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Color(0xFF627387),
-                              fontSize: 15.sp,
-                              fontFamily: 'sfprodisplay',
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 1.50.w,
-                            ),
-                          )
-                        ],
+                      child: Icon(
+                        Icons.tune,
+                        color: Colors.white,
+                        size: 24.sp,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 23.w,
-                  ),
-                  Container(
-                    width: 48.w,
-                    height: 48.h,
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFFFCE50),
-                      shape: OvalBorder(),
-                    ),
-                    child: Icon(
-                      Icons.tune,
-                      color: Colors.white,
-                      size: 24.sp,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 14.w,
-                  ),
-                  Container(
-                    width: 45.w,
-                    height: 45.h,
-                    decoration: ShapeDecoration(
-                      color: Color(0xFFF7F5F2),
-                      shape: OvalBorder(),
-                    ),
-                    child: Icon(
-                      Icons.notifications_none_outlined,
-                      size: 24.sp,
-                    ),
-                  ),
-                ],
+
+                  ],
+                ),
               ),
               SizedBox(
                 height: 40.h,
@@ -288,48 +275,48 @@ bool  locationEnabled=true;
                                            Navigator.of(context)
                                                .push(MaterialPageRoute(
                                                builder: (_) => BuyCarDetails(
-                                                 photo: nearbybuycardata[
-                                                 position]
-                                                     .photos!
-                                                     .toList(),
-                                                 brand: nearbybuycardata[
-                                                 position]
-                                                     .brand
-                                                     .toString(),
-                                                 rating: nearbybuycardata[
-                                                 position]
-                                                     .rating
-                                                     .toString(),
-                                                 fueltype: nearbybuycardata[
-                                                 position]
-                                                     .fuelType
-                                                     .toString(),
-                                                 gear: nearbybuycardata[
-                                                 position]
-                                                     .gearType
-                                                     .toString(),
-                                                 seat: nearbybuycardata[
-                                                 position]
-                                                     .noOfSeats
-                                                     .toString(),
-                                                 door: nearbybuycardata[
-                                                 position]
-                                                     .noOfDoors
-                                                     .toString(),
-                                                 ownerphoto:
-                                                 nearbybuycardata[
-                                                 position]
-                                                     .ownerProfilePhoto
-                                                     .toString(),
-                                                 ownername: nearbybuycardata[
-                                                 position]
-                                                     .ownerName
-                                                     .toString(),
-                                                 ownerplace:
-                                                 nearbybuycardata[
-                                                 position]
-                                                     .ownerPlace
-                                                     .toString(),
+                                                 // photo: nearbybuycardata[
+                                                 // position]
+                                                 //     .photos!
+                                                 //     .toList(),
+                                                 // brand: nearbybuycardata[
+                                                 // position]
+                                                 //     .brand
+                                                 //     .toString(),
+                                                 // rating: nearbybuycardata[
+                                                 // position]
+                                                 //     .rating
+                                                 //     .toString(),
+                                                 // fueltype: nearbybuycardata[
+                                                 // position]
+                                                 //     .fuelType
+                                                 //     .toString(),
+                                                 // gear: nearbybuycardata[
+                                                 // position]
+                                                 //     .gearType
+                                                 //     .toString(),
+                                                 // seat: nearbybuycardata[
+                                                 // position]
+                                                 //     .noOfSeats
+                                                 //     .toString(),
+                                                 // door: nearbybuycardata[
+                                                 // position]
+                                                 //     .noOfDoors
+                                                 //     .toString(),
+                                                 // ownerphoto:
+                                                 // nearbybuycardata[
+                                                 // position]
+                                                 //     .ownerProfilePhoto
+                                                 //     .toString(),
+                                                 // ownername: nearbybuycardata[
+                                                 // position]
+                                                 //     .ownerName
+                                                 //     .toString(),
+                                                 // ownerplace:
+                                                 // nearbybuycardata[
+                                                 // position]
+                                                 //     .ownerPlace
+                                                 //     .toString(),
                                                  id: nearbybuycardata[
                                                  position]
                                                      .id
@@ -338,16 +325,17 @@ bool  locationEnabled=true;
                                                  position]
                                                      .rentPrice
                                                      .toString(),
-                                                 description:
-                                                 nearbybuycardata[
-                                                 position]
-                                                     .description
-                                                     .toString(),
-                                                 phonenumber:
-                                                 nearbybuycardata[
-                                                 position]
-                                                     .ownerPhoneNumber
-                                                     .toString(), locationEnabled: locationEnabled,
+                                                 // description:
+                                                 // nearbybuycardata[
+                                                 // position]
+                                                 //     .description
+                                                 //     .toString(),
+                                                 // phonenumber:
+                                                 // nearbybuycardata[
+                                                 // position]
+                                                 //     .ownerPhoneNumber
+                                                 //     .toString(),
+                                                  locationEnabled: locationEnabled,
                                                )));
                                            print("hy" +
                                                nearbybuycardata[position]
@@ -642,46 +630,46 @@ bool  locationEnabled=true;
                                                             builder:
                                                                 (_) =>
                                                                     BuyCarDetails(
-                                                                      photo: allbuycardata[
-                                                                              position]
-                                                                          .photos!
-                                                                          .toList(),
-                                                                      brand: allbuycardata[
-                                                                              position]
-                                                                          .brand
-                                                                          .toString(),
-                                                                      rating: allbuycardata[
-                                                                              position]
-                                                                          .rating
-                                                                          .toString(),
-                                                                      fueltype: allbuycardata[
-                                                                              position]
-                                                                          .fuelType
-                                                                          .toString(),
-                                                                      gear: allbuycardata[
-                                                                              position]
-                                                                          .gearType
-                                                                          .toString(),
-                                                                      seat: allbuycardata[
-                                                                              position]
-                                                                          .noOfSeats
-                                                                          .toString(),
-                                                                      door: allbuycardata[
-                                                                              position]
-                                                                          .noOfDoors
-                                                                          .toString(),
-                                                                      ownerphoto: allbuycardata[
-                                                                              position]
-                                                                          .ownerProfilePhoto
-                                                                          .toString(),
-                                                                      ownername: allbuycardata[
-                                                                              position]
-                                                                          .ownerName
-                                                                          .toString(),
-                                                                      ownerplace: allbuycardata[
-                                                                              position]
-                                                                          .ownerPlace
-                                                                          .toString(),
+                                                                      // photo: allbuycardata[
+                                                                      //         position]
+                                                                      //     .photos!
+                                                                      //     .toList(),
+                                                                      // brand: allbuycardata[
+                                                                      //         position]
+                                                                      //     .brand
+                                                                      //     .toString(),
+                                                                      // rating: allbuycardata[
+                                                                      //         position]
+                                                                      //     .rating
+                                                                      //     .toString(),
+                                                                      // fueltype: allbuycardata[
+                                                                      //         position]
+                                                                      //     .fuelType
+                                                                      //     .toString(),
+                                                                      // gear: allbuycardata[
+                                                                      //         position]
+                                                                      //     .gearType
+                                                                      //     .toString(),
+                                                                      // seat: allbuycardata[
+                                                                      //         position]
+                                                                      //     .noOfSeats
+                                                                      //     .toString(),
+                                                                      // door: allbuycardata[
+                                                                      //         position]
+                                                                      //     .noOfDoors
+                                                                      //     .toString(),
+                                                                      // ownerphoto: allbuycardata[
+                                                                      //         position]
+                                                                      //     .ownerProfilePhoto
+                                                                      //     .toString(),
+                                                                      // ownername: allbuycardata[
+                                                                      //         position]
+                                                                      //     .ownerName
+                                                                      //     .toString(),
+                                                                      // ownerplace: allbuycardata[
+                                                                      //         position]
+                                                                      //     .ownerPlace
+                                                                      //     .toString(),
                                                                       id: allbuycardata[
                                                                               position]
                                                                           .id
@@ -690,14 +678,15 @@ bool  locationEnabled=true;
                                                                               position]
                                                                           .rentPrice
                                                                           .toString(),
-                                                                      description: allbuycardata[
-                                                                              position]
-                                                                          .description
-                                                                          .toString(),
-                                                                      phonenumber: allbuycardata[
-                                                                              position]
-                                                                          .ownerPhoneNumber
-                                                                          .toString(), locationEnabled: locationEnabled,
+                                                                      // description: allbuycardata[
+                                                                      //         position]
+                                                                      //     .description
+                                                                      //     .toString(),
+                                                                      // phonenumber: allbuycardata[
+                                                                      //         position]
+                                                                      //     .ownerPhoneNumber
+                                                                      //     .toString(),
+                                                                      locationEnabled: locationEnabled,
                                                                     )));
                                                   },
                                                   child: Container(
@@ -984,46 +973,46 @@ bool  locationEnabled=true;
                                                             builder:
                                                                 (_) =>
                                                                 BuyCarDetails(
-                                                                  photo: allbuycardata[
-                                                                  position]
-                                                                      .photos!
-                                                                      .toList(),
-                                                                  brand: allbuycardata[
-                                                                  position]
-                                                                      .brand
-                                                                      .toString(),
-                                                                  rating: allbuycardata[
-                                                                  position]
-                                                                      .rating
-                                                                      .toString(),
-                                                                  fueltype: allbuycardata[
-                                                                  position]
-                                                                      .fuelType
-                                                                      .toString(),
-                                                                  gear: allbuycardata[
-                                                                  position]
-                                                                      .gearType
-                                                                      .toString(),
-                                                                  seat: allbuycardata[
-                                                                  position]
-                                                                      .noOfSeats
-                                                                      .toString(),
-                                                                  door: allbuycardata[
-                                                                  position]
-                                                                      .noOfDoors
-                                                                      .toString(),
-                                                                  ownerphoto: allbuycardata[
-                                                                  position]
-                                                                      .ownerProfilePhoto
-                                                                      .toString(),
-                                                                  ownername: allbuycardata[
-                                                                  position]
-                                                                      .ownerName
-                                                                      .toString(),
-                                                                  ownerplace: allbuycardata[
-                                                                  position]
-                                                                      .ownerPlace
-                                                                      .toString(),
+                                                                  // photo: allbuycardata[
+                                                                  // position]
+                                                                  //     .photos!
+                                                                  //     .toList(),
+                                                                  // brand: allbuycardata[
+                                                                  // position]
+                                                                  //     .brand
+                                                                  //     .toString(),
+                                                                  // rating: allbuycardata[
+                                                                  // position]
+                                                                  //     .rating
+                                                                  //     .toString(),
+                                                                  // fueltype: allbuycardata[
+                                                                  // position]
+                                                                  //     .fuelType
+                                                                  //     .toString(),
+                                                                  // gear: allbuycardata[
+                                                                  // position]
+                                                                  //     .gearType
+                                                                  //     .toString(),
+                                                                  // seat: allbuycardata[
+                                                                  // position]
+                                                                  //     .noOfSeats
+                                                                  //     .toString(),
+                                                                  // door: allbuycardata[
+                                                                  // position]
+                                                                  //     .noOfDoors
+                                                                  //     .toString(),
+                                                                  // ownerphoto: allbuycardata[
+                                                                  // position]
+                                                                  //     .ownerProfilePhoto
+                                                                  //     .toString(),
+                                                                  // ownername: allbuycardata[
+                                                                  // position]
+                                                                  //     .ownerName
+                                                                  //     .toString(),
+                                                                  // ownerplace: allbuycardata[
+                                                                  // position]
+                                                                  //     .ownerPlace
+                                                                  //     .toString(),
                                                                   id: allbuycardata[
                                                                   position]
                                                                       .id
@@ -1032,14 +1021,15 @@ bool  locationEnabled=true;
                                                                   position]
                                                                       .rentPrice
                                                                       .toString(),
-                                                                  description: allbuycardata[
-                                                                  position]
-                                                                      .description
-                                                                      .toString(),
-                                                                  phonenumber: allbuycardata[
-                                                                  position]
-                                                                      .ownerPhoneNumber
-                                                                      .toString(), locationEnabled: locationEnabled,
+                                                                  // description: allbuycardata[
+                                                                  // position]
+                                                                  //     .description
+                                                                  //     .toString(),
+                                                                  // phonenumber: allbuycardata[
+                                                                  // position]
+                                                                  //     .ownerPhoneNumber
+                                                                    //  .toString(),
+                                                          locationEnabled: locationEnabled,
                                                                 )));
                                                   },
                                                   child: Container(
@@ -1327,49 +1317,49 @@ bool  locationEnabled=true;
                                                 MaterialPageRoute(
                                                     builder: (_) =>
                                                         BuyCarDetails(
-                                                          photo: allbuycardata[
-                                                                  index]
-                                                              .photos!
-                                                              .toList(),
-                                                          brand: allbuycardata[
-                                                                  index]
-                                                              .brand
-                                                              .toString(),
-                                                          rating: allbuycardata[
-                                                                  index]
-                                                              .rating
-                                                              .toString(),
-                                                          fueltype:
-                                                              allbuycardata[
-                                                                      index]
-                                                                  .fuelType
-                                                                  .toString(),
-                                                          gear: allbuycardata[
-                                                                  index]
-                                                              .gearType
-                                                              .toString(),
-                                                          seat: allbuycardata[
-                                                                  index]
-                                                              .noOfSeats
-                                                              .toString(),
-                                                          door: allbuycardata[
-                                                                  index]
-                                                              .noOfDoors
-                                                              .toString(),
-                                                          ownerphoto: allbuycardata[
-                                                                  index]
-                                                              .ownerProfilePhoto
-                                                              .toString(),
-                                                          ownername:
-                                                              allbuycardata[
-                                                                      index]
-                                                                  .ownerName
-                                                                  .toString(),
-                                                          ownerplace:
-                                                              allbuycardata[
-                                                                      index]
-                                                                  .ownerPlace
-                                                                  .toString(),
+                                                          // photo: allbuycardata[
+                                                          //         index]
+                                                          //     .photos!
+                                                          //     .toList(),
+                                                          // brand: allbuycardata[
+                                                          //         index]
+                                                          //     .brand
+                                                          //     .toString(),
+                                                          // rating: allbuycardata[
+                                                          //         index]
+                                                          //     .rating
+                                                          //     .toString(),
+                                                          // fueltype:
+                                                          //     allbuycardata[
+                                                          //             index]
+                                                          //         .fuelType
+                                                          //         .toString(),
+                                                          // gear: allbuycardata[
+                                                          //         index]
+                                                          //     .gearType
+                                                          //     .toString(),
+                                                          // seat: allbuycardata[
+                                                          //         index]
+                                                          //     .noOfSeats
+                                                          //     .toString(),
+                                                          // door: allbuycardata[
+                                                          //         index]
+                                                          //     .noOfDoors
+                                                          //     .toString(),
+                                                          // ownerphoto: allbuycardata[
+                                                          //         index]
+                                                          //     .ownerProfilePhoto
+                                                          //     .toString(),
+                                                          // ownername:
+                                                          //     allbuycardata[
+                                                          //             index]
+                                                          //         .ownerName
+                                                          //         .toString(),
+                                                          // ownerplace:
+                                                          //     allbuycardata[
+                                                          //             index]
+                                                          //         .ownerPlace
+                                                          //         .toString(),
                                                           id: allbuycardata[
                                                                   index]
                                                               .id
@@ -1378,16 +1368,17 @@ bool  locationEnabled=true;
                                                                   index]
                                                               .rentPrice
                                                               .toString(),
-                                                          description:
-                                                              allbuycardata[
-                                                                      index]
-                                                                  .description
-                                                                  .toString(),
-                                                          phonenumber:
-                                                              allbuycardata[
-                                                                      index]
-                                                                  .ownerPhoneNumber
-                                                                  .toString(), locationEnabled: locationEnabled,
+                                                          // description:
+                                                          //     allbuycardata[
+                                                          //             index]
+                                                          //         .description
+                                                          //         .toString(),
+                                                          // phonenumber:
+                                                          //     allbuycardata[
+                                                          //             index]
+                                                          //         .ownerPhoneNumber
+                                                  //                .toString(),
+                                                  locationEnabled: locationEnabled,
                                                         )));
                                           },
                                           child: Container(

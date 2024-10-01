@@ -14,7 +14,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
-Future.delayed(Duration(seconds: 4),() async {
+Future.delayed(Duration(seconds: 2),() async {
   //shared preferences.
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         if(prefs.containsKey("userId")){
@@ -27,6 +27,8 @@ Future.delayed(Duration(seconds: 4),() async {
     return Scaffold(
 
       backgroundColor: Colors.black,
+      body: Container(width: double.infinity,height: double.infinity,child: Image(image: AssetImage("assets/splash.png"),fit:BoxFit.cover ,),),
     );
+
   }
 }

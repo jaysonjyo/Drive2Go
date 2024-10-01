@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:drive2goo/Bloc/Buy/Buyvechildetails/buyvechildetails_bloc.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/Buy_VechilOrderModelClass.dart';
+import 'package:drive2goo/Repostory/ModelClass/Buyvechile/BuyvechildetailsModelClass.dart';
 import 'package:drive2goo/Repostory/ModelClass/Buyvechile/NearByBuyCarModelClass.dart';
 import 'package:drive2goo/UI/Home_Pages/Home.dart';
 import 'package:drive2goo/UI/Others/BottomNavigation.dart';
@@ -18,38 +20,17 @@ import '../../Bloc/Buy/Nearby_Buy_Car_Bloc/nearby_buy_bloc.dart';
 import '../Toast_message/Toast_message.dart';
 
 class BuyCarDetails extends StatefulWidget {
-  final List<dynamic> photo;
-  final String brand;
-  final String rating;
-  final String fueltype;
-  final String gear;
-  final String seat;
-  final String door;
-  final String ownerphoto;
-  final String ownername;
-  final String ownerplace;
+
   final String id;
   final String price;
-  final String description;
-  final String phonenumber;
+
   final bool locationEnabled;
 
   const BuyCarDetails(
       {super.key,
-      required this.photo,
-      required this.brand,
-      required this.rating,
-      required this.fueltype,
-      required this.gear,
-      required this.seat,
-      required this.door,
-      required this.ownerphoto,
-      required this.ownername,
-      required this.ownerplace,
+required this.price,
       required this.id,
-      required this.price,
-      required this.description,
-      required this.phonenumber,
+
       required this.locationEnabled});
 
   @override
@@ -125,6 +106,13 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
 
   //
   @override
+  void initState() {
+    BlocProvider.of<BuyvechildetailsBloc>(context).add(FetchBuyvechildetails(vechilid: widget.id));
+    // TODO: implement initState
+    super.initState();
+  }
+  late BuyvechildetailsModelClass buyvechildetailsdata;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -160,7 +148,17 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            child: Column(
+            child: BlocBuilder<BuyvechildetailsBloc, BuyvechildetailsState>(
+  builder: (context, state) {
+    if(state is BuyvechildetailsBlcoLoading){
+      return Center(child:  CircularProgressIndicator(),);
+    }
+    if(state is BuyvechildetailsBlocError){
+      return Center(child: Text("Error"),);
+    }
+    if(state is BuyvechildetailsBlocLoaded){
+      buyvechildetailsdata=BlocProvider.of<BuyvechildetailsBloc>(context).buyvechildetailsModelClass;
+    return Column(
               children: [
                 Container(
                   width: double.infinity.w,
@@ -177,7 +175,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                     ),
                   ),
                   child: CarouselSlider.builder(
-                    itemCount: widget.photo.length,
+                    itemCount: buyvechildetailsdata.photos!.length,
                     itemBuilder: (BuildContext context, int itemIndex,
                             int pageViewIndex) =>
                         Container(
@@ -185,7 +183,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                       height: 254.h,
                       decoration: ShapeDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(widget.photo[itemIndex]),
+                          image: NetworkImage(buyvechildetailsdata.photos![itemIndex].toString()),
                           fit: BoxFit.cover,
                         ),
                         shape: RoundedRectangleBorder(
@@ -218,7 +216,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.brand.toString(),
+                        buyvechildetailsdata.brand.toString(),
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           color: Color(0xFFF7F5F2),
@@ -236,7 +234,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                             unratedColor: Colors.grey,
                             itemSize: 20.sp,
                             initialRating:
-                                double.parse(widget.rating.toString()),
+                                double.parse(buyvechildetailsdata.rating.toString()),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -254,7 +252,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                             width: 13.w,
                           ),
                           Text(
-                            widget.rating.toString(),
+                            buyvechildetailsdata.rating.toString(),
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               color: Color(0xFFF7F5F2),
@@ -267,7 +265,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                       ),
                       SizedBox(height: 10.h),
                       Text(
-                        widget.description,
+                       buyvechildetailsdata.description.toString(),
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           color: Colors.white,
@@ -352,7 +350,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                               ),
                                             ),
                                             Text(
-                                              widget.fueltype.toString(),
+                                              buyvechildetailsdata.fuelType.toString(),
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -419,7 +417,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                               ),
                                             ),
                                             Text(
-                                              widget.gear.toString(),
+                                              buyvechildetailsdata.gearType.toString(),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16.sp,
@@ -493,7 +491,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                               ),
                                             ),
                                             Text(
-                                              widget.seat.toString(),
+                                              buyvechildetailsdata.noOfSeats.toString(),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16.sp,
@@ -559,7 +557,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                               ),
                                             ),
                                             Text(
-                                              widget.door.toString(),
+                                              buyvechildetailsdata.noOfDoors.toString(),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16.sp,
@@ -612,7 +610,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                               decoration: ShapeDecoration(
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                      widget.ownerphoto.toString()),
+                                      buyvechildetailsdata.ownerProfilePhoto.toString()),
                                   fit: BoxFit.cover,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -628,7 +626,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.ownername.toString(),
+                                    buyvechildetailsdata.ownerName.toString(),
                                     maxLines: 1,
                                     style: TextStyle(
                                       color: Color(0xFFF7F5F2),
@@ -660,7 +658,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                       Container(
                                         width: 131.w,
                                         child: Text(
-                                          widget.ownerplace,
+                                          buyvechildetailsdata.ownerPlace.toString(),
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             color: Color(0xFFF7F5F2),
@@ -684,7 +682,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                 GestureDetector(
                                   onTap: () {
                                     Whatsapp(
-                                        number: " +91${widget.phonenumber}");
+                                        number: " +91${buyvechildetailsdata.ownerPhoneNumber.toString()}");
                                   },
                                   child: Container(
                                     width: 26.w,
@@ -704,7 +702,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                 GestureDetector(
                                   onTap: () {
                                     // call code
-                                    launch("tel:${widget.phonenumber}");
+                                    launch("tel:${buyvechildetailsdata.ownerPhoneNumber.toString()}");
                                   },
                                   child: Container(
                                     width: 26.w,
@@ -817,67 +815,75 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                         Navigator.of(context).push(
                                                             MaterialPageRoute(
                                                                 builder: (_) =>
-                                                                    BuyCarDetails(
-                                                                      photo: nearbybuycardata[
-                                                                              position]
-                                                                          .photos!
-                                                                          .toList(),
-                                                                      brand: nearbybuycardata[
-                                                                              position]
-                                                                          .brand
-                                                                          .toString(),
-                                                                      rating: nearbybuycardata[
-                                                                              position]
-                                                                          .rating
-                                                                          .toString(),
-                                                                      fueltype: nearbybuycardata[
-                                                                              position]
-                                                                          .fuelType
-                                                                          .toString(),
-                                                                      gear: nearbybuycardata[
-                                                                              position]
-                                                                          .gearType
-                                                                          .toString(),
-                                                                      seat: nearbybuycardata[
-                                                                              position]
-                                                                          .noOfSeats
-                                                                          .toString(),
-                                                                      door: nearbybuycardata[
-                                                                              position]
-                                                                          .noOfDoors
-                                                                          .toString(),
-                                                                      ownerphoto: nearbybuycardata[
-                                                                              position]
-                                                                          .ownerProfilePhoto
-                                                                          .toString(),
-                                                                      ownername: nearbybuycardata[
-                                                                              position]
-                                                                          .ownerName
-                                                                          .toString(),
-                                                                      ownerplace: nearbybuycardata[
-                                                                              position]
-                                                                          .ownerPlace
-                                                                          .toString(),
-                                                                      id: nearbybuycardata[
-                                                                              position]
-                                                                          .id
-                                                                          .toString(),
+                                                                    BuyCarDetails(id: nearbybuycardata[
+                                                                                position]
+                                                                            .id
+                                                                            .toString(), locationEnabled:  widget
+                                                                                .locationEnabled,
                                                                       price: nearbybuycardata[
-                                                                              position]
-                                                                          .rentPrice
-                                                                          .toString(),
-                                                                      description: nearbybuycardata[
-                                                                              position]
-                                                                          .description
-                                                                          .toString(),
-                                                                      phonenumber: nearbybuycardata[
-                                                                              position]
-                                                                          .ownerPhoneNumber
-                                                                          .toString(),
-                                                                      locationEnabled:
-                                                                          widget
-                                                                              .locationEnabled,
-                                                                    )));
+                                                                    position]
+                                                                        .rentPrice
+                                                                        .toString(),),
+
+                                                                    //   (
+                                                                    //   photo: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .photos!
+                                                                    //       .toList(),
+                                                                    //   brand: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .brand
+                                                                    //       .toString(),
+                                                                    //   rating: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .rating
+                                                                    //       .toString(),
+                                                                    //   fueltype: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .fuelType
+                                                                    //       .toString(),
+                                                                    //   gear: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .gearType
+                                                                    //       .toString(),
+                                                                    //   seat: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .noOfSeats
+                                                                    //       .toString(),
+                                                                    //   door: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .noOfDoors
+                                                                    //       .toString(),
+                                                                    //   ownerphoto: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .ownerProfilePhoto
+                                                                    //       .toString(),
+                                                                    //   ownername: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .ownerName
+                                                                    //       .toString(),
+                                                                    //   ownerplace: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .ownerPlace
+                                                                    //       .toString(),
+                                                                    //   id: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .id
+                                                                    //       .toString(),
+
+                                                                    //   description: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .description
+                                                                    //       .toString(),
+                                                                    //   phonenumber: nearbybuycardata[
+                                                                    //           position]
+                                                                    //       .ownerPhoneNumber
+                                                                    //       .toString(),
+                                                                    //   locationEnabled:
+                                                                    //       widget
+                                                                    //           .locationEnabled,
+                                                                    // )
+                                                            ));
                                                       },
                                                       child: Container(
                                                         width: 185.w,
@@ -1086,7 +1092,10 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                   height: 108.h,
                 )
               ],
-            ),
+            );}
+    return SizedBox();
+  },
+),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -1274,7 +1283,7 @@ class _BuyCarDetailsState extends State<BuyCarDetails> {
                                                       buyerAddress: address.text
                                                           .toString(),
                                                       purchaseprice:
-                                                          widget.price));
+                                                          buyvechildetailsdata.rentPrice.toString()));
                                             }
                                             _formKey.currentState?.save();
                                           },

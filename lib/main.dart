@@ -1,3 +1,4 @@
+import 'package:drive2goo/Bloc/Buy/Buyvechildetails/buyvechildetails_bloc.dart';
 import 'package:drive2goo/Bloc/Profile/Feedback/feedback_bloc.dart';
 import 'package:drive2goo/Bloc/Profile/Privacypolicy/privacy_policy_bloc.dart';
 import 'package:drive2goo/Bloc/Profile/Terms_Condition/terms_condition_bloc.dart';
@@ -19,6 +20,7 @@ import 'Bloc/Buy/Buycar_order/buyorder_bloc.dart';
 import 'Bloc/Buy/Nearby_Buy_Car_Bloc/nearby_buy_bloc.dart';
 import 'Bloc/Profile/Helpcenter/chat/chat_bloc.dart';
 import 'Bloc/Profile/Helpcenter/post/helpcenterpost_bloc.dart';
+import 'Bloc/Profile/User/user_bloc.dart';
 import 'Bloc/Rent/Nearby_Bloc/nearby_car_bloc.dart';
 import 'Bloc/Rent/RentOrder_Bloc/rent_car_order_bloc.dart';
 import 'Bloc/Rent/Rent_Car_Bloc/rentcar_bloc.dart';
@@ -83,6 +85,9 @@ class MyApp extends StatelessWidget {
                 create: (context) => AllBuycarBloc(),
               ),
               BlocProvider(
+                create: (context) => BuyvechildetailsBloc(),
+              ),
+              BlocProvider(
                 create: (context) => BuyCreateOrderBloc(),
               ),
               BlocProvider(
@@ -108,6 +113,9 @@ class MyApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (context) => ProfileUpdateBloc(),
+              ),
+              BlocProvider(
+                create: (context) => UserBloc(),
               ),
             ],
             child: MaterialApp(

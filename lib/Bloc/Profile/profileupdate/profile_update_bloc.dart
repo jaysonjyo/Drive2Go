@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:drive2goo/Repostory/API/Api_main.dart';
 import 'package:drive2goo/Repostory/ModelClass/profileupdate/ProfileUpdateModelClass.dart';
@@ -14,10 +16,17 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
     on<FetchProfileUpdatevent>((event, emit) async{
       emit(ProfileUpdateBlocLoading());
       try{
-        profileUpdateModelClass=await usermainapi.getProfileupdate(event.fullname, event.oldpassword, event.newpassword);
+        if(event.boolcheckingimage==false){
+        profileUpdateModelClass = await usermainapi.getProfileupdate(event.fullname, event.oldpassword, event.newpassword);}
+        else{
+          profileUpdateModelClass = await usermainapi.uploadFile(event.userimae!);
+
+        }
         emit(ProfileUpdateBlocLoaded());
       }catch(error){
+        print("hi"+error.toString());
         emit(ProfileUpdateBlocError());
+
         ToastMessage().toastmessage(message: error.toString());
 
       }

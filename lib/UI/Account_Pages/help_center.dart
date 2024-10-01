@@ -90,7 +90,8 @@ late List<HelpcenterChatModel> chatdata;
 
     }
     if(state is ChatBlocError){
-      return Center( child: Text("Error"),);
+      return SizedBox();
+        // Center( child: Text("Error"),);
     }
     if(state is ChatBlocLoaded){
 
@@ -134,7 +135,7 @@ late List<HelpcenterChatModel> chatdata;
                             maxWidth: MediaQuery.of(context).size.width * 0.7.w,
                           ),
                           child:Text(
-                            chatdata[index].response.toString(),
+                           chatdata[index].response.toString(),
                             style: TextStyle(color: Colors.green,
                               fontSize: 17.sp,fontWeight: FontWeight.w500, fontFamily: 'sfprodisplay',),
                           ),
